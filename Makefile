@@ -1,3 +1,7 @@
-usearray: usearray.o Array.o
+CFLAGS=-ggdb
+LDFLAGS=-ggdb
 
-Array.o: Array.c Array.h
+usearray: usearray.o Array.h
+
+pp:
+	cc -c -E usearray.c
