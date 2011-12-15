@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 #include<assert.h>
 #include"Array.h"
 
@@ -126,12 +127,61 @@ void testIntArray() {
 
     Array_delete(int, array);
 
+    printf("ok\n");
+}
+void testPersonArray() {
+    printf("%s...\n", __func__);
+    Person x, y;
+    Array(Person)* array = Array__new(Person, 20);
+    strcpy(x.first_name, "Christian");
+    strcpy(x.last_name, "Friedl");
+    Array_push(Person, array, x);
+    y = Array_getValueAt(Person, array, 0);
+    printf("%s %s\n", y.first_name, y.last_name);
+    assert(!strcmp(y.first_name, x.first_name));
+    assert(!strcmp(y.last_name, x.last_name));
+    strcpy(x.first_name, "Cornelia");
+    strcpy(x.last_name, "Nalepka");
+    Array_push(Person, array, x);
+    y = Array_getValueAt(Person, array, 1);
+    printf("%s %s\n", y.first_name, y.last_name);
+    assert(!strcmp(y.first_name, x.first_name));
+    assert(!strcmp(y.last_name, x.last_name));
 
+    Array_delete(Person, array);
+
+    printf("ok\n");
+}
+
+void testManyPushes() {
+    printf("%s...\n", __func__);
+
+    Array(int)* intArray = Array__new(int, 1);
+
+    int i;
+    for (i=0; i < 200000; ++i)
+        Array_push(int, intArray, i);
+    printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
+    srandom(time(NULL));
+    for (i=0; i < 200000; ++i)
+        Array_pop(int, intArray);
+    printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
+    for (i=0; i < 200000; ++i)
+        Array_unshift(int, intArray, i);
+    printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
+    srandom(time(NULL));
+    for (i=0; i < 200000; ++i)
+        Array_shift(int, intArray);
+    printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
+
+    //printArray(intArray);   
     printf("ok\n");
 }
 
 int main() {
     testArrayNewDelete();
     testIntArray();
+    testPersonArray();
+    testManyPushes();
     return 0;
 }
