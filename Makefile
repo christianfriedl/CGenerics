@@ -1,12 +1,37 @@
-CFLAGS=-ggdb
-LDFLAGS=-ggdb
+include Makefile.local
+NORMAL_WARNINGS = -Wall
+MEGA_WARNINGS = -Wall -Wdeclaration-after-statement \
+	-Wredundant-decls -Wmissing-noreturn -Wshadow -Wcast-align \
+	-Wwrite-strings -Winline -Wformat-nonliteral -Wformat-security \
+	-Wswitch -Wswitch-default -Winit-self -Wmissing-include-dirs \
+	-Wundef -Waggregate-return -Wmissing-format-attribute \
+	-Wnested-externs -Werror
+WARNINGS = $(NORMAL_WARNINGS)
+CFLAGS=-ggdb $(WARNINGS)
+LDFLAGS=-ggdb $(WARNINGS) 
 
-BINARIES=usearray
+clean-all-test: clean all test
 
-usearray: usearray.o Array.h
+all-test: all test
 
 pp:
-	cc -c -E usearray.c
+	(cd test; make pp)
+
+localall: $(STATIC_LIBRARY)
+
+all: 
+	(cd test; make all)
+
+$(STATIC_LIBRARY): $(LIB_OBJECTS)
+	ar -rcsv $@ $?
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $?
 
 clean:
-	rm *.o *.a $(BINARIES)
+	rm -f *.o $(TEST_BINARIES) $(STATIC_LIBRARY)
+	(cd test; make clean)
+
+.PHONY: test
+test:
+	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then exit; fi; done
