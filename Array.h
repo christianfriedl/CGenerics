@@ -2,6 +2,7 @@
 #define _ARRAY_H
 
 #include<stdlib.h>
+#include<string.h>
 
 #ifndef min
     #define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
@@ -44,7 +45,7 @@ typedef struct { \
     unsigned int usedElements; /* the size of the array */ \
     unsigned int capacityElements; /* the currently possible maximum size of the array */ \
 } ArrayOf##TYPENAME; \
- \
+\
 ArrayOf##TYPENAME* ArrayOf##TYPENAME##__new(const unsigned int initialCapacity) { \
     ArrayOf##TYPENAME* this = malloc(sizeof(*this)); \
     assert(this != NULL); \
@@ -91,6 +92,40 @@ TYPENAME ArrayOf##TYPENAME##_pop(ArrayOf##TYPENAME* this) { \
     return *(this->vector + this->usedElements); \
 } \
 \
+TYPENAME ArrayOf##TYPENAME##_shift(ArrayOf##TYPENAME* this) { \
+    if (this->usedElements == 0) \
+        exit(1); /* TODO errors */ \
+    TYPENAME firstValue = *(this->vector); \
+    --this->usedElements; \
+    memmove(this->vector, (this->vector + 1), sizeof(TYPENAME) * this->usedElements); \
+    return firstValue; \
+} \
+\
+void ArrayOf##TYPENAME##_unshift(ArrayOf##TYPENAME* this, TYPENAME value) { \
+    if (this->usedElements == this->capacityElements) \
+        ArrayOf##TYPENAME##_grow_(this, this->capacityElements + 1); \
+    memmove((this->vector + 1), this->vector, sizeof(TYPENAME) * this->usedElements); \
+    *(this->vector) = value; \
+    ++this->usedElements; \
+} \
+\
+void ArrayOf##TYPENAME##_insertValueAt(ArrayOf##TYPENAME* this, TYPENAME value, unsigned int at) { \
+    if (this->usedElements == this->capacityElements) \
+        ArrayOf##TYPENAME##_grow_(this, this->capacityElements + 1); \
+    memmove((this->vector + at + 1), (this->vector + at), sizeof(TYPENAME) * (this->usedElements - at)); \
+    *(this->vector + at) = value; \
+    ++this->usedElements; \
+} \
+\
+TYPENAME ArrayOf##TYPENAME##_removeValueAt(ArrayOf##TYPENAME* this, unsigned int at) { \
+    if (this->usedElements == 0) \
+        exit(1); /* TODO errors */ \
+    TYPENAME value = *(this->vector + at); \
+    --this->usedElements; \
+    memmove((this->vector + at), (this->vector + at + 1), sizeof(TYPENAME) * (this->usedElements - at)); \
+    return value; \
+} \
+\
 unsigned int ArrayOf##TYPENAME##_getCapacity(ArrayOf##TYPENAME* this) { \
     return this->capacityElements; \
 } \
@@ -115,9 +150,9 @@ unsigned int ArrayOf##TYPENAME##_getSize(ArrayOf##TYPENAME* this) { \
 #define Array_pop(TYPENAME, array) ArrayOf##TYPENAME##_pop((array))
 #define Array_getCapacity(TYPENAME, array) ArrayOf##TYPENAME##_getCapacity((array))
 #define Array_getSize(TYPENAME, array) ArrayOf##TYPENAME##_getSize((array))
-#define Array_shift(TYPENAME, array) assert(1==0)
-#define Array_unshift(TYPENAME, array, value) assert(1==0)
-#define Array_insertValueAt(TYPENAME, array, value, at) assert(1==0)
-#define Array_removeValueAt(TYPENAME, array, value, at) assert(1==0)
+#define Array_shift(TYPENAME, array) ArrayOf##TYPENAME##_shift((array))
+#define Array_unshift(TYPENAME, array, value) ArrayOf##TYPENAME##_unshift((array), (value))
+#define Array_insertValueAt(TYPENAME, array, value, at) ArrayOf##TYPENAME##_insertValueAt((array), (value), (at))
+#define Array_removeValueAt(TYPENAME, array, at) ArrayOf##TYPENAME##_removeValueAt((array), (at))
 
 
