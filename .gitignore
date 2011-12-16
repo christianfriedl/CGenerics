@@ -1,1 +1,8 @@
 Makefile.local
+*.o
+*.a
+*.e
+*.e.c
+test/0500_Array
+test/0501_ArrayPerformance
+test/0750_LinkedList
