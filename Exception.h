@@ -3,10 +3,10 @@
 
 #define ExceptionID_GeneralFatalException       0
 
-typedef enum { Sincerety_none = 0, Sincerety_notice = 1, Sincerety_warning = 2, Sincerety_error = 3, Sincerety_fatal = 4 } Sincerety;
+typedef enum { Severity_none = 0, Severity_notice = 1, Severity_warning = 2, Severity_error = 3, Severity_fatal = 4 } Severity;
 
 typedef struct {
-    Sincerety sincerety;
+    Severity sincerety;
     int id;   
     char *msg;
 } Exception;
@@ -14,7 +14,7 @@ typedef struct {
 /* generic exception that will result in aborting the program */
 extern Exception GeneralFatalException;
 
-Exception* Exception__new(const Sincerety sincerety, const int id, const char* msg);
+Exception* Exception__new(const Severity sincerety, const int id, const char* msg, ...);
 void Exception_delete(Exception* this);
 void Exception_log(Exception* this);
 

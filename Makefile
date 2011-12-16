@@ -21,6 +21,10 @@ all-test: all test
 pp:
 	(cd test; make pp)
 
+pp-indent:
+	(cd test; make pp-indent)
+
+
 localall: $(STATIC_LIBRARY)
 
 all: localall

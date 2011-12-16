@@ -1,3 +1,4 @@
+#include<limits.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
@@ -181,6 +182,22 @@ void testManyPushes() {
     printf("ok\n");
 }
 
+void testArrayGrow() {
+    printf("%s...\n", __func__);
+
+    Array(int)* intArray = Array__new(int, 1);
+
+    Array_insertValueAt(int, intArray, 20, 20);
+    assert(Array_getValueAt(int, intArray, 20) == 20);
+    printf("%u\n", Array_getCapacity(int, intArray));
+    assert(Array_getCapacity(int, intArray) >= 21);
+    assert(Array_getSize(int, intArray) == 21);
+
+    Array_delete(int, intArray);
+
+    printf("ok\n");
+}
+
 void testExceptions() {
     printf("%s...\n", __func__);
 
@@ -190,11 +207,81 @@ void testExceptions() {
         printf("Exception caught, msg was '%s'\n", (AppState_getException(appState))->msg);
     assert(AppState_isExceptionRaisedWithID(appState, ExceptionID_ArrayIndexOutOfBounds));
     AppState_catchException(appState);
+    Array_pop(int, intArray);
+    if (AppState_isExceptionRaised(appState))
+        printf("Exception caught, msg was '%s'\n", (AppState_getException(appState))->msg);
+    AppState_catchException(appState);
+    Array_shift(int, intArray);
+    if (AppState_isExceptionRaised(appState))
+        printf("Exception caught, msg was '%s'\n", (AppState_getException(appState))->msg);
+    AppState_catchException(appState);
+    Array_getValueAt(int, intArray, 20);
+    if (AppState_isExceptionRaised(appState))
+        printf("Exception caught, msg was '%s'\n", (AppState_getException(appState))->msg);
+    AppState_catchException(appState);
 
     Array_delete(int, intArray);
 
     printf("ok\n");
 }
+
+int intComparison(const int *i1, const int *i2) {
+    return ((*i1 < *i2) ? -1 : (*i1 == *i2) ? 0 : 1);
+}
+int intComparisonReversed(const int *i1, const int *i2) {
+    return ((*i1 < *i2) ? 1 : (*i1 == *i2) ? 0 : -1);
+}
+
+void testSorting() {
+    printf("%s...\n", __func__);
+
+    Array(int)* intArray = Array__new(int, 20);
+    int i;
+    srandom(time(NULL));
+    for (i=0; i < 20; ++i)
+        Array_push(int, intArray, random() % 65536);
+    printf("unsorted: ");
+    Array_print(int, intArray, "%i");
+    Array_qsort(int, intArray, intComparison);
+    printf("sorted: ");
+    Array_print(int, intArray, "%i");
+    for (i=0; i < 19; ++i)
+        assert(Array_getValueAt(int, intArray, i) <= Array_getValueAt(int, intArray, i+1));
+    Array_qsort(int, intArray, intComparisonReversed);
+    printf("sorted reversed: ");
+    Array_print(int, intArray, "%i");
+    for (i=0; i < 19; ++i)
+        assert(Array_getValueAt(int, intArray, i) >= Array_getValueAt(int, intArray, i+1));
+
+    Array_delete(int, intArray);
+
+    printf("ok\n");
+}
+
+void testSearch() {
+    printf("%s...\n", __func__);
+
+    Array(int)* intArray = Array__new(int, 20);
+    int i;
+    srandom(time(NULL));
+    for (i=0; i < 20; ++i)
+        Array_push(int, intArray, i);
+
+    int x = 2;
+    i = Array_searchIndex(int, intArray, &x, intComparison);
+    printf("%u\n", i);
+    assert(i == 2);
+    x = 20;
+    i = Array_searchIndex(int, intArray, &x, intComparison);
+    printf("%u\n", i);
+    assert(i == 0);
+    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+
+    Array_delete(int, intArray);
+
+    printf("ok\n");
+}
+
 
 int main() {
     appState = AppState__new();
@@ -202,6 +289,9 @@ int main() {
     testIntArray();
     testPersonArray();
     testExceptions();
+    testArrayGrow();
+    testSorting();
+    testSearch();
     //testManyPushes();
     AppState_delete(appState);
     return 0;

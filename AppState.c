@@ -18,7 +18,7 @@ void AppState_delete(AppState* this) {
 
 void AppState_throwException(AppState* this, Exception* exception) {
     Exception_log(exception);
-    if (exception->sincerety == Sincerety_fatal) {
+    if (exception->sincerety == Severity_fatal) {
         AppState_delete(this); /* yeah */
         abort();
     }
@@ -26,9 +26,13 @@ void AppState_throwException(AppState* this, Exception* exception) {
     this->exception = exception;
 }
 
-void AppState_catchException(AppState* this) {
-    Exception_delete(this->exception);
-    this->exception = NULL;
+bool AppState_catchException(AppState* this) {
+    if (AppState_isExceptionRaised(this)) {
+        Exception_delete(this->exception);
+        this->exception = NULL;
+        return true;
+    } else
+        return false;
 }
 
 bool AppState_isExceptionRaised(AppState* this) {
