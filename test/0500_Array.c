@@ -162,19 +162,18 @@ void testManyPushes() {
     for (i=0; i < 200000; ++i)
         Array_push(int, intArray, i);
     printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
-    srandom(time(NULL));
     for (i=0; i < 200000; ++i)
         Array_pop(int, intArray);
     printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
     for (i=0; i < 200000; ++i)
         Array_unshift(int, intArray, i);
     printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
-    srandom(time(NULL));
     for (i=0; i < 200000; ++i)
         Array_shift(int, intArray);
     printf("cap %u size %u\n", Array_getCapacity(int, intArray), Array_getSize(int, intArray));
 
     //printArray(intArray);   
+    Array_delete(int, intArray);
     printf("ok\n");
 }
 
@@ -182,6 +181,6 @@ int main() {
     testArrayNewDelete();
     testIntArray();
     testPersonArray();
-    testManyPushes();
+    //testManyPushes();
     return 0;
 }
