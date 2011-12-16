@@ -3,6 +3,7 @@ Makefile.local
 *.a
 *.e
 *.e.c
+.*.sw?
 test/0500_Array
 test/0501_ArrayPerformance
 test/0750_LinkedList
