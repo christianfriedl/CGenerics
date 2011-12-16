@@ -1,6 +1,6 @@
 include Makefile.local
 CFLAGS=-Wall -I../
-LDFLAGS=-Wall
+LDFLAGS=-Wall -L../ -lcgenerics
 
 BINARIES=0500_Array
 

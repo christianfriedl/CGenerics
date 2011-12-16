@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
+#include"AppState.h"
 #include"Array.h"
 
 typedef struct {
@@ -14,6 +15,8 @@ typedef int* intPtr;
 INIT_ARRAY(int)
 INIT_ARRAY(intPtr)
 INIT_ARRAY(Person)
+
+AppState *appState;
 
 void printArray(Array(int)* array) {
     unsigned i;
@@ -174,13 +177,32 @@ void testManyPushes() {
 
     //printArray(intArray);   
     Array_delete(int, intArray);
+
+    printf("ok\n");
+}
+
+void testExceptions() {
+    printf("%s...\n", __func__);
+
+    Array(int)* intArray = Array__new(int, 1);
+    Array_removeValueAt(int, intArray, 1);
+    if (AppState_isExceptionRaisedWithID(appState, ExceptionID_ArrayIndexOutOfBounds))
+        printf("Exception caught, msg was '%s'\n", (AppState_getException(appState))->msg);
+    assert(AppState_isExceptionRaisedWithID(appState, ExceptionID_ArrayIndexOutOfBounds));
+    AppState_catchException(appState);
+
+    Array_delete(int, intArray);
+
     printf("ok\n");
 }
 
 int main() {
+    appState = AppState__new();
     testArrayNewDelete();
     testIntArray();
     testPersonArray();
+    testExceptions();
     //testManyPushes();
+    AppState_delete(appState);
     return 0;
 }
