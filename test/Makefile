@@ -9,7 +9,7 @@ clean-all: clean all
 all: clean $(BINARIES)
 
 clean:
-	rm -f *.o $(BINARIES) 
+	rm -f *.o *.e *.e.c *.BAK $(BINARIES) 
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $?
@@ -19,3 +19,6 @@ clean:
 
 pp:
 	for i in $(BINARIES); do gcc $(CFLAGS) -E -o - -c $$i.c; done
+
+pp-indent:
+	for i in $(BINARIES); do gcc $(CFLAGS) -E -o $$i.e.c -c $$i.c && indent -bad -bap -i4 $$i.e.c && gcc -o $$i.e $$i.e.c; done
