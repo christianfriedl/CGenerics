@@ -6,7 +6,6 @@
 #include"AppState.h"
 
 #define ExceptionID_ArrayIndexOutOfBounds   (100)
-#define ExceptionID_CannotAllocate          (101)
 #define ExceptionID_ElementNotFound         (102)
 
 #ifndef min
@@ -158,12 +157,12 @@ unsigned int ArrayOf##TYPENAME##_getCapacity(AppState* appState, ArrayOf##TYPENA
 unsigned int ArrayOf##TYPENAME##_getSize(AppState* appState, ArrayOf##TYPENAME* this) { \
     return this->usedElements; \
 } \
-void ArrayOf##TYPENAME##_qsort(AppState* appState, ArrayOf##TYPENAME* this, int (comparingFunction)(const TYPENAME *, const TYPENAME *)) { \
+void ArrayOf##TYPENAME##_qsort(AppState* appState, ArrayOf##TYPENAME* this, int (*comparingFunction)(const TYPENAME *, const TYPENAME *)) { \
     /* \
     void qsort(void *base, size_t nel, size_t width, int (*compar)(const void *, const void *)); \
     compar: <0, 0, >0
     */ \
-    qsort(this->vector, this->usedElements, sizeof(TYPENAME), comparingFunction); \
+    qsort(this->vector, this->usedElements, sizeof(TYPENAME), (int(*)(const void*, const void*))comparingFunction); \
 } \
 \
 void ArrayOf##TYPENAME##_print(AppState* appState, ArrayOf##TYPENAME* this, const char *printFormat) { \
@@ -192,22 +191,22 @@ unsigned int ArrayOf##TYPENAME##_searchIndex(AppState *appState, ArrayOf##TYPENA
 
 /* callers */
 
-#define Array__new(TYPENAME, initialCapacity) ArrayOf##TYPENAME##__new(appState, (initialCapacity))
-#define Array_delete(TYPENAME, array) ArrayOf##TYPENAME##_delete(appState, (array))
-#define Array_add(TYPENAME, array, value) ArrayOf##TYPENAME##_add(appState, (array), (value))
-#define Array_getValueAt(TYPENAME, array, at) ArrayOf##TYPENAME##_getValueAt(appState, (array), (at))
+#define Array__new(appState, TYPENAME, initialCapacity) ArrayOf##TYPENAME##__new(appState, (initialCapacity))
+#define Array_delete(appState, TYPENAME, array) ArrayOf##TYPENAME##_delete(appState, (array))
+#define Array_add(appState, TYPENAME, array, value) ArrayOf##TYPENAME##_add(appState, (array), (value))
+#define Array_getValueAt(appState, TYPENAME, array, at) ArrayOf##TYPENAME##_getValueAt(appState, (array), (at))
 #define Array_push Array_add
-#define Array_pop(TYPENAME, array) ArrayOf##TYPENAME##_pop(appState, (array))
-#define Array_getCapacity(TYPENAME, array) ArrayOf##TYPENAME##_getCapacity(appState, (array))
-#define Array_getSize(TYPENAME, array) ArrayOf##TYPENAME##_getSize(appState, (array))
-#define Array_shift(TYPENAME, array) ArrayOf##TYPENAME##_shift(appState, (array))
-#define Array_unshift(TYPENAME, array, value) ArrayOf##TYPENAME##_unshift(appState, (array), (value))
-#define Array_insertValueAt(TYPENAME, array, value, at) ArrayOf##TYPENAME##_insertValueAt(appState, (array), (value), (at))
-#define Array_removeValueAt(TYPENAME, array, at) ArrayOf##TYPENAME##_removeValueAt(appState, (array), (at))
-#define Array_qsort(TYPENAME, array, comparingFunction) ArrayOf##TYPENAME##_qsort(appState, (array), (comparingFunction))
-#define Array_qsort_r(TYPENAME, array, comparingFunction) ArrayOf##TYPENAME##_qsort_r(appState, (array), (comparingFunction))
-#define Array_print(TYPENAME, array, printFormat) ArrayOf##TYPENAME##_print(appState, (array), (printFormat))
-#define Array_searchIndex(TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_searchIndex(appState, (array), (elementPointer), (comparingFunction))
+#define Array_pop(appState, TYPENAME, array) ArrayOf##TYPENAME##_pop(appState, (array))
+#define Array_getCapacity(appState, TYPENAME, array) ArrayOf##TYPENAME##_getCapacity(appState, (array))
+#define Array_getSize(appState, TYPENAME, array) ArrayOf##TYPENAME##_getSize(appState, (array))
+#define Array_shift(appState, TYPENAME, array) ArrayOf##TYPENAME##_shift(appState, (array))
+#define Array_unshift(appState, TYPENAME, array, value) ArrayOf##TYPENAME##_unshift(appState, (array), (value))
+#define Array_insertValueAt(appState, TYPENAME, array, value, at) ArrayOf##TYPENAME##_insertValueAt(appState, (array), (value), (at))
+#define Array_removeValueAt(appState, TYPENAME, array, at) ArrayOf##TYPENAME##_removeValueAt(appState, (array), (at))
+#define Array_qsort(appState, TYPENAME, array, comparingFunction) ArrayOf##TYPENAME##_qsort(appState, (array), (comparingFunction))
+#define Array_qsort_r(appState, TYPENAME, array, comparingFunction) ArrayOf##TYPENAME##_qsort_r(appState, (array), (comparingFunction))
+#define Array_print(appState, TYPENAME, array, printFormat) ArrayOf##TYPENAME##_print(appState, (array), (printFormat))
+#define Array_searchIndex(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_searchIndex(appState, (array), (elementPointer), (comparingFunction))
 
 
 #endif 

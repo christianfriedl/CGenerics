@@ -1,7 +1,8 @@
 #ifndef _EXCEPTION_H
 #define _EXCEPTION_H
 
-#define ExceptionID_GeneralFatalException       0
+#define ExceptionID_GeneralFatalException       (0)
+#define ExceptionID_CannotAllocate              (1)
 
 typedef enum { Severity_none = 0, Severity_notice = 1, Severity_warning = 2, Severity_error = 3, Severity_fatal = 4 } Severity;
 
