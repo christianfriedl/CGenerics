@@ -2,7 +2,7 @@ include Makefile.local
 CFLAGS=-Wall -I../
 LDFLAGS=-Wall -L../ -lcgenerics
 
-BINARIES=0500_Array 0501_ArrayPerformance 0750_LinkedList
+BINARIES=0500_Array 0501_ArrayPerformance # 0750_LinkedList
 
 clean-all: clean all
 
