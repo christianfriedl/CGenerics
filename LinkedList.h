@@ -3,14 +3,7 @@
 
 #include<stdlib.h>
 #include<string.h>
-
-#ifndef min
-    #define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
-#endif
-
-#ifndef max
-    #define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
-#endif
+#include"CGenerics.h"
 
 
 /* everything below this line is type-specific! */
@@ -24,26 +17,67 @@
 
 #define INIT_LINKEDLIST(TYPENAME) \
 struct LinkedListElementOf##TYPENAME##_struct { \
-    TYPENAME value; \
-    struct LinkedListElementOf##TYPENAME##_struct* next; \
+    TYPENAME* value; \
+    struct LinkedListElementOf##TYPENAME##_struct* nextElement; \
 }; \
 typedef struct LinkedListElementOf##TYPENAME##_struct LinkedListElementOf##TYPENAME; \
  \
 typedef struct { \
     LinkedListElementOf##TYPENAME* rootElement; \
     LinkedListElementOf##TYPENAME* currentElement; \
+    LinkedListElementOf##TYPENAME* lastElement; \
 } LinkedListOf##TYPENAME; \
 \
-LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##__new(AppState* appState, const TYPENAME value) { \
+LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##__new(AppState* appState, TYPENAME* value) { \
     ArrayOf##TYPENAME* this = malloc(sizeof(*this)); \
     if (this != NULL) { \
         this->value = value; \
     } else \
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedList for %s", "TYPENAME")); \
+        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedListElement for '%s'", "TYPENAME")); \
     return this; \
 } \
 \
-void LinkedListElementOf##TYPENAME_delete(AppState* appState, LinkedListElementOf##TYPENAME* this)
+void LinkedListElementOf##TYPENAME_delete(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+	TYPENAME_delete(this->value); \
+	free(this); \
+} \
+\
+void LinkedListElementOf##TYPENAME##_setNext(AppState* appState, LinkedListElementOf##TYPENAME* this, LinkedListElementOf##TYPENAME* nextElement) { \
+	this->nextElement = nextElement; \
+} \
+\
+LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##_getNext(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+	return this->nextElement; \
+} \
+\
+LinkedListOf##TYPENAME* LinkedList##TYPENAME##__new(AppState* appState, LinkedListElementOf##TYPENAME* rootElement) { \
+	LinkedListOf##TYPENAME* this = malloc(sizeof(*this)); \
+	if (this != NULL) { \
+		this->rootElement = rootElement; \
+		this->currentElement = rootElement; \
+		this->lastElement = rootElement; \
+	} else \
+		AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedList for '%s'", "TYPENAME")); \
+	return this; \
+} \
+\
+void LinkedListOf##TYPENAME##_add(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
+	LinkedListElementOf##TYPENAME##_setNext(appState, this->currentElement, element); \
+	this->lastElement = element; \
+} \
+\
+void LinkedListOf##TYPENAME##_insertElementAfter(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* afterElement, LinkedListElementOf##TYPENAME* element) { \
+	if (this->lastElement == afterElement) \
+		LinkedListElementOf##TYPENAME##_add(appState, this, element); \
+	else {\
+		LinkedListElementOf##TYPENAME##_setNext(appState, element, LinkedListElementOf##TYPENAME##_getNext(appState, afterElement)); \
+		LinkedListElementOf##TYPENAME##_setNext(appState, afterElement, element); \
+	} \
+} \
+\
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
+	
+	
 
 /* type definition */
 

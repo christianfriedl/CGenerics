@@ -8,15 +8,6 @@
 #define ExceptionID_ArrayIndexOutOfBounds   (100)
 #define ExceptionID_ElementNotFound         (102)
 
-#ifndef min
-    #define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
-#endif
-
-#ifndef max
-    #define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
-#endif
-
-
 #define MAX_GROWTH_COUNT 65536
 
 /** 
