@@ -19,8 +19,8 @@ clean:
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $?
 
-%: %.o
-	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
+%: %.c
+	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CFLAGS)
 
 pp:
 	for i in $(BINARIES); do gcc $(CFLAGS) -E -o - -c $$i.c; done
