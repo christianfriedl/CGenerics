@@ -11,8 +11,10 @@ CFLAGS=-ggdb $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
 HEADERS=Array.h
-LIB_OBJECTS=Exception.o AppState.o Logger.o
+LIB_OBJECTS=Exception.o AppState.o Logger.o Integer.o
 STATIC_LIBRARY=libcgenerics.a
+
+clean-tests: clean tests test
 
 clean-all-test: clean all test
 
@@ -24,6 +26,8 @@ pp:
 pp-indent:
 	(cd test; make pp-indent)
 
+tests: localall
+	(cd test; make tests)
 
 localall: $(STATIC_LIBRARY)
 

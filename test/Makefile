@@ -2,14 +2,19 @@ include Makefile.local
 CFLAGS=-Wall -I../
 LDFLAGS=-Wall -L../ -lcgenerics
 
-BINARIES=0500_Array 0501_ArrayPerformance 0750_LinkedList
+BINARIES=0250_Integer 0500_Array # 0750_LinkedList
+PERFORMANCE_BINARIES=0501_ArrayPerformance 
 
 clean-all: clean all
 
-all: clean $(BINARIES)
+all: clean tests performance
+
+tests: $(BINARIES)
+
+performance: $(PERFORMANCE_BINARIES)
 
 clean:
-	rm -f *.o *.e *.e.c *.BAK $(BINARIES) 
+	rm -f *.o *.e *.e.c *.BAK $(BINARIES) $(PERFORMANCE_BINARIES)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $?
