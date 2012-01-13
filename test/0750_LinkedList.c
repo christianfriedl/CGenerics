@@ -144,6 +144,43 @@ void testRemove() {
     assert(LinkedListElement_getNextElement(appState, Integer, i2) == i4);
 }
 
+void testFind() {
+    printf("%s...\n", __func__);
+
+    LinkedListElement(Integer)* i1 = LinkedListElement__new(appState, Integer, Integer__new(appState, 1));
+    LinkedListElement(Integer)* i2 = LinkedListElement__new(appState, Integer, Integer__new(appState, 2));
+    LinkedListElement(Integer)* i3 = LinkedListElement__new(appState, Integer, Integer__new(appState, 3));
+    LinkedListElement(Integer)* i4 = LinkedListElement__new(appState, Integer, Integer__new(appState, 4));
+
+    /* create list, insert root element */
+    LinkedList(Integer)* ll = LinkedList__new(appState, Integer, i1);
+    assert(ll != NULL);
+    assert(LinkedList_getRootElement(appState, Integer, ll) == i1);
+    /* add elements at end */
+    LinkedList_addElement(appState, Integer, ll, i2);
+    LinkedList_addElement(appState, Integer, ll, i3);
+    LinkedList_addElement(appState, Integer, ll, i4);
+
+    Integer* tofind = Integer__new(appState, 1);
+    LinkedListElement(Integer)* found = LinkedList_find(appState, Integer, ll, tofind, Integer__compare);
+    assert(Integer_toInt(appState, tofind) == Integer_toInt(appState, LinkedListElement_getValue(appState, Integer, found)));
+    Integer_delete(appState, tofind);
+    tofind = Integer__new(appState, 5);
+    found = LinkedList_find(appState, Integer, ll, tofind, Integer__compare);
+    assert(found == NULL);
+    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+
+    LinkedListElement_delete(appState, Integer, tofind);
+    LinkedListElement_delete(appState, Integer, i1);
+    LinkedListElement_delete(appState, Integer, i2);
+    LinkedListElement_delete(appState, Integer, i3);
+    LinkedListElement_delete(appState, Integer, i4);
+
+    LinkedList_delete(appState, Integer, ll);
+
+    printf("ok\n");
+}
+
 
 int main() {
     appState = AppState__new();
@@ -153,6 +190,7 @@ int main() {
     testInsertElements();
     testMoveToNext();
     testRemove();
+    testFind();
 
     AppState_delete(appState);
     return 0;

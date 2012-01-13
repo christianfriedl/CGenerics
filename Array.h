@@ -5,9 +5,6 @@
 #include<string.h>
 #include"AppState.h"
 
-#define ExceptionID_ArrayIndexOutOfBounds   (100)
-#define ExceptionID_ElementNotFound         (102)
-
 #define MAX_GROWTH_COUNT 65536
 
 /** 

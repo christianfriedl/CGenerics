@@ -19,3 +19,7 @@ int Integer_toInt(AppState* appState, const Integer* this) {
 Integer* Integer_clone(AppState* appState, const Integer* this) {
     return Integer__new(appState, *this);
 }
+
+int Integer__compare(AppState* appState, const Integer* i1, const Integer* i2) {
+    return ((*i1 < *i2) ? -1 : (*i1 == *i2) ? 0 : 1);
+}

@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include"CGenerics.h"
+#include"Exception.h"
 
 
 /* everything below this line is type-specific! */
@@ -112,7 +113,16 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToRootElement(AppSta
     return this->rootElement; \
 } \
 \
-
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_find(AppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(AppState*, const TYPENAME*, const TYPENAME*)) { \
+    LinkedListElementOf##TYPENAME* cur; \
+    for (cur = this->rootElement; cur != NULL; cur = cur->nextElement) { \
+        if ((comparingFunction)(appState, (const TYPENAME*)cur->value, (const TYPENAME*)value) == 0) \
+            return cur; \
+    } \
+    AppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
+    return NULL; \
+} \
+\
 
 /* type definition */
 
@@ -139,5 +149,6 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToRootElement(AppSta
 #define LinkedList_moveToRootElement(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToRootElement((appState), (list))
 #define LinkedList_start(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToRootElement((appState), (list))
 #define LinkedList_next(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToNextElement((appState), (list))
+#define LinkedList_find(appState, TYPENAME, list, value, comparingFunction) LinkedListOf##TYPENAME##_find((appState), (list), (value), (comparingFunction))
 
 #endif
