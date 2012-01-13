@@ -41,17 +41,18 @@ void LinkedListElementOf##TYPENAME##_delete(AppState* appState, LinkedListElemen
 	free(this); \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##_getNext(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##_getNextElement(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
     return this->nextElement; \
 } \
 TYPENAME* LinkedListElementOf##TYPENAME##_getValue(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
     return this->value; \
 } \
-void LinkedListElementOf##TYPENAME##_setNext(AppState* appState, LinkedListElementOf##TYPENAME* this, LinkedListElementOf##TYPENAME* nextElement) { \
+\
+void LinkedListElementOf##TYPENAME##_setNextElement(AppState* appState, LinkedListElementOf##TYPENAME* this, LinkedListElementOf##TYPENAME* nextElement) { \
 	this->nextElement = nextElement; \
 } \
 \
-LinkedListOf##TYPENAME* LinkedList##TYPENAME##__new(AppState* appState, LinkedListElementOf##TYPENAME* rootElement) { \
+LinkedListOf##TYPENAME* LinkedListOf##TYPENAME##__new(AppState* appState, LinkedListElementOf##TYPENAME* rootElement) { \
 	LinkedListOf##TYPENAME* this = malloc(sizeof(*this)); \
 	if (this != NULL) { \
 		this->rootElement = rootElement; \
@@ -62,23 +63,46 @@ LinkedListOf##TYPENAME* LinkedList##TYPENAME##__new(AppState* appState, LinkedLi
 	return this; \
 } \
 \
-void LinkedListOf##TYPENAME##_add(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
-	LinkedListElementOf##TYPENAME##_setNext(appState, this->currentElement, element); \
+void LinkedListOf##TYPENAME##_delete(AppState* appState, LinkedListOf##TYPENAME* this) { \
+    free(this); \
+} \
+\
+void LinkedListOf##TYPENAME##_addElement(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
+	LinkedListElementOf##TYPENAME##_setNextElement(appState, this->lastElement, element); \
 	this->lastElement = element; \
 } \
 \
 void LinkedListOf##TYPENAME##_insertElementAfter(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* afterElement, LinkedListElementOf##TYPENAME* element) { \
 	if (this->lastElement == afterElement) \
-		LinkedListOf##TYPENAME##_add(appState, this, element); \
+		LinkedListOf##TYPENAME##_addElement(appState, this, element); \
 	else {\
-		LinkedListElementOf##TYPENAME##_setNext(appState, element, LinkedListElementOf##TYPENAME##_getNext(appState, afterElement)); \
-		LinkedListElementOf##TYPENAME##_setNext(appState, afterElement, element); \
+		LinkedListElementOf##TYPENAME##_setNextElement(appState, element, LinkedListElementOf##TYPENAME##_getNextElement(appState, afterElement)); \
+		LinkedListElementOf##TYPENAME##_setNextElement(appState, afterElement, element); \
 	} \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { }\
-	
-	
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { return NULL; }\
+\
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_getRootElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+    return this->rootElement; \
+} \
+\
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_getCurrentElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+    return this->currentElement; \
+} \
+\
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToNextElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+    LinkedListElementOf##TYPENAME* element = LinkedListElementOf##TYPENAME##_getNextElement(appState, this->currentElement); \
+    this->currentElement = element; \
+    return element; \
+} \
+\
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToRootElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+    this->currentElement = this->rootElement; \
+    return this->rootElement; \
+} \
+\
+
 
 /* type definition */
 
@@ -91,7 +115,19 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appStat
 #define LinkedListElement__new(appState, TYPENAME, value) LinkedListElementOf##TYPENAME##__new((appState), (value))
 #define LinkedListElement_delete(appState, TYPENAME, element) LinkedListElementOf##TYPENAME##_delete((appState), element)
 #define LinkedListElement_getValue(appState, TYPENAME, element) LinkedListElementOf##TYPENAME##_getValue((appState), element)
-#define LinkedListElement_getNext(appState, TYPENAME, element) LinkedListElementOf##TYPENAME##_getNext((appState), element)
+#define LinkedListElement_setNextElement(appState, TYPENAME, element, nextElement) LinkedListElementOf##TYPENAME##_getNextElement((appState), (element), (nextElement))
+#define LinkedListElement_getNextElement(appState, TYPENAME, element) LinkedListElementOf##TYPENAME##_getNextElement((appState), element)
 
+#define LinkedList__new(appState, TYPENAME, rootElement) LinkedListOf##TYPENAME##__new((appState), (rootElement))
+#define LinkedList_delete(appState, TYPENAME, list) LinkedListOf##TYPENAME##_delete((appState), (list))
+#define LinkedList_addElement(appState, TYPENAME, list, element) LinkedListOf##TYPENAME##_addElement((appState), (list), (element))
+#define LinkedList_insertElementAfter(appState, TYPENAME, list, afterElement, element) LinkedListOf##TYPENAME##_insertElementAfter((appState), (list), (afterElement), (element))
+#define LinkedList_remove(appState, TYPENAME, list, element) LinkedListOf##TYPENAME##_remove((appState), (list), (element))
+#define LinkedList_getRootElement(appState, TYPENAME, list) LinkedListOf##TYPENAME##_getRootElement((appState), (list))
+#define LinkedList_getCurrentElement(appState, TYPENAME, list) LinkedListOf##TYPENAME##_getCurrentElement((appState), (list))
+#define LinkedList_moveToNextElement(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToNextElement((appState), (list))
+#define LinkedList_moveToRootElement(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToRootElement((appState), (list))
+#define LinkedList_start(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToRootElement((appState), (list))
+#define LinkedList_next(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToNextElement((appState), (list))
 
 #endif
