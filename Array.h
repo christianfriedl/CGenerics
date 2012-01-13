@@ -181,6 +181,15 @@ unsigned int ArrayOf##TYPENAME##_findIndex(AppState *appState, ArrayOf##TYPENAME
     AppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
     return 0; \
 } \
+\
+TYPENAME* ArrayOf##TYPENAME##_find(AppState* appState, ArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
+    unsigned int index = ArrayOf##TYPENAME##_findIndex(appState, this, elementPointer, comparingFunction); \
+    if (AppState_isExceptionRaisedWithID(appState, ExceptionID_ElementNotFound)) \
+        return NULL; \
+    else \
+        return this->vector[index]; \
+} \
+\
 
 /* type definition */
 
@@ -206,6 +215,7 @@ unsigned int ArrayOf##TYPENAME##_findIndex(AppState *appState, ArrayOf##TYPENAME
 #define Array_qsort_r(appState, TYPENAME, array, comparingFunction) ArrayOf##TYPENAME##_qsort_r((appState), (array), (comparingFunction))
 #define Array_print(appState, TYPENAME, array, printFormat) ArrayOf##TYPENAME##_print((appState), (array), (printFormat))
 #define Array_findIndex(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_findIndex((appState), (array), (elementPointer), (comparingFunction))
+#define Array_find(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_find((appState), (array), (elementPointer), (comparingFunction))
 
 
 #endif 

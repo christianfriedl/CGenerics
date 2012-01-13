@@ -261,7 +261,7 @@ void testSorting() {
     printf("ok\n");
 }
 
-void testSearch() {
+void testFindIndex() {
     printf("%s...\n", __func__);
 
     Array(Int)* intArray = Array__new(appState, Int, 20);
@@ -288,6 +288,31 @@ void testSearch() {
     printf("ok\n");
 }
 
+void testFind() {
+    printf("%s...\n", __func__);
+
+    Array(Int)* intArray = Array__new(appState, Int, 20);
+    int i;
+    srandom(time(NULL));
+    for (i=0; i < 20; ++i) {
+        Int* x = Int__new(i);
+        Array_push(appState, Int, intArray, x);
+    }
+
+    Int *x = Int__new(2);
+    Int *y = Array_find(appState, Int, intArray, (const Int*)x, intComparison);
+    assert(*y == *x);
+    x = Int__new(20);
+    y = Array_find(appState, Int, intArray, (const Int*)x, intComparison);
+    assert(y == NULL);
+    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+
+    Array_deleteValues(appState, Int, intArray);
+    Array_delete(appState, Int, intArray);
+
+    printf("ok\n");
+}
+
 int main() {
     appState = AppState__new();
     testArrayNewDelete();
@@ -296,8 +321,8 @@ int main() {
     testExceptions();
     testArrayGrow();
     testSorting();
-    testSearch();
-    //testManyPushes();
+    testFindIndex();
+    testFind();
     AppState_delete(appState);
     return 0;
 }
