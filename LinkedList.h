@@ -84,8 +84,10 @@ void LinkedListOf##TYPENAME##_insertElementAfter(AppState* appState, LinkedListO
 LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
     LinkedListElementOf##TYPENAME* cur = this->rootElement; \
     while (cur->nextElement != NULL) { \
-        if (cur->nextElement == element) \
-            return cur; \
+        if (cur->nextElement == element) {\
+            cur->nextElement = element->nextElement; \
+            return element; \
+        } \
         cur = cur->nextElement; \
     } \
     return NULL; \

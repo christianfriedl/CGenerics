@@ -41,8 +41,8 @@ void testInsertElements() {
 
     LinkedListElement(Integer)* i1 = LinkedListElement__new(appState, Integer, Integer__new(appState, 1));
     LinkedListElement(Integer)* i2 = LinkedListElement__new(appState, Integer, Integer__new(appState, 2));
-    Integer* i3 = Integer__new(appState, 3);
-    Integer* i4 = Integer__new(appState, 4);
+    LinkedListElement(Integer)* i3 = LinkedListElement__new(appState, Integer, Integer__new(appState, 3));
+    LinkedListElement(Integer)* i4 = LinkedListElement__new(appState, Integer, Integer__new(appState, 4));
 
     /* create list, insert root element */
     LinkedList(Integer)* ll = LinkedList__new(appState, Integer, i1);
@@ -67,8 +67,12 @@ void testInsertElements() {
     assert(cur == i3);
     cur = LinkedListElement_getNextElement(appState, Integer, cur);
     assert(cur == NULL);
-
     
+    LinkedList_delete(appState, Integer, ll);
+    LinkedListElement_delete(appState, Integer, i1);
+    LinkedListElement_delete(appState, Integer, i2);
+    LinkedListElement_delete(appState, Integer, i3);
+    LinkedListElement_delete(appState, Integer, i4);
     printf("ok\n");
 }
 
@@ -77,8 +81,8 @@ void testMoveToNext() {
 
     LinkedListElement(Integer)* i1 = LinkedListElement__new(appState, Integer, Integer__new(appState, 1));
     LinkedListElement(Integer)* i2 = LinkedListElement__new(appState, Integer, Integer__new(appState, 2));
-    Integer* i3 = Integer__new(appState, 3);
-    Integer* i4 = Integer__new(appState, 4);
+    LinkedListElement(Integer)* i3 = LinkedListElement__new(appState, Integer, Integer__new(appState, 3));
+    LinkedListElement(Integer)* i4 = LinkedListElement__new(appState, Integer, Integer__new(appState, 4));
 
     /* create list, insert root element */
     LinkedList(Integer)* ll = LinkedList__new(appState, Integer, i1);
@@ -123,24 +127,21 @@ void testRemove() {
 
     LinkedListElement(Integer)* i1 = LinkedListElement__new(appState, Integer, Integer__new(appState, 1));
     LinkedListElement(Integer)* i2 = LinkedListElement__new(appState, Integer, Integer__new(appState, 2));
-    Integer* i3 = Integer__new(appState, 3);
-    Integer* i4 = Integer__new(appState, 4);
+    LinkedListElement(Integer)* i3 = LinkedListElement__new(appState, Integer, Integer__new(appState, 3));
+    LinkedListElement(Integer)* i4 = LinkedListElement__new(appState, Integer, Integer__new(appState, 4));
 
     /* create list, insert root element */
     LinkedList(Integer)* ll = LinkedList__new(appState, Integer, i1);
     assert(ll != NULL);
     assert(LinkedList_getRootElement(appState, Integer, ll) == i1);
-    /* add element at end */
+    /* add elements at end */
     LinkedList_addElement(appState, Integer, ll, i2);
+    LinkedList_addElement(appState, Integer, ll, i3);
+    LinkedList_addElement(appState, Integer, ll, i4);
 
-    /* insert at end */
-    LinkedList_insertElementAfter(appState, Integer, ll, i2, i3);
-
-    /* insert in middle */
-    LinkedList_insertElementAfter(appState, Integer, ll, i2, i4);
-    
     LinkedListElement(Integer)* r = LinkedList_remove(appState, Integer, ll, i3);
     assert(r == i3);
+    assert(LinkedListElement_getNextElement(appState, Integer, i2) == i4);
 }
 
 
