@@ -118,6 +118,31 @@ void testMoveToNext() {
     printf("ok\n");
 }
 
+void testRemove() {
+    printf("%s...\n", __func__);
+
+    LinkedListElement(Integer)* i1 = LinkedListElement__new(appState, Integer, Integer__new(appState, 1));
+    LinkedListElement(Integer)* i2 = LinkedListElement__new(appState, Integer, Integer__new(appState, 2));
+    Integer* i3 = Integer__new(appState, 3);
+    Integer* i4 = Integer__new(appState, 4);
+
+    /* create list, insert root element */
+    LinkedList(Integer)* ll = LinkedList__new(appState, Integer, i1);
+    assert(ll != NULL);
+    assert(LinkedList_getRootElement(appState, Integer, ll) == i1);
+    /* add element at end */
+    LinkedList_addElement(appState, Integer, ll, i2);
+
+    /* insert at end */
+    LinkedList_insertElementAfter(appState, Integer, ll, i2, i3);
+
+    /* insert in middle */
+    LinkedList_insertElementAfter(appState, Integer, ll, i2, i4);
+    
+    LinkedList_remove(appState, Integer, i3);
+}
+
+
 int main() {
     appState = AppState__new();
 

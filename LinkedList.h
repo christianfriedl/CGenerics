@@ -81,7 +81,14 @@ void LinkedListOf##TYPENAME##_insertElementAfter(AppState* appState, LinkedListO
 	} \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { return NULL; }\
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
+    LinkedListElementOf##TYPENAME* cur = this->rootElement; \
+    while (cur->nextElement != NULL) { \
+        if (cur->nextElement == element) \
+            return cur; \
+    } \
+    return NULL; \
+} \
 \
 LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_getRootElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
     return this->rootElement; \
