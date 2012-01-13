@@ -139,7 +139,8 @@ void testRemove() {
     /* insert in middle */
     LinkedList_insertElementAfter(appState, Integer, ll, i2, i4);
     
-    LinkedList_remove(appState, Integer, i3);
+    LinkedListElement(Integer)* r = LinkedList_remove(appState, Integer, ll, i3);
+    assert(r == i3);
 }
 
 
@@ -150,6 +151,7 @@ int main() {
     testListNewDelete();
     testInsertElements();
     testMoveToNext();
+    testRemove();
 
     AppState_delete(appState);
     return 0;

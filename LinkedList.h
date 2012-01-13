@@ -86,6 +86,7 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appStat
     while (cur->nextElement != NULL) { \
         if (cur->nextElement == element) \
             return cur; \
+        cur = cur->nextElement; \
     } \
     return NULL; \
 } \
