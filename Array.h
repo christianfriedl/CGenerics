@@ -173,7 +173,7 @@ void ArrayOf##TYPENAME##_print(AppState* appState, ArrayOf##TYPENAME* this, cons
     free(printFormatWithSpace); \
 } \
 \
-unsigned int ArrayOf##TYPENAME##_searchIndex(AppState *appState, ArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
+unsigned int ArrayOf##TYPENAME##_findIndex(AppState *appState, ArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
     unsigned int i; \
     for (i = 0; i < this->usedElements; ++i) \
         if ((comparingFunction)((const TYPENAME**)this->vector + i, (const TYPENAME**)&elementPointer) == 0) \
@@ -205,7 +205,7 @@ unsigned int ArrayOf##TYPENAME##_searchIndex(AppState *appState, ArrayOf##TYPENA
 #define Array_qsort(appState, TYPENAME, array, comparingFunction) ArrayOf##TYPENAME##_qsort((appState), (array), (comparingFunction))
 #define Array_qsort_r(appState, TYPENAME, array, comparingFunction) ArrayOf##TYPENAME##_qsort_r((appState), (array), (comparingFunction))
 #define Array_print(appState, TYPENAME, array, printFormat) ArrayOf##TYPENAME##_print((appState), (array), (printFormat))
-#define Array_searchIndex(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_searchIndex((appState), (array), (elementPointer), (comparingFunction))
+#define Array_findIndex(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_findIndex((appState), (array), (elementPointer), (comparingFunction))
 
 
 #endif 

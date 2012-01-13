@@ -273,11 +273,11 @@ void testSearch() {
     }
 
     Int *x = Int__new(2);
-    i = Array_searchIndex(appState, Int, intArray, (const Int*)x, intComparison);
+    i = Array_findIndex(appState, Int, intArray, (const Int*)x, intComparison);
     printf("%u\n", i);
     assert(i == 2);
     x = Int__new(20);
-    i = Array_searchIndex(appState, Int, intArray, (const Int*)x, intComparison);
+    i = Array_findIndex(appState, Int, intArray, (const Int*)x, intComparison);
     printf("%u\n", i);
     assert(i == 0);
     assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
