@@ -41,12 +41,14 @@ void LinkedListElementOf##TYPENAME##_delete(AppState* appState, LinkedListElemen
 	free(this); \
 } \
 \
+LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##_getNext(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+    return this->nextElement; \
+} \
+TYPENAME* LinkedListElementOf##TYPENAME##_getValue(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+    return this->value; \
+} \
 void LinkedListElementOf##TYPENAME##_setNext(AppState* appState, LinkedListElementOf##TYPENAME* this, LinkedListElementOf##TYPENAME* nextElement) { \
 	this->nextElement = nextElement; \
-} \
-\
-LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##_getNext(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
-	return this->nextElement; \
 } \
 \
 LinkedListOf##TYPENAME* LinkedList##TYPENAME##__new(AppState* appState, LinkedListElementOf##TYPENAME* rootElement) { \
@@ -67,7 +69,7 @@ void LinkedListOf##TYPENAME##_add(AppState* appState, LinkedListOf##TYPENAME* th
 \
 void LinkedListOf##TYPENAME##_insertElementAfter(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* afterElement, LinkedListElementOf##TYPENAME* element) { \
 	if (this->lastElement == afterElement) \
-		LinkedListElementOf##TYPENAME##_add(appState, this, element); \
+		LinkedListOf##TYPENAME##_add(appState, this, element); \
 	else {\
 		LinkedListElementOf##TYPENAME##_setNext(appState, element, LinkedListElementOf##TYPENAME##_getNext(appState, afterElement)); \
 		LinkedListElementOf##TYPENAME##_setNext(appState, afterElement, element); \
@@ -88,6 +90,8 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appStat
 
 #define LinkedListElement__new(appState, TYPENAME, value) LinkedListElementOf##TYPENAME##__new((appState), (value))
 #define LinkedListElement_delete(appState, TYPENAME, element) LinkedListElementOf##TYPENAME##_delete((appState), element)
+#define LinkedListElement_getValue(appState, TYPENAME, element) LinkedListElementOf##TYPENAME##_getValue((appState), element)
+#define LinkedListElement_getNext(appState, TYPENAME, element) LinkedListElementOf##TYPENAME##_getNext((appState), element)
 
 
 #endif
