@@ -105,6 +105,7 @@ void testMoveToNext() {
     assert(cur == i4);
     cur = LinkedList_moveToNextElement(appState, Integer, ll);
     assert(cur == i3);
+    printf("%ld\n", i3->nextElement);
     cur = LinkedList_moveToNextElement(appState, Integer, ll);
     assert(cur == NULL);
 

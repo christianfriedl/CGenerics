@@ -33,6 +33,7 @@ LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##__new(AppState* ap
     LinkedListElementOf##TYPENAME* this = malloc(sizeof(*this)); \
     if (this != NULL) { \
         this->value = value; \
+        this->nextElement = NULL; \
     } else \
         AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedListElement for '%s'", "TYPENAME")); \
     return this; \
