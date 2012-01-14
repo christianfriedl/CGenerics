@@ -162,12 +162,20 @@ void testFind() {
     LinkedList_addElement(appState, Integer, ll, i4);
 
     Integer* tofind = Integer__new(appState, 1);
-    LinkedListElement(Integer)* found = LinkedList_find(appState, Integer, ll, tofind, Integer__compare);
+    LinkedListElement(Integer)* found = LinkedList_findElement(appState, Integer, ll, tofind, Integer__compare);
     assert(Integer_toInt(appState, tofind) == Integer_toInt(appState, LinkedListElement_getValue(appState, Integer, found)));
+
+    Integer* foundInteger = LinkedList_findValue(appState, Integer, ll, tofind, Integer__compare);
+    assert(Integer_toInt(appState, tofind) == Integer_toInt(appState, foundInteger));
+
     Integer_delete(appState, tofind);
     tofind = Integer__new(appState, 5);
-    found = LinkedList_find(appState, Integer, ll, tofind, Integer__compare);
+    found = LinkedList_findElement(appState, Integer, ll, tofind, Integer__compare);
     assert(found == NULL);
+    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+
+    foundInteger = LinkedList_findValue(appState, Integer, ll, tofind, Integer__compare);
+    assert(foundInteger== NULL);
     assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
 
     LinkedListElement_delete(appState, Integer, tofind);

@@ -114,7 +114,7 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToRootElement(AppSta
     return this->rootElement; \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_find(AppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(AppState*, const TYPENAME*, const TYPENAME*)) { \
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_findElement(AppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(AppState*, const TYPENAME*, const TYPENAME*)) { \
     LinkedListElementOf##TYPENAME* cur; \
     for (cur = this->rootElement; cur != NULL; cur = cur->nextElement) { \
         if ((comparingFunction)(appState, (const TYPENAME*)cur->value, (const TYPENAME*)value) == 0) \
@@ -122,6 +122,14 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_find(AppState* appState,
     } \
     AppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
     return NULL; \
+} \
+\
+TYPENAME* LinkedListOf##TYPENAME##_findValue(AppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(AppState*, const TYPENAME*, const TYPENAME*)) { \
+    LinkedListElementOf##TYPENAME* element = LinkedListOf##TYPENAME##_findElement(appState, this, value, comparingFunction); \
+    if (element != NULL) \
+        return LinkedListElementOf##TYPENAME##_getValue(appState, element); \
+    else \
+        return NULL; \
 } \
 \
 
@@ -150,6 +158,7 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_find(AppState* appState,
 #define LinkedList_moveToRootElement(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToRootElement((appState), (list))
 #define LinkedList_start(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToRootElement((appState), (list))
 #define LinkedList_next(appState, TYPENAME, list) LinkedListOf##TYPENAME##_moveToNextElement((appState), (list))
-#define LinkedList_find(appState, TYPENAME, list, value, comparingFunction) LinkedListOf##TYPENAME##_find((appState), (list), (value), (comparingFunction))
+#define LinkedList_findElement(appState, TYPENAME, list, value, comparingFunction) LinkedListOf##TYPENAME##_findElement((appState), (list), (value), (comparingFunction))
+#define LinkedList_findValue(appState, TYPENAME, list, value, comparingFunction) LinkedListOf##TYPENAME##_findValue((appState), (list), (value), (comparingFunction))
 
 #endif
