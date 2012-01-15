@@ -62,6 +62,7 @@ void testClone() {
         Array_push(appState, Int, intArray, x);
     }
     Array(Int)* clonedArray = Array_clone(appState, Int, intArray);
+    assert(clonedArray != NULL);
     assert(AppState_isExceptionRaised(appState) == false);
     assert(Array_getSize(appState, Int, clonedArray) == Array_getSize(appState, Int, intArray));
     assert(Array_getCapacity(appState, Int, clonedArray) == Array_getCapacity(appState, Int, intArray));
@@ -69,8 +70,6 @@ void testClone() {
         assert(*(Array_getValueAt(appState, Int, clonedArray, i)) == *(Array_getValueAt(appState, Int, intArray, i)));
     }
 
-    Array_deleteValues(appState, Int, clonedArray);
-    Array_delete(appState, Int, clonedArray);
     Array_deleteValues(appState, Int, intArray);
     Array_delete(appState, Int, intArray);
 
