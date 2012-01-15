@@ -178,7 +178,7 @@ void testFind() {
     assert(foundInteger== NULL);
     assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
 
-    LinkedListElement_delete(appState, Integer, tofind);
+    Integer_delete(appState, tofind);
     LinkedListElement_delete(appState, Integer, i1);
     LinkedListElement_delete(appState, Integer, i2);
     LinkedListElement_delete(appState, Integer, i3);
