@@ -41,8 +41,8 @@ int main() {
     appState = AppState__new();
 
     testNewDelete();
-    testToInt();
     testClone();
+    testToInt();
 
     AppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
