@@ -314,6 +314,12 @@ void testFind() {
     printf("ok\n");
 }
 
+void addOne(AppState* appState, Int* x) {
+    *x += 1;
+}
+void printInt(AppState* appState, const Int* x) {
+    printf("%i ", *x);
+}
 void testMap() {
     printf("%s...\n", __func__);
 
@@ -324,6 +330,10 @@ void testMap() {
         Int* x = Int__new(i);
         Array_push(appState, Int, intArray, x);
     }
+    Array(Int)* mappedArray = Array_map(appState, Int, intArray, addOne);
+    Array_mapConstant(appState, Int, intArray, printInt);
+    printf("\n new: ");
+    Array_mapConstant(appState, Int, mappedArray, printInt);
 
     Array_deleteValues(appState, Int, intArray);
     Array_delete(appState, Int, intArray);

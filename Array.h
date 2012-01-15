@@ -204,16 +204,22 @@ TYPENAME* ArrayOf##TYPENAME##_find(AppState* appState, ArrayOf##TYPENAME* this, 
         return this->vector[index]; \
 } \
 \
-ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(AppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(TYPENAME*)) { \
+ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(AppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(AppState*, TYPENAME*)) { \
     unsigned int i; \
     ArrayOf##TYPENAME* that = ArrayOf##TYPENAME##_clone(appState, this); \
     if (AppState_isExceptionRaised(appState)) \
         return NULL; \
     for (i = 0; i < that->usedElements; ++i) \
-        (mapFunction)(*(that->vector + i)); \
+        (mapFunction)(appState, *(that->vector + i)); \
     return that; \
 } \
-        
+\
+void ArrayOf##TYPENAME##_mapConstant(AppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(AppState*, const TYPENAME*)) { \
+    unsigned int i; \
+    for (i = 0; i < this->usedElements; ++i) \
+        (mapFunction)(appState, *(this->vector + i)); \
+} \
+\
 
 /* type definition */
 
@@ -242,6 +248,7 @@ ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(AppState* appState, ArrayOf##TYPENAME
 #define Array_findIndex(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_findIndex((appState), (array), (elementPointer), (comparingFunction))
 #define Array_find(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_find((appState), (array), (elementPointer), (comparingFunction))
 #define Array_map(appState, TYPENAME, array, mapFunction) ArrayOf##TYPENAME##_map((appState), (array), (mapFunction))
+#define Array_mapConstant(appState, TYPENAME, array, mapFunction) ArrayOf##TYPENAME##_mapConstant((appState), (array), (mapFunction))
 
 
 #endif 
