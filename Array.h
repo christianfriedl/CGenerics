@@ -50,6 +50,15 @@ ArrayOf##TYPENAME* ArrayOf##TYPENAME##__new(AppState* appState, const unsigned i
     return this; \
 } \
 \
+ArrayOf##TYPENAME* ArrayOf##TYPENAME##_clone(AppState* appState, ArrayOf##TYPENAME* this) { \
+    ArrayOf##TYPENAME* that = ArrayOf##TYPENAME##__new(appState, this->capacityElements); \
+    if (AppState_isExceptionRaisedWithID(appState, ExceptionID_CannotAllocate)) \
+        return NULL; \
+    memcpy(that->vector, this->vector, sizeof(TYPENAME*) * this->usedElements); \
+    that->usedElements = this->usedElements; \
+    return that; \
+} \
+\
 void ArrayOf##TYPENAME##_delete(AppState* appState, ArrayOf##TYPENAME* this) { \
     free(this->vector); \
     free(this); \
@@ -187,6 +196,16 @@ TYPENAME* ArrayOf##TYPENAME##_find(AppState* appState, ArrayOf##TYPENAME* this, 
         return this->vector[index]; \
 } \
 \
+ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(AppState* appState, ArrayOf##TYPENAME* this, int (*mapFunction)(TYPENAME*)) { \
+    unsigned int i; \
+    ArrayOf##TYPENAME* that = ArrayOf##TYPENAME##_clone(appState, this); \
+    if (AppState_isExceptionRaised(appState)) \
+        return NULL; \
+    for (i = 0; i < that->usedElements; ++i) \
+        (mapFunction)((that->vector + i)); \
+    return that; \
+} \
+        
 
 /* type definition */
 
@@ -196,6 +215,7 @@ TYPENAME* ArrayOf##TYPENAME##_find(AppState* appState, ArrayOf##TYPENAME* this, 
 /* callers */
 
 #define Array__new(appState, TYPENAME, initialCapacity) ArrayOf##TYPENAME##__new((appState), (initialCapacity))
+#define Array_clone(appState, TYPENAME, array) ArrayOf##TYPENAME##_clone((appState), (array))
 #define Array_delete(appState, TYPENAME, array) ArrayOf##TYPENAME##_delete((appState), (array))
 #define Array_deleteValues(appState, TYPENAME, array) ArrayOf##TYPENAME##_deleteValues((appState), (array))
 #define Array_add(appState, TYPENAME, array, value) ArrayOf##TYPENAME##_add((appState), (array), (value))
@@ -213,6 +233,7 @@ TYPENAME* ArrayOf##TYPENAME##_find(AppState* appState, ArrayOf##TYPENAME* this, 
 #define Array_print(appState, TYPENAME, array, printFormat) ArrayOf##TYPENAME##_print((appState), (array), (printFormat))
 #define Array_findIndex(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_findIndex((appState), (array), (elementPointer), (comparingFunction))
 #define Array_find(appState, TYPENAME, array, elementPointer, comparingFunction) ArrayOf##TYPENAME##_find((appState), (array), (elementPointer), (comparingFunction))
+#define Array_map(appState, TYPENAME, array, mapFunction) ArrayOf##TYPENAME##_map((appState), (array), (mapFunction))
 
 
 #endif 

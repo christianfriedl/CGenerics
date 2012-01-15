@@ -37,7 +37,7 @@ void printArray(Array(Int)* array) {
         printf("%i ", *(Array_getValueAt(appState, Int, array, i)));
     printf("\n");
 }
-void testArrayNewDelete() {
+void testNewDelete() {
     printf("%s...\n", __func__);
 
     Array(Int)* intArray = Array__new(appState, Int, 20);
@@ -51,6 +51,31 @@ void testArrayNewDelete() {
     printf("ok\n");
 }
 
+void testClone() {
+    printf("%s...\n", __func__);
+
+    Array(Int)* intArray = Array__new(appState, Int, 20);
+    int i;
+    srandom(time(NULL));
+    for (i=0; i < 20; ++i) {
+        Int* x = Int__new(i);
+        Array_push(appState, Int, intArray, x);
+    }
+    Array(Int)* clonedArray = Array_clone(appState, Int, intArray);
+    assert(AppState_isExceptionRaised(appState) == false);
+    assert(Array_getSize(appState, Int, clonedArray) == Array_getSize(appState, Int, intArray));
+    assert(Array_getCapacity(appState, Int, clonedArray) == Array_getCapacity(appState, Int, intArray));
+    for (i=0; i < 20; ++i) {
+        assert(*(Array_getValueAt(appState, Int, clonedArray, i)) == *(Array_getValueAt(appState, Int, intArray, i)));
+    }
+
+    Array_deleteValues(appState, Int, clonedArray);
+    Array_delete(appState, Int, clonedArray);
+    Array_deleteValues(appState, Int, intArray);
+    Array_delete(appState, Int, intArray);
+
+    printf("ok\n");
+}
 void testIntArray() {
     printf("%s...\n", __func__);
     Int *x;
@@ -282,10 +307,28 @@ void testFind() {
     printf("ok\n");
 }
 
+void testMap() {
+    printf("%s...\n", __func__);
+
+    Array(Int)* intArray = Array__new(appState, Int, 20);
+    int i;
+    srandom(time(NULL));
+    for (i=0; i < 20; ++i) {
+        Int* x = Int__new(i);
+        Array_push(appState, Int, intArray, x);
+    }
+
+    Array_deleteValues(appState, Int, intArray);
+    Array_delete(appState, Int, intArray);
+
+    printf("ok\n");
+}
+
 int main() {
     printf("=== %s ===\n", __FILE__);
     appState = AppState__new();
-    testArrayNewDelete();
+    testNewDelete();
+    testClone();
     testIntArray();
     testPersonArray();
     testExceptions();
@@ -293,6 +336,7 @@ int main() {
     testSorting();
     testFindIndex();
     testFind();
+    testMap();
     AppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
     return 0;
