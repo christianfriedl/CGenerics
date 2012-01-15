@@ -70,6 +70,7 @@ void testClone() {
         assert(*(Array_getValueAt(appState, Int, clonedArray, i)) == *(Array_getValueAt(appState, Int, intArray, i)));
     }
 
+    Array_delete(appState, Int, clonedArray);
     Array_deleteValues(appState, Int, intArray);
     Array_delete(appState, Int, intArray);
 
