@@ -14,9 +14,9 @@ HEADERS=Array.h
 LIB_OBJECTS=Exception.o AppState.o Logger.o Integer.o
 STATIC_LIBRARY=libcgenerics.a
 
-necessary-tests: tests test
-
 clean-tests: clean tests test
+
+necessary-tests: tests test
 
 clean-all-test: clean all test
 

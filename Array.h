@@ -50,11 +50,19 @@ ArrayOf##TYPENAME* ArrayOf##TYPENAME##__new(AppState* appState, const unsigned i
     return this; \
 } \
 \
+void ArrayOf##TYPENAME##_delete(AppState* appState, ArrayOf##TYPENAME* this); \
 ArrayOf##TYPENAME* ArrayOf##TYPENAME##_clone(AppState* appState, ArrayOf##TYPENAME* this) { \
     ArrayOf##TYPENAME* that = ArrayOf##TYPENAME##__new(appState, this->capacityElements); \
     if (AppState_isExceptionRaisedWithID(appState, ExceptionID_CannotAllocate)) \
         return NULL; \
-    memcpy(that->vector, this->vector, sizeof(TYPENAME*) * this->usedElements); \
+    unsigned int i; \
+    for (i=0; i < this->usedElements; ++i) { \
+        *(that->vector + i) = TYPENAME##_clone(appState, *(this->vector + i)); \
+        if (AppState_isExceptionRaised(appState)) { \
+            ArrayOf##TYPENAME##_delete(appState, that); \
+            return NULL; \
+        } \
+    } \
     that->usedElements = this->usedElements; \
     return that; \
 } \
@@ -196,13 +204,13 @@ TYPENAME* ArrayOf##TYPENAME##_find(AppState* appState, ArrayOf##TYPENAME* this, 
         return this->vector[index]; \
 } \
 \
-ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(AppState* appState, ArrayOf##TYPENAME* this, int (*mapFunction)(TYPENAME*)) { \
+ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(AppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(TYPENAME*)) { \
     unsigned int i; \
     ArrayOf##TYPENAME* that = ArrayOf##TYPENAME##_clone(appState, this); \
     if (AppState_isExceptionRaised(appState)) \
         return NULL; \
     for (i = 0; i < that->usedElements; ++i) \
-        (mapFunction)((that->vector + i)); \
+        (mapFunction)(*(that->vector + i)); \
     return that; \
 } \
         

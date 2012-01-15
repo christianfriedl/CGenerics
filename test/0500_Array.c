@@ -19,8 +19,14 @@ Int* Int__new(int value) {
     *this = value;
     return this;
 }
+Int* Int_clone(AppState* appState, Int* this) {
+    return Int__new(*this);
+}
 void Int_delete(int* this) {
     free(this);
+}
+Person* Person_clone(AppState* appState, Person* this) {
+    return NULL; /* stub, unneeded */
 }
 void Person_delete(Person* this) {
     free(this);
@@ -70,6 +76,7 @@ void testClone() {
         assert(*(Array_getValueAt(appState, Int, clonedArray, i)) == *(Array_getValueAt(appState, Int, intArray, i)));
     }
 
+    Array_deleteValues(appState, Int, clonedArray);
     Array_delete(appState, Int, clonedArray);
     Array_deleteValues(appState, Int, intArray);
     Array_delete(appState, Int, intArray);
