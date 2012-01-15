@@ -48,7 +48,7 @@ clean:
 
 .PHONY: test
 test:
-	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then exit; fi; done
+	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then exit $$?; fi; done
 
 install:
 	cp $(HEADERS) ~/c/include/cgenerics
