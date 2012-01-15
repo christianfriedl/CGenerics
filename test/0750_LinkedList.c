@@ -191,6 +191,7 @@ void testFind() {
 
 
 int main() {
+    printf("=== %s ===\n", __FILE__);
     appState = AppState__new();
 
     testElementNewDelete();
@@ -201,5 +202,6 @@ int main() {
     testFind();
 
     AppState_delete(appState);
+    printf("=== %s ok ===\n", __FILE__);
     return 0;
 }
