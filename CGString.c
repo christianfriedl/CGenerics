@@ -27,3 +27,7 @@ char* CGString_toVector(CGAppState* appState, const CGString* this) {
 int CGString__compare(CGAppState* appState, const CGString* s1, const CGString* s2) {
     return (strcmp(s1->vector, s2->vector));
 }
+void CGString_append(CGAppState* appState, CGString* this, const CGString* that) {
+    this->vector = realloc(this->vector, sizeof(char) * (strlen(this->vector) + strlen(that->vector) + 1));
+    strcat(this->vector, that->vector);
+}

@@ -38,6 +38,19 @@ void testClone() {
     printf("%s ok\n", __func__);
 }
 
+void testAppend() {
+    printf("%s...\n", __func__);
+    CGString* s = CGString__new(appState, "abcde");
+    CGString* s2 = CGString__new(appState, "fghijk");
+    CGString_append(appState, s, s2);
+    CGString* c = CGString__new(appState, "abcdefghijk");
+    assert(!CGString__compare(appState, s, c));
+    CGString_delete(appState, c);
+    CGString_delete(appState, s2);
+    CGString_delete(appState, s);
+    printf("%s ok\n", __func__);
+}
+
 
 int main() {
     printf("=== %s ===\n", __FILE__);
@@ -47,6 +60,7 @@ int main() {
     testNewDelete();
     testClone();
     testToVector();
+    testAppend();
 
     CGAppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);

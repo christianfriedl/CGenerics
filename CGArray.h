@@ -11,7 +11,7 @@
     calculate the needed element count from the current given count, the requested count, and the maximum size to grow per iteration
     - up to the maximum growth size count, we double the size each time
 */
-unsigned int calculateNeededElementCount(CGAppState* appState, unsigned int currentCount, const unsigned int requested, const unsigned int maxGrowthCount) {
+static unsigned int calculateNeededElementCount(CGAppState* appState, unsigned int currentCount, const unsigned int requested, const unsigned int maxGrowthCount) {
     while (currentCount < requested)
         if (currentCount < maxGrowthCount)
             currentCount = currentCount << 1;
