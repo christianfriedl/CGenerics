@@ -31,3 +31,6 @@ void CGString_append(CGAppState* appState, CGString* this, const CGString* that)
     this->vector = realloc(this->vector, sizeof(char) * (strlen(this->vector) + strlen(that->vector) + 1));
     strcat(this->vector, that->vector);
 }
+size_t CGString_getSize(CGAppState* appState, const CGString* this) {
+    return strlen(this->vector);
+}

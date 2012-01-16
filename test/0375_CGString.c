@@ -51,6 +51,15 @@ void testAppend() {
     printf("%s ok\n", __func__);
 }
 
+void testSize() {
+    printf("%s...\n", __func__);
+    CGString* s = CGString__new(appState, "abcde");
+    assert(CGString_getSize(appState, s) == 5);
+    CGString_delete(appState, s);
+    printf("%s ok\n", __func__);
+}
+
+
 
 int main() {
     printf("=== %s ===\n", __FILE__);
@@ -61,6 +70,7 @@ int main() {
     testClone();
     testToVector();
     testAppend();
+    testSize();
 
     CGAppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
