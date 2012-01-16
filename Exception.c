@@ -6,10 +6,10 @@
 
 Exception GeneralFatalException = { Severity_fatal, ExceptionID_GeneralFatalException, "General Fatal Exception" };
 
-Exception* Exception__new(const Severity sincerety, const int id, const char* msg, ...) {
+Exception* Exception__new(const Severity severity, const int id, const char* msg, ...) {
     Exception* this = malloc(sizeof(*this));
     if (this != NULL) {
-        this->sincerety = sincerety;
+        this->severity = severity;
         this->id = id;
         va_list args;
         va_start(args, msg);
@@ -27,7 +27,7 @@ void Exception_delete(Exception* this) {
 }
 
 void Exception_log(Exception* this) {
-    switch(this->sincerety) {
+    switch(this->severity) {
         case Severity_none:
             break;
         case Severity_notice:
@@ -46,4 +46,12 @@ void Exception_log(Exception* this) {
             break;
     }
 }
-
+Severity Exception_getSeverity(const Exception* this) {
+    return this->severity;
+}
+int Exception_getId(const Exception* this) {
+    return this->id;
+}
+char *Exception_getMsg(const Exception* this) {
+    return strdup(this->msg);
+}
