@@ -6,12 +6,12 @@
 
 typedef struct {
     char* vector;
-} String;
+} CGString;
 
-String* String__new(CGAppState* appState, const char* value);
-String* String_clone(CGAppState* appState, const String* this);
-void String_delete(CGAppState* appState, String* this);
-char* String_toVector(CGAppState* appState, const String* this);
-int String__compare(CGAppState* appState, const String* i1, const String* i2);
+CGString* CGString__new(CGAppState* appState, const char* value);
+CGString* CGString_clone(CGAppState* appState, const CGString* this);
+void CGString_delete(CGAppState* appState, CGString* this);
+char* CGString_toVector(CGAppState* appState, const CGString* this);
+int CGString__compare(CGAppState* appState, const CGString* i1, const CGString* i2);
 
 #endif
