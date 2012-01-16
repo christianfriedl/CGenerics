@@ -11,7 +11,7 @@ CFLAGS=-ggdb $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
 HEADERS=CGArray.h
-LIB_OBJECTS=CGException.o CGAppState.o Logger.o CGInteger.o CGString.o
+LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o
 STATIC_LIBRARY=libcgenerics.a
 
 clean-tests: clean tests test

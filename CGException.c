@@ -2,7 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include"CGException.h"
-#include"Logger.h"
+#include"CGLogger.h"
 
 CGException GeneralFatalCGException = { Severity_fatal, CGExceptionID_GeneralFatalException, "General Fatal CGException" };
 
@@ -16,7 +16,7 @@ CGException* CGException__new(const Severity severity, const int id, const char*
         vasprintf(&this->msg, msg, args);
         va_end(args);
     } else {
-        Logger__error("Cannot allocate exception, aborting.");
+        CGLogger__error("Cannot allocate exception, aborting.");
         abort();
     }
     return this;
@@ -31,17 +31,17 @@ void CGException_log(CGException* this) {
         case Severity_none:
             break;
         case Severity_notice:
-            Logger__notice(this->msg);
+            CGLogger__notice(this->msg);
             break;
         case Severity_warning:
-            Logger__warn(this->msg);
+            CGLogger__warn(this->msg);
             break;
         case Severity_error:
-            Logger__error(this->msg);
+            CGLogger__error(this->msg);
             break;
         case Severity_fatal:
-            Logger__error(this->msg);
-            Logger__error("aborting");
+            CGLogger__error(this->msg);
+            CGLogger__error("aborting");
             abort();
             break;
     }
