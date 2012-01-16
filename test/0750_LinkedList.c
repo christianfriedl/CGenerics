@@ -5,7 +5,7 @@
 #include<assert.h>
 #include"CGAppState.h"
 #include"CGInteger.h"
-#include"LinkedList.h"
+#include"CGLinkedList.h"
 
 INIT_LINKEDLIST(CGInteger)
 
@@ -17,10 +17,10 @@ void testElementNewDelete() {
     CGInteger* i = CGInteger__new(appState, 22);
     assert(i != NULL);
     assert(*i == 22);
-    LinkedListElement(CGInteger)* lle = LinkedListElement__new(appState, CGInteger, i);
+    CGLinkedListElement(CGInteger)* lle = CGLinkedListElement__new(appState, CGInteger, i);
     assert(lle != NULL);
-    assert(LinkedListElement_getValue(appState, CGInteger, lle) == i);
-    LinkedListElement_delete(appState, CGInteger, lle);
+    assert(CGLinkedListElement_getValue(appState, CGInteger, lle) == i);
+    CGLinkedListElement_delete(appState, CGInteger, lle);
     CGInteger_delete(appState, i);
     
     printf("ok\n");
@@ -29,94 +29,94 @@ void testElementNewDelete() {
 void testListNewDelete() {
     printf("%s...\n", __func__);
 
-    LinkedListElement(CGInteger)* i1 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
-    LinkedList(CGInteger)* ll = LinkedList__new(appState, CGInteger, i1);
-    LinkedList_delete(appState, CGInteger, ll);
-    LinkedListElement_delete(appState, CGInteger, i1);
+    CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
+    CGLinkedList(CGInteger)* ll = CGLinkedList__new(appState, CGInteger, i1);
+    CGLinkedList_delete(appState, CGInteger, ll);
+    CGLinkedListElement_delete(appState, CGInteger, i1);
     
     printf("ok\n");
 }
 void testInsertElements() {
     printf("%s...\n", __func__);
 
-    LinkedListElement(CGInteger)* i1 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
-    LinkedListElement(CGInteger)* i2 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
-    LinkedListElement(CGInteger)* i3 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
-    LinkedListElement(CGInteger)* i4 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
+    CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
+    CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
+    CGLinkedListElement(CGInteger)* i3 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
+    CGLinkedListElement(CGInteger)* i4 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
 
     /* create list, insert root element */
-    LinkedList(CGInteger)* ll = LinkedList__new(appState, CGInteger, i1);
+    CGLinkedList(CGInteger)* ll = CGLinkedList__new(appState, CGInteger, i1);
     assert(ll != NULL);
-    assert(LinkedList_getRootElement(appState, CGInteger, ll) == i1);
+    assert(CGLinkedList_getRootElement(appState, CGInteger, ll) == i1);
     /* add element at end */
-    LinkedList_addElement(appState, CGInteger, ll, i2);
+    CGLinkedList_addElement(appState, CGInteger, ll, i2);
 
     /* insert at end */
-    LinkedList_insertElementAfter(appState, CGInteger, ll, i2, i3);
+    CGLinkedList_insertElementAfter(appState, CGInteger, ll, i2, i3);
 
     /* insert in middle */
-    LinkedList_insertElementAfter(appState, CGInteger, ll, i2, i4);
+    CGLinkedList_insertElementAfter(appState, CGInteger, ll, i2, i4);
 
-    LinkedListElement(CGInteger)* cur = LinkedList_getRootElement(appState, CGInteger, ll);
+    CGLinkedListElement(CGInteger)* cur = CGLinkedList_getRootElement(appState, CGInteger, ll);
     assert(cur == i1);
-    cur = LinkedListElement_getNextElement(appState, CGInteger, cur);
+    cur = CGLinkedListElement_getNextElement(appState, CGInteger, cur);
     assert(cur == i2);
-    cur = LinkedListElement_getNextElement(appState, CGInteger, cur);
+    cur = CGLinkedListElement_getNextElement(appState, CGInteger, cur);
     assert(cur == i4);
-    cur = LinkedListElement_getNextElement(appState, CGInteger, cur);
+    cur = CGLinkedListElement_getNextElement(appState, CGInteger, cur);
     assert(cur == i3);
-    cur = LinkedListElement_getNextElement(appState, CGInteger, cur);
+    cur = CGLinkedListElement_getNextElement(appState, CGInteger, cur);
     assert(cur == NULL);
     
-    LinkedList_delete(appState, CGInteger, ll);
-    LinkedListElement_delete(appState, CGInteger, i1);
-    LinkedListElement_delete(appState, CGInteger, i2);
-    LinkedListElement_delete(appState, CGInteger, i3);
-    LinkedListElement_delete(appState, CGInteger, i4);
+    CGLinkedList_delete(appState, CGInteger, ll);
+    CGLinkedListElement_delete(appState, CGInteger, i1);
+    CGLinkedListElement_delete(appState, CGInteger, i2);
+    CGLinkedListElement_delete(appState, CGInteger, i3);
+    CGLinkedListElement_delete(appState, CGInteger, i4);
     printf("ok\n");
 }
 
 void testMoveToNext() {
     printf("%s...\n", __func__);
 
-    LinkedListElement(CGInteger)* i1 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
-    LinkedListElement(CGInteger)* i2 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
-    LinkedListElement(CGInteger)* i3 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
-    LinkedListElement(CGInteger)* i4 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
+    CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
+    CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
+    CGLinkedListElement(CGInteger)* i3 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
+    CGLinkedListElement(CGInteger)* i4 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
 
     /* create list, insert root element */
-    LinkedList(CGInteger)* ll = LinkedList__new(appState, CGInteger, i1);
+    CGLinkedList(CGInteger)* ll = CGLinkedList__new(appState, CGInteger, i1);
     assert(ll != NULL);
-    assert(LinkedList_getRootElement(appState, CGInteger, ll) == i1);
+    assert(CGLinkedList_getRootElement(appState, CGInteger, ll) == i1);
     /* add element at end */
-    LinkedList_addElement(appState, CGInteger, ll, i2);
+    CGLinkedList_addElement(appState, CGInteger, ll, i2);
 
     /* insert at end */
-    LinkedList_insertElementAfter(appState, CGInteger, ll, i2, i3);
+    CGLinkedList_insertElementAfter(appState, CGInteger, ll, i2, i3);
 
     /* insert in middle */
-    LinkedList_insertElementAfter(appState, CGInteger, ll, i2, i4);
+    CGLinkedList_insertElementAfter(appState, CGInteger, ll, i2, i4);
 
-    LinkedListElement(CGInteger)* cur = LinkedList_moveToRootElement(appState, CGInteger, ll);
+    CGLinkedListElement(CGInteger)* cur = CGLinkedList_moveToRootElement(appState, CGInteger, ll);
     assert(cur == i1);
-    cur = LinkedList_moveToNextElement(appState, CGInteger, ll);
+    cur = CGLinkedList_moveToNextElement(appState, CGInteger, ll);
     assert(cur == i2);
-    cur = LinkedList_moveToNextElement(appState, CGInteger, ll);
+    cur = CGLinkedList_moveToNextElement(appState, CGInteger, ll);
     assert(cur == i4);
-    cur = LinkedList_moveToNextElement(appState, CGInteger, ll);
+    cur = CGLinkedList_moveToNextElement(appState, CGInteger, ll);
     assert(cur == i3);
-    cur = LinkedList_moveToNextElement(appState, CGInteger, ll);
+    cur = CGLinkedList_moveToNextElement(appState, CGInteger, ll);
     assert(cur == NULL);
 
-    cur = LinkedList_start(appState, CGInteger, ll);
+    cur = CGLinkedList_start(appState, CGInteger, ll);
     assert(cur == i1);
-    cur = LinkedList_next(appState, CGInteger, ll);
+    cur = CGLinkedList_next(appState, CGInteger, ll);
     assert(cur == i2);
-    cur = LinkedList_next(appState, CGInteger, ll);
+    cur = CGLinkedList_next(appState, CGInteger, ll);
     assert(cur == i4);
-    cur = LinkedList_next(appState, CGInteger, ll);
+    cur = CGLinkedList_next(appState, CGInteger, ll);
     assert(cur == i3);
-    cur = LinkedList_next(appState, CGInteger, ll);
+    cur = CGLinkedList_next(appState, CGInteger, ll);
     assert(cur == NULL);
 
     printf("ok\n");
@@ -125,66 +125,66 @@ void testMoveToNext() {
 void testRemove() {
     printf("%s...\n", __func__);
 
-    LinkedListElement(CGInteger)* i1 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
-    LinkedListElement(CGInteger)* i2 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
-    LinkedListElement(CGInteger)* i3 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
-    LinkedListElement(CGInteger)* i4 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
+    CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
+    CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
+    CGLinkedListElement(CGInteger)* i3 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
+    CGLinkedListElement(CGInteger)* i4 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
 
     /* create list, insert root element */
-    LinkedList(CGInteger)* ll = LinkedList__new(appState, CGInteger, i1);
+    CGLinkedList(CGInteger)* ll = CGLinkedList__new(appState, CGInteger, i1);
     assert(ll != NULL);
-    assert(LinkedList_getRootElement(appState, CGInteger, ll) == i1);
+    assert(CGLinkedList_getRootElement(appState, CGInteger, ll) == i1);
     /* add elements at end */
-    LinkedList_addElement(appState, CGInteger, ll, i2);
-    LinkedList_addElement(appState, CGInteger, ll, i3);
-    LinkedList_addElement(appState, CGInteger, ll, i4);
+    CGLinkedList_addElement(appState, CGInteger, ll, i2);
+    CGLinkedList_addElement(appState, CGInteger, ll, i3);
+    CGLinkedList_addElement(appState, CGInteger, ll, i4);
 
-    LinkedListElement(CGInteger)* r = LinkedList_remove(appState, CGInteger, ll, i3);
+    CGLinkedListElement(CGInteger)* r = CGLinkedList_remove(appState, CGInteger, ll, i3);
     assert(r == i3);
-    assert(LinkedListElement_getNextElement(appState, CGInteger, i2) == i4);
+    assert(CGLinkedListElement_getNextElement(appState, CGInteger, i2) == i4);
 }
 
 void testFind() {
     printf("%s...\n", __func__);
 
-    LinkedListElement(CGInteger)* i1 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
-    LinkedListElement(CGInteger)* i2 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
-    LinkedListElement(CGInteger)* i3 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
-    LinkedListElement(CGInteger)* i4 = LinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
+    CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 1));
+    CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 2));
+    CGLinkedListElement(CGInteger)* i3 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 3));
+    CGLinkedListElement(CGInteger)* i4 = CGLinkedListElement__new(appState, CGInteger, CGInteger__new(appState, 4));
 
     /* create list, insert root element */
-    LinkedList(CGInteger)* ll = LinkedList__new(appState, CGInteger, i1);
+    CGLinkedList(CGInteger)* ll = CGLinkedList__new(appState, CGInteger, i1);
     assert(ll != NULL);
-    assert(LinkedList_getRootElement(appState, CGInteger, ll) == i1);
+    assert(CGLinkedList_getRootElement(appState, CGInteger, ll) == i1);
     /* add elements at end */
-    LinkedList_addElement(appState, CGInteger, ll, i2);
-    LinkedList_addElement(appState, CGInteger, ll, i3);
-    LinkedList_addElement(appState, CGInteger, ll, i4);
+    CGLinkedList_addElement(appState, CGInteger, ll, i2);
+    CGLinkedList_addElement(appState, CGInteger, ll, i3);
+    CGLinkedList_addElement(appState, CGInteger, ll, i4);
 
     CGInteger* tofind = CGInteger__new(appState, 1);
-    LinkedListElement(CGInteger)* found = LinkedList_findElement(appState, CGInteger, ll, tofind, CGInteger__compare);
-    assert(CGInteger_toInt(appState, tofind) == CGInteger_toInt(appState, LinkedListElement_getValue(appState, CGInteger, found)));
+    CGLinkedListElement(CGInteger)* found = CGLinkedList_findElement(appState, CGInteger, ll, tofind, CGInteger__compare);
+    assert(CGInteger_toInt(appState, tofind) == CGInteger_toInt(appState, CGLinkedListElement_getValue(appState, CGInteger, found)));
 
-    CGInteger* foundCGInteger = LinkedList_findValue(appState, CGInteger, ll, tofind, CGInteger__compare);
+    CGInteger* foundCGInteger = CGLinkedList_findValue(appState, CGInteger, ll, tofind, CGInteger__compare);
     assert(CGInteger_toInt(appState, tofind) == CGInteger_toInt(appState, foundCGInteger));
 
     CGInteger_delete(appState, tofind);
     tofind = CGInteger__new(appState, 5);
-    found = LinkedList_findElement(appState, CGInteger, ll, tofind, CGInteger__compare);
+    found = CGLinkedList_findElement(appState, CGInteger, ll, tofind, CGInteger__compare);
     assert(found == NULL);
     assert(CGAppState_catchCGExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
 
-    foundCGInteger = LinkedList_findValue(appState, CGInteger, ll, tofind, CGInteger__compare);
+    foundCGInteger = CGLinkedList_findValue(appState, CGInteger, ll, tofind, CGInteger__compare);
     assert(foundCGInteger== NULL);
     assert(CGAppState_catchCGExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
 
     CGInteger_delete(appState, tofind);
-    LinkedListElement_delete(appState, CGInteger, i1);
-    LinkedListElement_delete(appState, CGInteger, i2);
-    LinkedListElement_delete(appState, CGInteger, i3);
-    LinkedListElement_delete(appState, CGInteger, i4);
+    CGLinkedListElement_delete(appState, CGInteger, i1);
+    CGLinkedListElement_delete(appState, CGInteger, i2);
+    CGLinkedListElement_delete(appState, CGInteger, i3);
+    CGLinkedListElement_delete(appState, CGInteger, i4);
 
-    LinkedList_delete(appState, CGInteger, ll);
+    CGLinkedList_delete(appState, CGInteger, ll);
 
     printf("ok\n");
 }
