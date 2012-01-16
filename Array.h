@@ -3,7 +3,7 @@
 
 #include<stdlib.h>
 #include<string.h>
-#include"AppState.h"
+#include"CGAppState.h"
 
 #define MAX_GROWTH_COUNT 65536
 
@@ -11,7 +11,7 @@
     calculate the needed element count from the current given count, the requested count, and the maximum size to grow per iteration
     - up to the maximum growth size count, we double the size each time
 */
-unsigned int calculateNeededElementCount(AppState* appState, unsigned int currentCount, const unsigned int requested, const unsigned int maxGrowthCount) {
+unsigned int calculateNeededElementCount(CGAppState* appState, unsigned int currentCount, const unsigned int requested, const unsigned int maxGrowthCount) {
     while (currentCount < requested)
         if (currentCount < maxGrowthCount)
             currentCount = currentCount << 1;
@@ -37,28 +37,28 @@ typedef struct { \
     unsigned int capacityElements; /* the currently possible maximum size of the array */ \
 } ArrayOf##TYPENAME; \
 \
-ArrayOf##TYPENAME* ArrayOf##TYPENAME##__new(AppState* appState, const unsigned int initialCapacity) { \
+ArrayOf##TYPENAME* ArrayOf##TYPENAME##__new(CGAppState* appState, const unsigned int initialCapacity) { \
     ArrayOf##TYPENAME* this = malloc(sizeof(*this)); \
     if (this != NULL) { \
         this->usedElements = 0; \
         this->capacityElements = calculateNeededElementCount(appState, 1, initialCapacity, MAX_GROWTH_COUNT); \
         this->vector = malloc(sizeof(TYPENAME*) * initialCapacity); \
         if (this->vector == NULL) \
-            AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "cannot allocate Array")); \
+            CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "cannot allocate Array")); \
     } else \
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "cannot allocate Array")); \
+        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "cannot allocate Array")); \
     return this; \
 } \
 \
-void ArrayOf##TYPENAME##_delete(AppState* appState, ArrayOf##TYPENAME* this); \
-ArrayOf##TYPENAME* ArrayOf##TYPENAME##_clone(AppState* appState, ArrayOf##TYPENAME* this) { \
+void ArrayOf##TYPENAME##_delete(CGAppState* appState, ArrayOf##TYPENAME* this); \
+ArrayOf##TYPENAME* ArrayOf##TYPENAME##_clone(CGAppState* appState, ArrayOf##TYPENAME* this) { \
     ArrayOf##TYPENAME* that = ArrayOf##TYPENAME##__new(appState, this->capacityElements); \
-    if (AppState_isExceptionRaisedWithID(appState, ExceptionID_CannotAllocate)) \
+    if (CGAppState_isExceptionRaisedWithID(appState, ExceptionID_CannotAllocate)) \
         return NULL; \
     unsigned int i; \
     for (i=0; i < this->usedElements; ++i) { \
         *(that->vector + i) = TYPENAME##_clone(appState, *(this->vector + i)); \
-        if (AppState_isExceptionRaised(appState)) { \
+        if (CGAppState_isExceptionRaised(appState)) { \
             ArrayOf##TYPENAME##_delete(appState, that); \
             return NULL; \
         } \
@@ -67,28 +67,28 @@ ArrayOf##TYPENAME* ArrayOf##TYPENAME##_clone(AppState* appState, ArrayOf##TYPENA
     return that; \
 } \
 \
-void ArrayOf##TYPENAME##_delete(AppState* appState, ArrayOf##TYPENAME* this) { \
+void ArrayOf##TYPENAME##_delete(CGAppState* appState, ArrayOf##TYPENAME* this) { \
     free(this->vector); \
     free(this); \
 } \
 \
 void TYPENAME##_delete(TYPENAME* this); \
-void ArrayOf##TYPENAME##_deleteValues(AppState* appState, ArrayOf##TYPENAME* this) { \
+void ArrayOf##TYPENAME##_deleteValues(CGAppState* appState, ArrayOf##TYPENAME* this) { \
     unsigned int i; \
     for (i=0; i < this->usedElements; ++i) \
         TYPENAME##_delete(*(this->vector + i)); \
 } \
 \
-void ArrayOf##TYPENAME##_grow_(AppState* appState, ArrayOf##TYPENAME* this, unsigned int requestedCapacity) { \
+void ArrayOf##TYPENAME##_grow_(CGAppState* appState, ArrayOf##TYPENAME* this, unsigned int requestedCapacity) { \
     unsigned int newCapacity = calculateNeededElementCount(appState, this->capacityElements, requestedCapacity, MAX_GROWTH_COUNT); \
     this->vector = realloc(this->vector, sizeof(TYPENAME*) * newCapacity); \
     if (this->vector == NULL) \
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "cannot allocate Array")); \
+        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "cannot allocate Array")); \
     else \
         this->capacityElements = newCapacity; \
 } \
 \
-TYPENAME* ArrayOf##TYPENAME##_add(AppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value) { \
+TYPENAME* ArrayOf##TYPENAME##_add(CGAppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value) { \
     if (this->usedElements == this->capacityElements) \
         ArrayOf##TYPENAME##_grow_(appState, this, this->capacityElements + 1); \
     *(this->vector + this->usedElements) = value; \
@@ -96,26 +96,26 @@ TYPENAME* ArrayOf##TYPENAME##_add(AppState* appState, ArrayOf##TYPENAME* this, T
     return value; \
 } \
 \
-TYPENAME* ArrayOf##TYPENAME##_getValueAt(AppState* appState, ArrayOf##TYPENAME* this, const unsigned int at) { \
+TYPENAME* ArrayOf##TYPENAME##_getValueAt(CGAppState* appState, ArrayOf##TYPENAME* this, const unsigned int at) { \
     if (at >= this->usedElements) { \
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot get value beyond array end (requested position: %u)", at)); \
+        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot get value beyond array end (requested position: %u)", at)); \
         return *(this->vector); \
     } \
     return *(this->vector + at); \
 } \
 \
-TYPENAME* ArrayOf##TYPENAME##_pop(AppState* appState, ArrayOf##TYPENAME* this) { \
+TYPENAME* ArrayOf##TYPENAME##_pop(CGAppState* appState, ArrayOf##TYPENAME* this) { \
     if (this->usedElements == 0) { \
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot pop from empty array")); \
+        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot pop from empty array")); \
         return *(this->vector); \
     } \
     --this->usedElements; \
     return *(this->vector + this->usedElements); \
 } \
 \
-TYPENAME* ArrayOf##TYPENAME##_shift(AppState* appState, ArrayOf##TYPENAME* this) { \
+TYPENAME* ArrayOf##TYPENAME##_shift(CGAppState* appState, ArrayOf##TYPENAME* this) { \
     if (this->usedElements == 0) {\
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot shift from empty array")); \
+        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot shift from empty array")); \
         return *(this->vector); \
     } \
     TYPENAME* firstValue = *(this->vector); \
@@ -124,7 +124,7 @@ TYPENAME* ArrayOf##TYPENAME##_shift(AppState* appState, ArrayOf##TYPENAME* this)
     return firstValue; \
 } \
 \
-void ArrayOf##TYPENAME##_unshift(AppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value) { \
+void ArrayOf##TYPENAME##_unshift(CGAppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value) { \
     if (this->usedElements == this->capacityElements) \
         ArrayOf##TYPENAME##_grow_(appState, this, this->capacityElements + 1); \
     memmove((this->vector + 1), this->vector, sizeof(TYPENAME*) * this->usedElements); \
@@ -132,14 +132,14 @@ void ArrayOf##TYPENAME##_unshift(AppState* appState, ArrayOf##TYPENAME* this, TY
     ++this->usedElements; \
 } \
 \
-void ArrayOf##TYPENAME##_insertValueAtAfterEnd_(AppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value, const unsigned int at) { \
+void ArrayOf##TYPENAME##_insertValueAtAfterEnd_(CGAppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value, const unsigned int at) { \
     unsigned int neededCapacityElements = max(at + 1, this->capacityElements); \
     ArrayOf##TYPENAME##_grow_(appState, this, neededCapacityElements); \
     *(this->vector + at) = value; \
     this->usedElements = at + 1; \
 } \
 \
-void ArrayOf##TYPENAME##_insertValueAt(AppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value, const unsigned int at) { \
+void ArrayOf##TYPENAME##_insertValueAt(CGAppState* appState, ArrayOf##TYPENAME* this, TYPENAME* value, const unsigned int at) { \
     if (at >= this->usedElements) { \
         ArrayOf##TYPENAME##_insertValueAtAfterEnd_(appState, this, value, at); \
     } else {\
@@ -151,9 +151,9 @@ void ArrayOf##TYPENAME##_insertValueAt(AppState* appState, ArrayOf##TYPENAME* th
     } \
 } \
 \
-TYPENAME* ArrayOf##TYPENAME##_removeValueAt(AppState* appState, ArrayOf##TYPENAME* this, unsigned int at) { \
+TYPENAME* ArrayOf##TYPENAME##_removeValueAt(CGAppState* appState, ArrayOf##TYPENAME* this, unsigned int at) { \
     if (at >= this->usedElements) { \
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot remove value beyond array end")); \
+        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_ArrayIndexOutOfBounds, "cannot remove value beyond array end")); \
         return *(this->vector); \
     } \
     TYPENAME* value = *(this->vector + at); \
@@ -162,14 +162,14 @@ TYPENAME* ArrayOf##TYPENAME##_removeValueAt(AppState* appState, ArrayOf##TYPENAM
     return value; \
 } \
 \
-unsigned int ArrayOf##TYPENAME##_getCapacity(AppState* appState, ArrayOf##TYPENAME* this) { \
+unsigned int ArrayOf##TYPENAME##_getCapacity(CGAppState* appState, ArrayOf##TYPENAME* this) { \
     return this->capacityElements; \
 } \
 \
-unsigned int ArrayOf##TYPENAME##_getSize(AppState* appState, ArrayOf##TYPENAME* this) { \
+unsigned int ArrayOf##TYPENAME##_getSize(CGAppState* appState, ArrayOf##TYPENAME* this) { \
     return this->usedElements; \
 } \
-void ArrayOf##TYPENAME##_qsort(AppState* appState, ArrayOf##TYPENAME* this, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
+void ArrayOf##TYPENAME##_qsort(CGAppState* appState, ArrayOf##TYPENAME* this, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
     /* \
     void qsort(void *base, size_t nel, size_t width, int (*compar)(const void *, const void *)); \
     compar: <0, 0, >0
@@ -177,7 +177,7 @@ void ArrayOf##TYPENAME##_qsort(AppState* appState, ArrayOf##TYPENAME* this, int 
     qsort(this->vector, this->usedElements, sizeof(TYPENAME*), (int(*)(const void*, const void*))comparingFunction); \
 } \
 \
-void ArrayOf##TYPENAME##_print(AppState* appState, ArrayOf##TYPENAME* this, const char *printFormat) { \
+void ArrayOf##TYPENAME##_print(CGAppState* appState, ArrayOf##TYPENAME* this, const char *printFormat) { \
     unsigned int i; \
     char *printFormatWithSpace = malloc(sizeof(char) * strlen(printFormat) + 2); \
     sprintf(printFormatWithSpace, "%s ", printFormat); \
@@ -187,34 +187,34 @@ void ArrayOf##TYPENAME##_print(AppState* appState, ArrayOf##TYPENAME* this, cons
     free(printFormatWithSpace); \
 } \
 \
-unsigned int ArrayOf##TYPENAME##_findIndex(AppState *appState, ArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
+unsigned int ArrayOf##TYPENAME##_findIndex(CGAppState *appState, ArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
     unsigned int i; \
     for (i = 0; i < this->usedElements; ++i) \
         if ((comparingFunction)((const TYPENAME**)this->vector + i, (const TYPENAME**)&elementPointer) == 0) \
             return i; \
-    AppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
+    CGAppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
     return 0; \
 } \
 \
-TYPENAME* ArrayOf##TYPENAME##_find(AppState* appState, ArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
+TYPENAME* ArrayOf##TYPENAME##_find(CGAppState* appState, ArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
     unsigned int index = ArrayOf##TYPENAME##_findIndex(appState, this, elementPointer, comparingFunction); \
-    if (AppState_isExceptionRaisedWithID(appState, ExceptionID_ElementNotFound)) \
+    if (CGAppState_isExceptionRaisedWithID(appState, ExceptionID_ElementNotFound)) \
         return NULL; \
     else \
         return this->vector[index]; \
 } \
 \
-ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(AppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(AppState*, TYPENAME*)) { \
+ArrayOf##TYPENAME* ArrayOf##TYPENAME##_map(CGAppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(CGAppState*, TYPENAME*)) { \
     unsigned int i; \
     ArrayOf##TYPENAME* that = ArrayOf##TYPENAME##_clone(appState, this); \
-    if (AppState_isExceptionRaised(appState)) \
+    if (CGAppState_isExceptionRaised(appState)) \
         return NULL; \
     for (i = 0; i < that->usedElements; ++i) \
         (mapFunction)(appState, *(that->vector + i)); \
     return that; \
 } \
 \
-void ArrayOf##TYPENAME##_mapConstant(AppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(AppState*, const TYPENAME*)) { \
+void ArrayOf##TYPENAME##_mapConstant(CGAppState* appState, ArrayOf##TYPENAME* this, void (*mapFunction)(CGAppState*, const TYPENAME*)) { \
     unsigned int i; \
     for (i = 0; i < this->usedElements; ++i) \
         (mapFunction)(appState, *(this->vector + i)); \

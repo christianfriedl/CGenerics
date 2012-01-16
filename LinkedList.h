@@ -29,52 +29,52 @@ typedef struct { \
     LinkedListElementOf##TYPENAME* lastElement; \
 } LinkedListOf##TYPENAME; \
 \
-LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##__new(AppState* appState, TYPENAME* value) { \
+LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##__new(CGAppState* appState, TYPENAME* value) { \
     LinkedListElementOf##TYPENAME* this = malloc(sizeof(*this)); \
     if (this != NULL) { \
         this->value = value; \
         this->nextElement = NULL; \
     } else \
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedListElement for '%s'", "TYPENAME")); \
+        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedListElement for '%s'", "TYPENAME")); \
     return this; \
 } \
 \
-void LinkedListElementOf##TYPENAME##_delete(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+void LinkedListElementOf##TYPENAME##_delete(CGAppState* appState, LinkedListElementOf##TYPENAME* this) { \
 	free(this); \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##_getNextElement(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##_getNextElement(CGAppState* appState, LinkedListElementOf##TYPENAME* this) { \
     return this->nextElement; \
 } \
-TYPENAME* LinkedListElementOf##TYPENAME##_getValue(AppState* appState, LinkedListElementOf##TYPENAME* this) { \
+TYPENAME* LinkedListElementOf##TYPENAME##_getValue(CGAppState* appState, LinkedListElementOf##TYPENAME* this) { \
     return this->value; \
 } \
 \
-void LinkedListElementOf##TYPENAME##_setNextElement(AppState* appState, LinkedListElementOf##TYPENAME* this, LinkedListElementOf##TYPENAME* nextElement) { \
+void LinkedListElementOf##TYPENAME##_setNextElement(CGAppState* appState, LinkedListElementOf##TYPENAME* this, LinkedListElementOf##TYPENAME* nextElement) { \
 	this->nextElement = nextElement; \
 } \
 \
-LinkedListOf##TYPENAME* LinkedListOf##TYPENAME##__new(AppState* appState, LinkedListElementOf##TYPENAME* rootElement) { \
+LinkedListOf##TYPENAME* LinkedListOf##TYPENAME##__new(CGAppState* appState, LinkedListElementOf##TYPENAME* rootElement) { \
 	LinkedListOf##TYPENAME* this = malloc(sizeof(*this)); \
 	if (this != NULL) { \
 		this->rootElement = rootElement; \
 		this->currentElement = rootElement; \
 		this->lastElement = rootElement; \
 	} else \
-		AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedList for '%s'", "TYPENAME")); \
+		CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedList for '%s'", "TYPENAME")); \
 	return this; \
 } \
 \
-void LinkedListOf##TYPENAME##_delete(AppState* appState, LinkedListOf##TYPENAME* this) { \
+void LinkedListOf##TYPENAME##_delete(CGAppState* appState, LinkedListOf##TYPENAME* this) { \
     free(this); \
 } \
 \
-void LinkedListOf##TYPENAME##_addElement(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
+void LinkedListOf##TYPENAME##_addElement(CGAppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
 	LinkedListElementOf##TYPENAME##_setNextElement(appState, this->lastElement, element); \
 	this->lastElement = element; \
 } \
 \
-void LinkedListOf##TYPENAME##_insertElementAfter(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* afterElement, LinkedListElementOf##TYPENAME* element) { \
+void LinkedListOf##TYPENAME##_insertElementAfter(CGAppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* afterElement, LinkedListElementOf##TYPENAME* element) { \
 	if (this->lastElement == afterElement) \
 		LinkedListOf##TYPENAME##_addElement(appState, this, element); \
 	else {\
@@ -83,7 +83,7 @@ void LinkedListOf##TYPENAME##_insertElementAfter(AppState* appState, LinkedListO
 	} \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(CGAppState* appState, LinkedListOf##TYPENAME* this, LinkedListElementOf##TYPENAME* element) { \
     LinkedListElementOf##TYPENAME* cur = this->rootElement; \
     while (cur->nextElement != NULL) { \
         if (cur->nextElement == element) {\
@@ -95,36 +95,36 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_remove(AppState* appStat
     return NULL; \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_getRootElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_getRootElement(CGAppState* appState, LinkedListOf##TYPENAME* this) { \
     return this->rootElement; \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_getCurrentElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_getCurrentElement(CGAppState* appState, LinkedListOf##TYPENAME* this) { \
     return this->currentElement; \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToNextElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToNextElement(CGAppState* appState, LinkedListOf##TYPENAME* this) { \
     LinkedListElementOf##TYPENAME* element = LinkedListElementOf##TYPENAME##_getNextElement(appState, this->currentElement); \
     this->currentElement = element; \
     return element; \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToRootElement(AppState* appState, LinkedListOf##TYPENAME* this) { \
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_moveToRootElement(CGAppState* appState, LinkedListOf##TYPENAME* this) { \
     this->currentElement = this->rootElement; \
     return this->rootElement; \
 } \
 \
-LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_findElement(AppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(AppState*, const TYPENAME*, const TYPENAME*)) { \
+LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_findElement(CGAppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(CGAppState*, const TYPENAME*, const TYPENAME*)) { \
     LinkedListElementOf##TYPENAME* cur; \
     for (cur = this->rootElement; cur != NULL; cur = cur->nextElement) { \
         if ((comparingFunction)(appState, (const TYPENAME*)cur->value, (const TYPENAME*)value) == 0) \
             return cur; \
     } \
-    AppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
+    CGAppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
     return NULL; \
 } \
 \
-TYPENAME* LinkedListOf##TYPENAME##_findValue(AppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(AppState*, const TYPENAME*, const TYPENAME*)) { \
+TYPENAME* LinkedListOf##TYPENAME##_findValue(CGAppState* appState, LinkedListOf##TYPENAME* this, const TYPENAME* value, int (*comparingFunction)(CGAppState*, const TYPENAME*, const TYPENAME*)) { \
     LinkedListElementOf##TYPENAME* element = LinkedListOf##TYPENAME##_findElement(appState, this, value, comparingFunction); \
     if (element != NULL) \
         return LinkedListElementOf##TYPENAME##_getValue(appState, element); \

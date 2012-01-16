@@ -3,7 +3,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"AppState.h"
+#include"CGAppState.h"
 #include"Array.h"
 
 typedef struct {
@@ -19,13 +19,13 @@ Int* Int__new(int value) {
     *this = value;
     return this;
 }
-Int* Int_clone(AppState* appState, Int* this) {
+Int* Int_clone(CGAppState* appState, Int* this) {
     return Int__new(*this);
 }
 void Int_delete(int* this) {
     free(this);
 }
-Person* Person_clone(AppState* appState, Person* this) {
+Person* Person_clone(CGAppState* appState, Person* this) {
     return NULL; /* stub, unneeded */
 }
 void Person_delete(Person* this) {
@@ -35,7 +35,7 @@ void Person_delete(Person* this) {
 INIT_ARRAY(Int)
 INIT_ARRAY(Person)
 
-AppState *appState;
+CGAppState *appState;
 
 void printArray(Array(Int)* array) {
     unsigned i;
@@ -69,7 +69,7 @@ void testClone() {
     }
     Array(Int)* clonedArray = Array_clone(appState, Int, intArray);
     assert(clonedArray != NULL);
-    assert(AppState_isExceptionRaised(appState) == false);
+    assert(CGAppState_isExceptionRaised(appState) == false);
     assert(Array_getSize(appState, Int, clonedArray) == Array_getSize(appState, Int, intArray));
     assert(Array_getCapacity(appState, Int, clonedArray) == Array_getCapacity(appState, Int, intArray));
     for (i=0; i < 20; ++i) {
@@ -217,17 +217,17 @@ void testExceptions() {
 
     Array(Int)* intArray = Array__new(appState, Int, 1);
     Array_removeValueAt(appState, Int, intArray, 1);
-    assert(AppState_isExceptionRaisedWithID(appState, ExceptionID_ArrayIndexOutOfBounds));
-    AppState_catchException(appState);
+    assert(CGAppState_isExceptionRaisedWithID(appState, ExceptionID_ArrayIndexOutOfBounds));
+    CGAppState_catchException(appState);
     Array_pop(appState, Int, intArray);
-    assert(AppState_isExceptionRaised(appState));
-    AppState_catchException(appState);
+    assert(CGAppState_isExceptionRaised(appState));
+    CGAppState_catchException(appState);
     Array_shift(appState, Int, intArray);
-    assert(AppState_isExceptionRaised(appState));
-    AppState_catchException(appState);
+    assert(CGAppState_isExceptionRaised(appState));
+    CGAppState_catchException(appState);
     Array_getValueAt(appState, Int, intArray, 20);
-    assert(AppState_isExceptionRaised(appState));
-    AppState_catchException(appState);
+    assert(CGAppState_isExceptionRaised(appState));
+    CGAppState_catchException(appState);
 
     Array_delete(appState, Int, intArray);
 
@@ -281,7 +281,7 @@ void testFindIndex() {
     x = Int__new(20);
     i = Array_findIndex(appState, Int, intArray, (const Int*)x, intComparison);
     assert(i == 0);
-    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
 
     Array_deleteValues(appState, Int, intArray);
     Array_delete(appState, Int, intArray);
@@ -306,7 +306,7 @@ void testFind() {
     x = Int__new(20);
     y = Array_find(appState, Int, intArray, (const Int*)x, intComparison);
     assert(y == NULL);
-    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
 
     Array_deleteValues(appState, Int, intArray);
     Array_delete(appState, Int, intArray);
@@ -314,10 +314,10 @@ void testFind() {
     printf("ok\n");
 }
 
-void addOne(AppState* appState, Int* x) {
+void addOne(CGAppState* appState, Int* x) {
     *x += 1;
 }
-void printInt(AppState* appState, const Int* x) {
+void printInt(CGAppState* appState, const Int* x) {
     printf("%i ", *x);
 }
 void testMap() {
@@ -343,7 +343,7 @@ void testMap() {
 
 int main() {
     printf("=== %s ===\n", __FILE__);
-    appState = AppState__new();
+    appState = CGAppState__new();
     testNewDelete();
     testClone();
     testIntArray();
@@ -354,7 +354,7 @@ int main() {
     testFindIndex();
     testFind();
     testMap();
-    AppState_delete(appState);
+    CGAppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

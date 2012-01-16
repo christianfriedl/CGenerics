@@ -3,9 +3,9 @@
 #include<time.h>
 #include<assert.h>
 #include"Array.h"
-#include"AppState.h"
+#include"CGAppState.h"
 
-AppState* appState;
+CGAppState* appState;
 void int_delete(int* this) {
     free(this);
 }
@@ -58,11 +58,11 @@ void testManyShifts() {
 }
 
 int main() {
-    appState = AppState__new();
+    appState = CGAppState__new();
     
     testManyPushes();
     testManyShifts();
 
-    AppState_delete(appState);
+    CGAppState_delete(appState);
     return 0;
 }

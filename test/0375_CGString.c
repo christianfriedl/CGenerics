@@ -4,10 +4,10 @@
 #include<time.h>
 #include<assert.h>
 #include<string.h>
-#include"AppState.h"
+#include"CGAppState.h"
 #include"CGString.h"
 
-AppState* appState;
+CGAppState* appState;
 
 void testNewDelete() {
     printf("%s...\n", __func__);
@@ -42,13 +42,13 @@ void testClone() {
 int main() {
     printf("=== %s ===\n", __FILE__);
 
-    appState = AppState__new();
+    appState = CGAppState__new();
 
     testNewDelete();
     testClone();
     testToVector();
 
-    AppState_delete(appState);
+    CGAppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

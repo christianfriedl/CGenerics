@@ -3,13 +3,13 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"AppState.h"
+#include"CGAppState.h"
 #include"Integer.h"
 #include"LinkedList.h"
 
 INIT_LINKEDLIST(Integer)
 
-AppState *appState;
+CGAppState *appState;
 
 void testElementNewDelete() {
     printf("%s...\n", __func__);
@@ -172,11 +172,11 @@ void testFind() {
     tofind = Integer__new(appState, 5);
     found = LinkedList_findElement(appState, Integer, ll, tofind, Integer__compare);
     assert(found == NULL);
-    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
 
     foundInteger = LinkedList_findValue(appState, Integer, ll, tofind, Integer__compare);
     assert(foundInteger== NULL);
-    assert(AppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, ExceptionID_ElementNotFound) == true);
 
     Integer_delete(appState, tofind);
     LinkedListElement_delete(appState, Integer, i1);
@@ -192,7 +192,7 @@ void testFind() {
 
 int main() {
     printf("=== %s ===\n", __FILE__);
-    appState = AppState__new();
+    appState = CGAppState__new();
 
     testElementNewDelete();
     testListNewDelete();
@@ -201,7 +201,7 @@ int main() {
     testRemove();
     testFind();
 
-    AppState_delete(appState);
+    CGAppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

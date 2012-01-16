@@ -1,14 +1,14 @@
 #ifndef _INTEGER_H
 #define _INTEGER_H
 
-#include"AppState.h"
+#include"CGAppState.h"
 
 typedef int Integer;
 
-Integer* Integer__new(AppState* appState, const int value);
-Integer* Integer_clone(AppState* appState, const Integer* this);
-void Integer_delete(AppState* appState, Integer* this);
-int Integer_toInt(AppState* appState, const Integer* this);
-int Integer__compare(AppState* appState, const Integer* i1, const Integer* i2);
+Integer* Integer__new(CGAppState* appState, const int value);
+Integer* Integer_clone(CGAppState* appState, const Integer* this);
+void Integer_delete(CGAppState* appState, Integer* this);
+int Integer_toInt(CGAppState* appState, const Integer* this);
+int Integer__compare(CGAppState* appState, const Integer* i1, const Integer* i2);
 
 #endif
