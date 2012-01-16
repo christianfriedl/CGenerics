@@ -10,9 +10,13 @@ WARNINGS = $(NORMAL_WARNINGS)
 CFLAGS=-ggdb $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
-HEADERS=CGArray.h
+HEADERS=CGAppState.h CGArray.h CGException.h CGInteger.h CGLinkedList.h CGLogger.h CGString.h CGenerics.h
 LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o
 STATIC_LIBRARY=libcgenerics.a
+
+PREFIX=/opt/local
+INSTALLHEADERS=${PREFIX}/include/cgenerics
+INSTALLLIB=${PREFIX}/lib
 
 clean-tests: clean tests test
 
@@ -51,4 +55,6 @@ test:
 	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then echo "ERROR..."; exit 1; fi; done
 
 install:
-	cp $(HEADERS) ~/c/include/cgenerics
+	if [ ! -d ${INSTALLHEADERS} ]; then mkdir ${INSTALLHEADERS}; fi
+	cp $(HEADERS) ${INSTALLHEADERS}
+	cp $(STATIC_LIBRARY) $(INSTALLLIB)
