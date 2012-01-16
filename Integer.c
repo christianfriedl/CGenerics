@@ -7,7 +7,7 @@ Integer* Integer__new(CGAppState* appState, const int value) {
     if (this != NULL)
         *this = value;
     else
-        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate Integer for '%i'", value));
+        CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate Integer for '%i'", value));
     return this;
 }
 Integer* Integer_clone(CGAppState* appState, const Integer* this) {

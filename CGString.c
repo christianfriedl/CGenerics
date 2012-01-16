@@ -9,9 +9,9 @@ CGString* CGString__new(CGAppState* appState, const char* value) {
         if (this->vector != NULL)
             strcpy(this->vector, value);
         else
-            CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate CGString vector for '%s'", value));
+            CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString vector for '%s'", value));
     } else
-        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate CGString for '%s'", value));
+        CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString for '%s'", value));
     return this;
 }
 CGString* CGString_clone(CGAppState* appState, const CGString* this) {

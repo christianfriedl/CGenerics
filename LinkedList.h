@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include"CGenerics.h"
-#include"Exception.h"
+#include"CGException.h"
 
 
 /* everything below this line is type-specific! */
@@ -35,7 +35,7 @@ LinkedListElementOf##TYPENAME* LinkedListElementOf##TYPENAME##__new(CGAppState* 
         this->value = value; \
         this->nextElement = NULL; \
     } else \
-        CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedListElement for '%s'", "TYPENAME")); \
+        CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate LinkedListElement for '%s'", "TYPENAME")); \
     return this; \
 } \
 \
@@ -61,7 +61,7 @@ LinkedListOf##TYPENAME* LinkedListOf##TYPENAME##__new(CGAppState* appState, Link
 		this->currentElement = rootElement; \
 		this->lastElement = rootElement; \
 	} else \
-		CGAppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate LinkedList for '%s'", "TYPENAME")); \
+		CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate LinkedList for '%s'", "TYPENAME")); \
 	return this; \
 } \
 \
@@ -120,7 +120,7 @@ LinkedListElementOf##TYPENAME* LinkedListOf##TYPENAME##_findElement(CGAppState* 
         if ((comparingFunction)(appState, (const TYPENAME*)cur->value, (const TYPENAME*)value) == 0) \
             return cur; \
     } \
-    CGAppState_throwException(appState, Exception__new(Severity_none, ExceptionID_ElementNotFound, "")); \
+    CGAppState_throwCGException(appState, CGException__new(Severity_none, CGExceptionID_ElementNotFound, "")); \
     return NULL; \
 } \
 \

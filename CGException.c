@@ -1,13 +1,13 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include"Exception.h"
+#include"CGException.h"
 #include"Logger.h"
 
-Exception GeneralFatalException = { Severity_fatal, ExceptionID_GeneralFatalException, "General Fatal Exception" };
+CGException GeneralFatalCGException = { Severity_fatal, CGExceptionID_GeneralFatalCGException, "General Fatal CGException" };
 
-Exception* Exception__new(const Severity severity, const int id, const char* msg, ...) {
-    Exception* this = malloc(sizeof(*this));
+CGException* CGException__new(const Severity severity, const int id, const char* msg, ...) {
+    CGException* this = malloc(sizeof(*this));
     if (this != NULL) {
         this->severity = severity;
         this->id = id;
@@ -21,12 +21,12 @@ Exception* Exception__new(const Severity severity, const int id, const char* msg
     }
     return this;
 }
-void Exception_delete(Exception* this) {
+void CGException_delete(CGException* this) {
     free(this->msg);
     free(this);
 }
 
-void Exception_log(Exception* this) {
+void CGException_log(CGException* this) {
     switch(this->severity) {
         case Severity_none:
             break;
@@ -46,12 +46,12 @@ void Exception_log(Exception* this) {
             break;
     }
 }
-Severity Exception_getSeverity(const Exception* this) {
+Severity CGException_getSeverity(const CGException* this) {
     return this->severity;
 }
-int Exception_getId(const Exception* this) {
+int CGException_getId(const CGException* this) {
     return this->id;
 }
-char *Exception_getMsg(const Exception* this) {
+char *CGException_getMsg(const CGException* this) {
     return strdup(this->msg);
 }
