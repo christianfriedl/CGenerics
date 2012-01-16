@@ -10,8 +10,8 @@ WARNINGS = $(NORMAL_WARNINGS)
 CFLAGS=-ggdb $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
-HEADERS=Array.h
-LIB_OBJECTS=Exception.o AppState.o Logger.o Integer.o CGString.o
+HEADERS=CGArray.h
+LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o
 STATIC_LIBRARY=libcgenerics.a
 
 clean-tests: clean tests test

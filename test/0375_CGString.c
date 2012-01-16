@@ -4,37 +4,37 @@
 #include<time.h>
 #include<assert.h>
 #include<string.h>
-#include"AppState.h"
+#include"CGAppState.h"
 #include"CGString.h"
 
-AppState* appState;
+CGAppState* appState;
 
 void testNewDelete() {
     printf("%s...\n", __func__);
-    String* s = String__new(appState, "abcde");
+    CGString* s = CGString__new(appState, "abcde");
     assert(s != NULL);
     assert(!strcmp(s->vector, "abcde"));
-    String_delete(appState, s);
+    CGString_delete(appState, s);
     printf("%s ok\n", __func__);
 }
 void testToVector() {
     printf("%s...\n", __func__);
-    String* s = String__new(appState, "abcde");
-    char *v = String_toVector(appState, s);
+    CGString* s = CGString__new(appState, "abcde");
+    char *v = CGString_toVector(appState, s);
     assert(!strcmp(v, s->vector));
     free(v);
-    String_delete(appState, s);
+    CGString_delete(appState, s);
     printf("%s ok\n", __func__);
 }
 
 void testClone() {
     printf("%s...\n", __func__);
-    String* s = String__new(appState, "abcde");
-    String* s2 = String_clone(appState, s);
+    CGString* s = CGString__new(appState, "abcde");
+    CGString* s2 = CGString_clone(appState, s);
     assert(s2 != NULL);
     assert(!strcmp(s2->vector, "abcde"));
-    String_delete(appState, s2);
-    String_delete(appState, s);
+    CGString_delete(appState, s2);
+    CGString_delete(appState, s);
     printf("%s ok\n", __func__);
 }
 
@@ -42,13 +42,13 @@ void testClone() {
 int main() {
     printf("=== %s ===\n", __FILE__);
 
-    appState = AppState__new();
+    appState = CGAppState__new();
 
     testNewDelete();
     testClone();
     testToVector();
 
-    AppState_delete(appState);
+    CGAppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

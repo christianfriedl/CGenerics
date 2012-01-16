@@ -1,29 +1,29 @@
 #include<stdlib.h>
 #include"CGString.h"
-#include"AppState.h"
+#include"CGAppState.h"
 
-String* String__new(AppState* appState, const char* value) {
-    String* this = malloc(sizeof(*this));
+CGString* CGString__new(CGAppState* appState, const char* value) {
+    CGString* this = malloc(sizeof(*this));
     if (this != NULL) {
         this->vector = malloc(sizeof(char) * (strlen(value) + 1));
         if (this->vector != NULL)
             strcpy(this->vector, value);
         else
-            AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate String vector for '%s'", value));
+            CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString vector for '%s'", value));
     } else
-        AppState_throwException(appState, Exception__new(Severity_error, ExceptionID_CannotAllocate, "unable to allocate String for '%s'", value));
+        CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString for '%s'", value));
     return this;
 }
-String* String_clone(AppState* appState, const String* this) {
-    return String__new(appState, (const char*)this->vector);
+CGString* CGString_clone(CGAppState* appState, const CGString* this) {
+    return CGString__new(appState, (const char*)this->vector);
 }
-void String_delete(AppState* appState, String* this) {
+void CGString_delete(CGAppState* appState, CGString* this) {
     free(this->vector);
     free(this);
 }
-char* String_toVector(AppState* appState, const String* this) {
+char* CGString_toVector(CGAppState* appState, const CGString* this) {
     return strdup(this->vector);
 }
-int String__compare(AppState* appState, const String* s1, const String* s2) {
+int CGString__compare(CGAppState* appState, const CGString* s1, const CGString* s2) {
     return (strcmp(s1->vector, s2->vector));
 }
