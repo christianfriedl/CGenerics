@@ -1,7 +1,7 @@
 #ifndef _EXCEPTION_H
 #define _EXCEPTION_H
 
-#define CGExceptionID_GeneralFatalCGException       (0)
+#define CGExceptionID_GeneralFatalException       (0)
 #define CGExceptionID_CannotAllocate              (1) 
 #define CGExceptionID_CGArrayIndexOutOfBounds   (100) 
 #define CGExceptionID_ElementNotFound (102)
