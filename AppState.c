@@ -41,8 +41,19 @@ bool AppState_isExceptionRaised(AppState* this) {
 bool AppState_isExceptionRaisedWithID(AppState* this, int exceptionID) {
     return ((this->exception != NULL && this->exception->id == exceptionID) ? true : false);
 }
+bool AppState_isExceptionRaisedWithSeverity(AppState* this, Severity severity) {
+    return ((this->exception != NULL && this->exception->severity == severity) ? true : false);
+}
 bool AppState_catchExceptionWithID(AppState* this, int exceptionID) {
     if (this->exception != NULL && this->exception->id == exceptionID) {
+        AppState_catchException(this);
+        return true;
+    }
+    return false;
+}
+
+bool AppState_catchExceptionWithSeverity(AppState* this, Severity severity) {
+    if (this->exception != NULL && this->exception->severity == severity) {
         AppState_catchException(this);
         return true;
     }
