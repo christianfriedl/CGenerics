@@ -3,7 +3,7 @@
 
 #define ExceptionID_GeneralFatalException       (0)
 #define ExceptionID_CannotAllocate              (1) 
-#define ExceptionID_ArrayIndexOutOfBounds   (100) 
+#define ExceptionID_CGArrayIndexOutOfBounds   (100) 
 #define ExceptionID_ElementNotFound (102)
 
 

@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"Array.h"
+#include"CGArray.h"
 #include"CGAppState.h"
 
 CGAppState* appState;
@@ -15,7 +15,7 @@ INIT_ARRAY(int)
 void testManyPushes() {
     printf("%s...\n", __func__);
 
-    Array(int)* intArray = Array__new(appState, int, 1);
+    CGArray(int)* intCGArray = CGArray__new(appState, int, 1);
 
     int i;
     int *x;
@@ -23,37 +23,37 @@ void testManyPushes() {
         x = malloc(sizeof(*x));
         if (x) {
             *x = i;
-            Array_push(appState, int, intArray, x);
+            CGArray_push(appState, int, intCGArray, x);
         } else printf("unable to alloc at %i\n", i);
     }
-    printf("cap %u size %u\n", Array_getCapacity(appState, int, intArray), Array_getSize(appState, int, intArray));
+    printf("cap %u size %u\n", CGArray_getCapacity(appState, int, intCGArray), CGArray_getSize(appState, int, intCGArray));
     for (i=0; i < 200000; ++i) {
-        x = Array_pop(appState, int, intArray);
+        x = CGArray_pop(appState, int, intCGArray);
         int_delete(x);
     }
-    printf("cap %u size %u\n", Array_getCapacity(appState, int, intArray), Array_getSize(appState, int, intArray));
+    printf("cap %u size %u\n", CGArray_getCapacity(appState, int, intCGArray), CGArray_getSize(appState, int, intCGArray));
     printf("ok\n");
 }
 void testManyShifts() {
     printf("%s...\n", __func__);
 
-    Array(int)* intArray = Array__new(appState, int, 1);
+    CGArray(int)* intCGArray = CGArray__new(appState, int, 1);
 
     int i;
     int *x;
     for (i=0; i < 200000; ++i) {
         x = malloc(sizeof(*x));
-        Array_unshift(appState, int, intArray, x);
+        CGArray_unshift(appState, int, intCGArray, x);
     } 
-    printf("cap %u size %u\n", Array_getCapacity(appState, int, intArray), Array_getSize(appState, int, intArray));
+    printf("cap %u size %u\n", CGArray_getCapacity(appState, int, intCGArray), CGArray_getSize(appState, int, intCGArray));
     for (i=0; i < 200000; ++i) {
-        x = Array_shift(appState, int, intArray);
+        x = CGArray_shift(appState, int, intCGArray);
         int_delete(x);
     }
-    printf("cap %u size %u\n", Array_getCapacity(appState, int, intArray), Array_getSize(appState, int, intArray));
+    printf("cap %u size %u\n", CGArray_getCapacity(appState, int, intCGArray), CGArray_getSize(appState, int, intCGArray));
 
-    //printArray(intArray);   
-    Array_delete(appState, int, intArray);
+    //printCGArray(intCGArray);   
+    CGArray_delete(appState, int, intCGArray);
     printf("ok\n");
 }
 

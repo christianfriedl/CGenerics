@@ -10,7 +10,7 @@ WARNINGS = $(NORMAL_WARNINGS)
 CFLAGS=-ggdb $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
-HEADERS=Array.h
+HEADERS=CGArray.h
 LIB_OBJECTS=Exception.o CGAppState.o Logger.o Integer.o CGString.o
 STATIC_LIBRARY=libcgenerics.a
 
