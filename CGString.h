@@ -4,9 +4,7 @@
 #include<string.h>
 #include"CGAppState.h"
 
-typedef struct {
-    char* vector;
-} CGString;
+typedef char CGString;
 
 CGString* CGString__new(CGAppState* appState, const char* value);
 CGString* CGString_clone(CGAppState* appState, const CGString* this);
@@ -21,6 +19,7 @@ size_t CGString_getSize(CGAppState* appState, const CGString* this);
     - strchr
     - strtok
     - insertAt
+    - replaceAt
     - substring
     - toUpper, toLower
 */

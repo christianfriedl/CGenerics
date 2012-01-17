@@ -5,9 +5,9 @@
 CGString* CGString__new(CGAppState* appState, const char* value) {
     CGString* this = malloc(sizeof(*this));
     if (this != NULL) {
-        this->vector = malloc(sizeof(char) * (strlen(value) + 1));
-        if (this->vector != NULL)
-            strcpy(this->vector, value);
+        this = malloc(sizeof(char) * (strlen(value) + 1));
+        if (this != NULL)
+            strcpy(this, value);
         else
             CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString vector for '%s'", value));
     } else
@@ -15,22 +15,21 @@ CGString* CGString__new(CGAppState* appState, const char* value) {
     return this;
 }
 CGString* CGString_clone(CGAppState* appState, const CGString* this) {
-    return CGString__new(appState, (const char*)this->vector);
+    return CGString__new(appState, (const char*)this);
 }
 void CGString_delete(CGAppState* appState, CGString* this) {
-    free(this->vector);
     free(this);
 }
 char* CGString_toVector(CGAppState* appState, const CGString* this) {
-    return strdup(this->vector);
+    return strdup(this);
 }
 int CGString__compare(CGAppState* appState, const CGString* s1, const CGString* s2) {
-    return (strcmp(s1->vector, s2->vector));
+    return (strcmp(s1, s2));
 }
 void CGString_append(CGAppState* appState, CGString* this, const CGString* that) {
-    this->vector = realloc(this->vector, sizeof(char) * (strlen(this->vector) + strlen(that->vector) + 1));
-    strcat(this->vector, that->vector);
+    this = realloc(this, sizeof(char) * (strlen(this) + strlen(that) + 1));
+    strcat(this, that);
 }
 size_t CGString_getSize(CGAppState* appState, const CGString* this) {
-    return strlen(this->vector);
+    return strlen(this);
 }
