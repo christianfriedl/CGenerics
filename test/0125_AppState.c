@@ -3,55 +3,55 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"AppState.h"
+#include"CGAppState.h"
 
 void testNewDelete() {
     printf("%s...\n", __func__);
-    AppState* appState = AppState__new();
+    CGAppState* appState = CGAppState__new();
     assert(appState != NULL);
-    AppState_delete(appState);
+    CGAppState_delete(appState);
     printf("%s ok\n", __func__);
 }
 
 void testExceptionNewDelete() {
     printf("%s...\n", __func__);
 
-    Exception* e = Exception__new(Severity_error, ExceptionID_GeneralFatalException, "testing");
+    CGException* e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, "testing");
     assert(e != NULL);
-    assert(Exception_getId(e) == ExceptionID_GeneralFatalException);
-    assert(Exception_getSeverity(e) == Severity_error);
-    char *msg = Exception_getMsg(e);
+    assert(CGException_getId(e) == CGExceptionID_GeneralFatalException);
+    assert(CGException_getSeverity(e) == Severity_error);
+    char *msg = CGException_getMsg(e);
     assert(!strcmp(msg, "testing"));
     free(msg);
-    Exception_delete(e);
+    CGException_delete(e);
 
     printf("%s ok\n", __func__);
 }
 void testThrowCatch() {
     printf("%s...\n", __func__);
-    AppState* appState = AppState__new();
-    assert(AppState_isExceptionRaised(appState) == false);
-    Exception* e = Exception__new(Severity_error, ExceptionID_GeneralFatalException, "testing");
-    AppState_throwException(appState, e);
-    assert(AppState_isExceptionRaised(appState) == true);
-    assert(AppState_isExceptionRaisedWithID(appState, ExceptionID_CannotAllocate) == false);
-    assert(AppState_isExceptionRaisedWithID(appState, ExceptionID_GeneralFatalException) == true);
-    assert(AppState_getException(appState) == e);
-    assert(AppState_catchExceptionWithID(appState, ExceptionID_CannotAllocate) == false);
-    assert(AppState_isExceptionRaisedWithID(appState, ExceptionID_GeneralFatalException) == true);
-    assert(AppState_catchExceptionWithID(appState, ExceptionID_GeneralFatalException) == true);
-    assert(AppState_catchExceptionWithID(appState, ExceptionID_GeneralFatalException) == false);
-    e = Exception__new(Severity_error, ExceptionID_GeneralFatalException, "testing");
-    AppState_throwException(appState, e);
-    assert(AppState_catchException(appState) == true);
-    assert(AppState_catchException(appState) == false);
-    e = Exception__new(Severity_error, ExceptionID_GeneralFatalException, "testing");
-    AppState_throwException(appState, e);
-    assert(AppState_isExceptionRaisedWithSeverity(appState, Severity_none) == false);
-    assert(AppState_isExceptionRaisedWithSeverity(appState, Severity_error) == true);
-    assert(AppState_catchExceptionWithSeverity(appState, Severity_none) == false);
-    assert(AppState_catchExceptionWithSeverity(appState, Severity_error) == true);
-    AppState_delete(appState);
+    CGAppState* appState = CGAppState__new();
+    assert(CGAppState_isExceptionRaised(appState) == false);
+    CGException* e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, "testing");
+    CGAppState_throwException(appState, e);
+    assert(CGAppState_isExceptionRaised(appState) == true);
+    assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_CannotAllocate) == false);
+    assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_GeneralFatalException) == true);
+    assert(CGAppState_getException(appState) == e);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_CannotAllocate) == false);
+    assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_GeneralFatalException) == true);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == true);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == false);
+    e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, "testing");
+    CGAppState_throwException(appState, e);
+    assert(CGAppState_catchException(appState) == true);
+    assert(CGAppState_catchException(appState) == false);
+    e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, "testing");
+    CGAppState_throwException(appState, e);
+    assert(CGAppState_isExceptionRaisedWithSeverity(appState, Severity_none) == false);
+    assert(CGAppState_isExceptionRaisedWithSeverity(appState, Severity_error) == true);
+    assert(CGAppState_catchExceptionWithSeverity(appState, Severity_none) == false);
+    assert(CGAppState_catchExceptionWithSeverity(appState, Severity_error) == true);
+    CGAppState_delete(appState);
     printf("%s ok\n", __func__);
 }
 
