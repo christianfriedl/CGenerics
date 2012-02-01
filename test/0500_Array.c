@@ -69,7 +69,7 @@ void testClone() {
     }
     CGArray(Int)* clonedCGArray = CGArray_clone(appState, Int, intCGArray);
     assert(clonedCGArray != NULL);
-    assert(CGAppState_isCGExceptionRaised(appState) == false);
+    assert(CGAppState_isExceptionRaised(appState) == false);
     assert(CGArray_getSize(appState, Int, clonedCGArray) == CGArray_getSize(appState, Int, intCGArray));
     assert(CGArray_getCapacity(appState, Int, clonedCGArray) == CGArray_getCapacity(appState, Int, intCGArray));
     for (i=0; i < 20; ++i) {
@@ -217,17 +217,17 @@ void testCGExceptions() {
 
     CGArray(Int)* intCGArray = CGArray__new(appState, Int, 1);
     CGArray_removeValueAt(appState, Int, intCGArray, 1);
-    assert(CGAppState_isCGExceptionRaisedWithID(appState, CGExceptionID_CGArrayIndexOutOfBounds));
-    CGAppState_catchCGException(appState);
+    assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_ArrayIndexOutOfBounds));
+    CGAppState_catchException(appState);
     CGArray_pop(appState, Int, intCGArray);
-    assert(CGAppState_isCGExceptionRaised(appState));
-    CGAppState_catchCGException(appState);
+    assert(CGAppState_isExceptionRaised(appState));
+    CGAppState_catchException(appState);
     CGArray_shift(appState, Int, intCGArray);
-    assert(CGAppState_isCGExceptionRaised(appState));
-    CGAppState_catchCGException(appState);
+    assert(CGAppState_isExceptionRaised(appState));
+    CGAppState_catchException(appState);
     CGArray_getValueAt(appState, Int, intCGArray, 20);
-    assert(CGAppState_isCGExceptionRaised(appState));
-    CGAppState_catchCGException(appState);
+    assert(CGAppState_isExceptionRaised(appState));
+    CGAppState_catchException(appState);
 
     CGArray_delete(appState, Int, intCGArray);
 
@@ -281,7 +281,7 @@ void testFindIndex() {
     x = Int__new(20);
     i = CGArray_findIndex(appState, Int, intCGArray, (const Int*)x, intComparison);
     assert(i == 0);
-    assert(CGAppState_catchCGExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
 
     CGArray_deleteValues(appState, Int, intCGArray);
     CGArray_delete(appState, Int, intCGArray);
@@ -306,7 +306,7 @@ void testFind() {
     x = Int__new(20);
     y = CGArray_find(appState, Int, intCGArray, (const Int*)x, intComparison);
     assert(y == NULL);
-    assert(CGAppState_catchCGExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
 
     CGArray_deleteValues(appState, Int, intCGArray);
     CGArray_delete(appState, Int, intCGArray);

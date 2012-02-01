@@ -3,7 +3,7 @@
 
 #define CGExceptionID_GeneralFatalException       (0)
 #define CGExceptionID_CannotAllocate              (1) 
-#define CGExceptionID_CGArrayIndexOutOfBounds   (100) 
+#define CGExceptionID_ArrayIndexOutOfBounds   (100) 
 #define CGExceptionID_ElementNotFound (102)
 
 
@@ -16,7 +16,7 @@ typedef struct {
 } CGException;
 
 /* generic exception that will result in aborting the program */
-extern CGException GeneralFatalCGException;
+extern CGException CGGeneralFatalException;
 
 CGException* CGException__new(const Severity severity, const int id, const char* msg, ...);
 void CGException_delete(CGException* this);

@@ -172,11 +172,11 @@ void testFind() {
     tofind = CGInteger__new(appState, 5);
     found = CGLinkedList_findElement(appState, CGInteger, ll, tofind, CGInteger__compare);
     assert(found == NULL);
-    assert(CGAppState_catchCGExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
 
     foundCGInteger = CGLinkedList_findValue(appState, CGInteger, ll, tofind, CGInteger__compare);
     assert(foundCGInteger== NULL);
-    assert(CGAppState_catchCGExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
 
     CGInteger_delete(appState, tofind);
     CGLinkedListElement_delete(appState, CGInteger, i1);

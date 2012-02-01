@@ -4,7 +4,7 @@
 #include"CGException.h"
 #include"CGLogger.h"
 
-CGException GeneralFatalCGException = { Severity_fatal, CGExceptionID_GeneralFatalException, "General Fatal CGException" };
+CGException CGGeneralFatalException = { Severity_fatal, CGExceptionID_GeneralFatalException, "General Fatal CGException" };
 
 CGException* CGException__new(const Severity severity, const int id, const char* msg, ...) {
     CGException* this = malloc(sizeof(*this));

@@ -7,7 +7,7 @@ CGInteger* CGInteger__new(CGAppState* appState, const int value) {
     if (this != NULL)
         *this = value;
     else
-        CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGInteger for '%i'", value));
+        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGInteger for '%i'", value));
     return this;
 }
 CGInteger* CGInteger_clone(CGAppState* appState, const CGInteger* this) {

@@ -35,7 +35,7 @@ CGLinkedListElementOf##TYPENAME* CGLinkedListElementOf##TYPENAME##__new(CGAppSta
         this->value = value; \
         this->nextElement = NULL; \
     } else \
-        CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGLinkedListElement for '%s'", "TYPENAME")); \
+        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGLinkedListElement for '%s'", "TYPENAME")); \
     return this; \
 } \
 \
@@ -61,7 +61,7 @@ CGLinkedListOf##TYPENAME* CGLinkedListOf##TYPENAME##__new(CGAppState* appState, 
 		this->currentElement = rootElement; \
 		this->lastElement = rootElement; \
 	} else \
-		CGAppState_throwCGException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGLinkedList for '%s'", "TYPENAME")); \
+		CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGLinkedList for '%s'", "TYPENAME")); \
 	return this; \
 } \
 \
@@ -120,7 +120,7 @@ CGLinkedListElementOf##TYPENAME* CGLinkedListOf##TYPENAME##_findElement(CGAppSta
         if ((comparingFunction)(appState, (const TYPENAME*)cur->value, (const TYPENAME*)value) == 0) \
             return cur; \
     } \
-    CGAppState_throwCGException(appState, CGException__new(Severity_none, CGExceptionID_ElementNotFound, "")); \
+    CGAppState_throwException(appState, CGException__new(Severity_none, CGExceptionID_ElementNotFound, "")); \
     return NULL; \
 } \
 \
