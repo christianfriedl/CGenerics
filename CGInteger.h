@@ -1,5 +1,5 @@
-#ifndef _INTEGER_H
-#define _INTEGER_H
+#ifndef _CGINTEGER_H
+#define _CGINTEGER_H
 
 #include"CGAppState.h"
 

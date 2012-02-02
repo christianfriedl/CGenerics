@@ -1,5 +1,5 @@
-#ifndef _APPSTATE_H
-#define _APPSTATE_H
+#ifndef _CGAPPSTATE_H
+#define _CGAPPSTATE_H
 
 #include"CGenerics.h"
 #include"CGException.h"

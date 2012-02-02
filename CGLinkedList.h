@@ -1,5 +1,5 @@
-#ifndef _LINKEDLIST_H
-#define _LINKEDLIST_H
+#ifndef _CGLINKEDLIST_H
+#define _CGLINKEDLIST_H
 
 #include<stdlib.h>
 #include<string.h>

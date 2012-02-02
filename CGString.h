@@ -1,5 +1,5 @@
-#ifndef _STRING_H
-#define _STRING_H
+#ifndef _CGSTRING_H
+#define _CGCGSTRING_H
 
 #include<string.h>
 #include"CGAppState.h"

@@ -1,3 +1,4 @@
+#include<string.h>
 #include<stdlib.h>
 #include"CGString.h"
 #include"CGAppState.h"
