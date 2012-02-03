@@ -14,7 +14,7 @@ HEADERS=CGAppState.h CGArray.h CGException.h CGInteger.h CGLinkedList.h CGLogger
 LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o
 STATIC_LIBRARY=libcgenerics.a
 
-PREFIX=/opt/local
+PREFIX=/usr
 INSTALLHEADERS=${PREFIX}/include/cgenerics
 INSTALLLIB=${PREFIX}/lib
 
@@ -55,6 +55,6 @@ test:
 	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then echo "ERROR..."; exit 1; fi; done
 
 install:
-	if [ ! -d ${INSTALLHEADERS} ]; then mkdir ${INSTALLHEADERS}; fi
+	if [ ! -d ${INSTALLHEADERS} ]; then mkdir -p ${INSTALLHEADERS}; fi
 	cp $(HEADERS) ${INSTALLHEADERS}
 	cp $(STATIC_LIBRARY) $(INSTALLLIB)
