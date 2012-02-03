@@ -1,5 +1,5 @@
-#ifndef _ARRAY_H
-#define _ARRAY_H
+#ifndef _CGARRAY_H
+#define _CGARRAY_H
 
 #include<stdlib.h>
 #include<string.h>

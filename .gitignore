@@ -4,6 +4,7 @@ Makefile.local
 *.e
 *.e.c
 .*.sw?
+test/0125_AppState
 test/0250_Integer
 test/0500_Array
 test/0501_ArrayPerformance

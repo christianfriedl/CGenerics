@@ -1,5 +1,5 @@
-#ifndef _EXCEPTION_H
-#define _EXCEPTION_H
+#ifndef _CGEXCEPTION_H
+#define _CGEXCEPTION_H
 
 #define CGExceptionID_GeneralFatalException       (0)
 #define CGExceptionID_CannotAllocate              (1) 

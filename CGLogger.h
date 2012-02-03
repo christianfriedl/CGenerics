@@ -1,5 +1,5 @@
-#ifndef _LOGGER_H
-#define _LOGGER_H
+#ifndef _CGLOGGER_H
+#define _CGLOGGER_H
 
 #include<syslog.h>
 #include<stdarg.h>
