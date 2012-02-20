@@ -22,13 +22,13 @@ Int* Int__new(int value) {
 Int* Int_clone(CGAppState* appState, Int* this) {
     return Int__new(*this);
 }
-void Int_delete(int* this) {
+void Int_delete(CGAppState* appState, int* this) {
     free(this);
 }
 Person* Person_clone(CGAppState* appState, Person* this) {
     return NULL; /* stub, unneeded */
 }
-void Person_delete(Person* this) {
+void Person_delete(CGAppState* appState, Person* this) {
     free(this);
 }
 

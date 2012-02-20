@@ -72,11 +72,11 @@ void CGArrayOf##TYPENAME##_delete(CGAppState* appState, CGArrayOf##TYPENAME* thi
     free(this); \
 } \
 \
-void TYPENAME##_delete(TYPENAME* this); \
+void TYPENAME##_delete(CGAppState* appState, TYPENAME* this); \
 void CGArrayOf##TYPENAME##_deleteValues(CGAppState* appState, CGArrayOf##TYPENAME* this) { \
     unsigned int i; \
     for (i=0; i < this->usedElements; ++i) \
-        TYPENAME##_delete(*(this->vector + i)); \
+        TYPENAME##_delete(appState, *(this->vector + i)); \
 } \
 \
 void CGArrayOf##TYPENAME##_grow_(CGAppState* appState, CGArrayOf##TYPENAME* this, unsigned int requestedCapacity) { \
