@@ -30,12 +30,14 @@ static unsigned int calculateNeededElementCount(CGAppState* appState, unsigned i
     NOTE: TYPENAME is a valid identifier; if you plan for a, say, CGArray<int*>, then do a typedef int* intPtr or the like...
 */
 
-#define INIT_ARRAY(TYPENAME) \
+#define INIT_ARRAY_TYPE(TYPENAME) \
 typedef struct { \
     TYPENAME** vector; \
     unsigned int usedElements; /* the size of the array */ \
     unsigned int capacityElements; /* the currently possible maximum size of the array */ \
 } CGArrayOf##TYPENAME; \
+
+#define INIT_ARRAY_FUNCS(TYPENAME) \
 \
 CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__new(CGAppState* appState, const unsigned int initialCapacity) { \
     CGArrayOf##TYPENAME* this = malloc(sizeof(*this)); \
@@ -219,7 +221,11 @@ void CGArrayOf##TYPENAME##_mapConstant(CGAppState* appState, CGArrayOf##TYPENAME
     for (i = 0; i < this->usedElements; ++i) \
         (mapFunction)(appState, *(this->vector + i)); \
 } \
-\
+
+#define INIT_ARRAY(TYPENAME) \
+    INIT_ARRAY_TYPE(TYPENAME) \
+    INIT_ARRAY_FUNCS(TYPENAME) \
+
 
 /* type definition */
 
