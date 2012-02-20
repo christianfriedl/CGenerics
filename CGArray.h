@@ -30,14 +30,38 @@ static unsigned int calculateNeededElementCount(CGAppState* appState, unsigned i
     NOTE: TYPENAME is a valid identifier; if you plan for a, say, CGArray<int*>, then do a typedef int* intPtr or the like...
 */
 
-#define INIT_ARRAY_TYPE(TYPENAME) \
+#define DECLARE_ARRAY_TYPE(TYPENAME) \
 typedef struct { \
     TYPENAME** vector; \
     unsigned int usedElements; /* the size of the array */ \
     unsigned int capacityElements; /* the currently possible maximum size of the array */ \
 } CGArrayOf##TYPENAME; \
 
-#define INIT_ARRAY_FUNCS(TYPENAME) \
+#define DECLARE_ARRAY_FUNCS(TYPENAME) \
+CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__new(CGAppState* appState, const unsigned int initialCapacity); \
+void CGArrayOf##TYPENAME##_delete(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+void CGArrayOf##TYPENAME##_deleteValues(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##_clone(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+void CGArrayOf##TYPENAME##_delete(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+void CGArrayOf##TYPENAME##_grow_(CGAppState* appState, CGArrayOf##TYPENAME* this, unsigned int requestedCapacity); \
+TYPENAME* CGArrayOf##TYPENAME##_add(CGAppState* appState, CGArrayOf##TYPENAME* this, TYPENAME* value); \
+TYPENAME* CGArrayOf##TYPENAME##_getValueAt(CGAppState* appState, CGArrayOf##TYPENAME* this, const unsigned int at); \
+TYPENAME* CGArrayOf##TYPENAME##_pop(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+TYPENAME* CGArrayOf##TYPENAME##_shift(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+void CGArrayOf##TYPENAME##_unshift(CGAppState* appState, CGArrayOf##TYPENAME* this, TYPENAME* value); \
+void CGArrayOf##TYPENAME##_insertValueAtAfterEnd_(CGAppState* appState, CGArrayOf##TYPENAME* this, TYPENAME* value, const unsigned int at); \
+void CGArrayOf##TYPENAME##_insertValueAt(CGAppState* appState, CGArrayOf##TYPENAME* this, TYPENAME* value, const unsigned int at); \
+TYPENAME* CGArrayOf##TYPENAME##_removeValueAt(CGAppState* appState, CGArrayOf##TYPENAME* this, unsigned int at); \
+unsigned int CGArrayOf##TYPENAME##_getCapacity(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+unsigned int CGArrayOf##TYPENAME##_getSize(CGAppState* appState, CGArrayOf##TYPENAME* this); \
+void CGArrayOf##TYPENAME##_qsort(CGAppState* appState, CGArrayOf##TYPENAME* this, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)); \
+void CGArrayOf##TYPENAME##_print(CGAppState* appState, CGArrayOf##TYPENAME* this, const char *printFormat); \
+unsigned int CGArrayOf##TYPENAME##_findIndex(CGAppState *appState, CGArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)); \
+TYPENAME* CGArrayOf##TYPENAME##_find(CGAppState* appState, CGArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)); \
+CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##_map(CGAppState* appState, CGArrayOf##TYPENAME* this, void (*mapFunction)(CGAppState*, TYPENAME*)); \
+void CGArrayOf##TYPENAME##_mapConstant(CGAppState* appState, CGArrayOf##TYPENAME* this, void (*mapFunction)(CGAppState*, const TYPENAME*)); \
+
+#define DEFINE_ARRAY_FUNCS(TYPENAME) \
 \
 CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__new(CGAppState* appState, const unsigned int initialCapacity) { \
     CGArrayOf##TYPENAME* this = malloc(sizeof(*this)); \
@@ -222,9 +246,16 @@ void CGArrayOf##TYPENAME##_mapConstant(CGAppState* appState, CGArrayOf##TYPENAME
         (mapFunction)(appState, *(this->vector + i)); \
 } \
 
+#define DECLARE_ARRAY(TYPENAME) \
+    DECLARE_ARRAY_TYPE(TYPENAME) \
+    DECLARE_ARRAY_FUNCS(TYPENAME) 
+
+#define DEFINE_ARRAY(TYPENAME) \
+    DEFINE_ARRAY_FUNCS(TYPENAME) 
+
 #define INIT_ARRAY(TYPENAME) \
-    INIT_ARRAY_TYPE(TYPENAME) \
-    INIT_ARRAY_FUNCS(TYPENAME) \
+    DECLARE_ARRAY(TYPENAME) \
+    DEFINE_ARRAY(TYPENAME)
 
 
 /* type definition */
