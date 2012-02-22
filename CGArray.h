@@ -3,6 +3,7 @@
 
 #include<stdlib.h>
 #include<string.h>
+#include<stdarg.h>
 #include"CGAppState.h"
 
 #define MAX_GROWTH_COUNT 65536
@@ -39,6 +40,7 @@ typedef struct { \
 
 #define DECLARE_ARRAY_FUNCS(TYPENAME) \
 CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__new(CGAppState* appState, const unsigned int initialCapacity); \
+CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__newFromInitializerList(CGAppState* appState, TYPENAME* item, ...); \
 void CGArrayOf##TYPENAME##_delete(CGAppState* appState, CGArrayOf##TYPENAME* this); \
 void CGArrayOf##TYPENAME##_deleteValues(CGAppState* appState, CGArrayOf##TYPENAME* this); \
 CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##_clone(CGAppState* appState, CGArrayOf##TYPENAME* this); \
@@ -73,6 +75,24 @@ CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__new(CGAppState* appState, const unsi
             CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray")); \
     } else \
         CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray")); \
+    return this; \
+} \
+\
+CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__newFromInitializerList(CGAppState* appState, TYPENAME* item, ...) { \
+    CGArrayOf##TYPENAME* this = CGArrayOf##TYPENAME##__new(appState, 1); \
+    if (this != NULL) { \
+        va_list args; \
+        va_start(args, item); \
+        while (item) { \
+            printf("before: %i (%i)\n", this->usedElements, *item); \
+            CGArrayOf##TYPENAME##_add(appState, this, item); \
+            printf("after: %i\n", this->usedElements); \
+            if (CGAppState_isExceptionRaised(appState)) \
+                break; \
+            item = va_arg(args, TYPENAME*); \
+        } \
+        va_end(args); \
+    } \
     return this; \
 } \
 \
@@ -266,6 +286,7 @@ void CGArrayOf##TYPENAME##_mapConstant(CGAppState* appState, CGArrayOf##TYPENAME
 /* callers */
 
 #define CGArray__new(appState, TYPENAME, initialCapacity) CGArrayOf##TYPENAME##__new((appState), (initialCapacity))
+#define CGArray__newFromInitializerList(appState, TYPENAME, ...) CGArrayOf##TYPENAME##__newFromInitializerList((appState), __VA_ARGS__)
 #define CGArray_clone(appState, TYPENAME, array) CGArrayOf##TYPENAME##_clone((appState), (array))
 #define CGArray_delete(appState, TYPENAME, array) CGArrayOf##TYPENAME##_delete((appState), (array))
 #define CGArray_deleteValues(appState, TYPENAME, array) CGArrayOf##TYPENAME##_deleteValues((appState), (array))

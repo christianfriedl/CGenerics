@@ -32,7 +32,9 @@ void Person_delete(CGAppState* appState, Person* this) {
     free(this);
 }
 
-INIT_ARRAY(Int)
+DECLARE_ARRAY_TYPE(Int)
+DECLARE_ARRAY_FUNCS(Int)
+DEFINE_ARRAY_FUNCS(Int)
 INIT_ARRAY(Person)
 
 CGAppState *appState;
@@ -53,6 +55,33 @@ void testNewDelete() {
     CGArray_delete(appState, Int, intCGArray);
     CGArray_deleteValues(appState, Person, personCGArray);
     CGArray_delete(appState, Person, personCGArray);
+    
+    printf("ok\n");
+}
+
+void testNewFromInitializerList() {
+    printf("%s...\n", __func__);
+
+    Int* i1 = Int__new(1);
+    Int* i2 = Int__new(2);
+    CGArray(Int)* intCGArray = CGArray__newFromInitializerList(appState, Int, i1, NULL);
+    assert(intCGArray != NULL);
+    assert(CGArray_getValueAt(appState, Int, intCGArray, 0) == i1);
+    assert(CGArray_getSize(appState, Int, intCGArray) == 1);
+    assert(CGArray_getCapacity(appState, Int, intCGArray) >= 1);
+    CGArray_delete(appState, Int, intCGArray);
+    assert(!CGAppState_isExceptionRaised(appState));
+
+    CGArray(Int)* intCGArray2 = CGArray__newFromInitializerList(appState, Int, i1, i2, NULL);
+    assert(intCGArray2 != NULL);
+    assert(CGArray_getValueAt(appState, Int, intCGArray2, 0) == i1);
+    assert(CGArray_getValueAt(appState, Int, intCGArray2, 1) == i2);
+    assert(CGArray_getSize(appState, Int, intCGArray2) == 2);
+    assert(CGArray_getCapacity(appState, Int, intCGArray2) >= 2);
+    CGArray_delete(appState, Int, intCGArray2);
+    Int_delete(appState, i1);
+    Int_delete(appState, i2);
+    assert(!CGAppState_isExceptionRaised(appState));
     
     printf("ok\n");
 }
@@ -345,6 +374,7 @@ int main() {
     printf("=== %s ===\n", __FILE__);
     appState = CGAppState__new();
     testNewDelete();
+    testNewFromInitializerList();
     testClone();
     testIntCGArray();
     testPersonCGArray();

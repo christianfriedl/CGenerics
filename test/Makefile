@@ -7,7 +7,7 @@ PERFORMANCE_BINARIES=0501_ArrayPerformance
 
 clean-all: clean all
 
-all: clean tests performance
+all: clean tests # performance
 
 tests: $(BINARIES)
 
