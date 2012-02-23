@@ -24,7 +24,6 @@ CGException* CGException__new(const Severity severity, const int id, const char*
     return this;
 }
 void CGException_delete(CGException* this) {
-    free(this->msg);
     free(this);
 }
 
