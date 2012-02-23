@@ -12,6 +12,7 @@ CGAppState* CGAppState__new();
 void CGAppState_delete(CGAppState* this);
 void CGAppState_throwException(CGAppState* this, CGException* exception);
 bool CGAppState_catchAndDeleteException(CGAppState* this);
+bool CGAppState_catchAndDeleteExceptionWithID(CGAppState* this, int exceptionID);
 CGException* CGAppState_catchException(CGAppState* this);
 CGException* CGAppState_catchExceptionWithID(CGAppState* this, int exceptionID);
 CGException* CGAppState_catchExceptionWithSeverity(CGAppState* this, Severity severity);

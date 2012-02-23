@@ -35,6 +35,15 @@ bool CGAppState_catchAndDeleteException(CGAppState* this) {
         return false;
 }
 
+bool CGAppState_catchAndDeleteExceptionWithID(CGAppState* this, int exceptionID) {
+    if (CGAppState_isExceptionRaisedWithID(this, exceptionID)) {
+        CGException_delete(this->exception);
+        this->exception = NULL;
+        return true;
+    } else
+        return false;
+}
+
 CGException* CGAppState_catchException(CGAppState* this) {
     if (CGAppState_isExceptionRaised(this)) {
         CGException* e = this->exception;

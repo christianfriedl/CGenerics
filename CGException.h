@@ -25,4 +25,5 @@ int CGException_getId(const CGException* this);
 char *CGException_getMsg(const CGException* this);
 void CGException_log(CGException* this);
 
+
 #endif
