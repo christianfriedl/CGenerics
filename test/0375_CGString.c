@@ -17,6 +17,14 @@ void testNewDelete() {
     CGString_delete(appState, s);
     printf("%s ok\n", __func__);
 }
+void testNewFromLengthAndPreset() {
+    printf("%s...\n", __func__);
+    CGString* s = CGString__newFromLengthAndPreset(appState, 20, 'x');
+    assert(s != NULL);
+    assert(!strcmp(s, "xxxxxxxxxxxxxxxxxxxx"));
+    CGString_delete(appState, s);
+    printf("%s ok\n", __func__);
+}
 void testToVector() {
     printf("%s...\n", __func__);
     CGString* s = CGString__new(appState, "abcde");
@@ -67,6 +75,7 @@ int main() {
     appState = CGAppState__new();
 
     testNewDelete();
+    testNewFromLengthAndPreset();
     testClone();
     testToVector();
     testAppend();

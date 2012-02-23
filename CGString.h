@@ -7,6 +7,7 @@
 typedef char CGString;
 
 CGString* CGString__new(CGAppState* appState, const char* value);
+CGString* CGString__newFromLengthAndPreset(CGAppState* appState, unsigned int length, const char preset);
 CGString* CGString_clone(CGAppState* appState, const CGString* this);
 void CGString_delete(CGAppState* appState, CGString* this);
 char* CGString_toVector(CGAppState* appState, const CGString* this);

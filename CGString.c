@@ -4,15 +4,20 @@
 #include"CGAppState.h"
 
 CGString* CGString__new(CGAppState* appState, const char* value) {
-    CGString* this = malloc(sizeof(*this));
-    if (this != NULL) {
-        this = malloc(sizeof(char) * (strlen(value) + 1));
-        if (this != NULL)
-            strcpy(this, value);
-        else
-            CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString vector for '%s'", value));
-    } else
+    CGString* this = malloc(sizeof(char) * (strlen(value) + 1));
+    if (this != NULL)
+        strcpy(this, value);
+    else
         CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString for '%s'", value));
+    return this;
+}
+CGString* CGString__newFromLengthAndPreset(CGAppState* appState, unsigned int length, const char preset) {
+    CGString* this = malloc(sizeof(char) * (length + 1));
+    if (this != NULL) {
+        memset(this, preset, length);
+        *(this + length) = '\0';
+    } else
+        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString"));
     return this;
 }
 CGString* CGString_clone(CGAppState* appState, const CGString* this) {
