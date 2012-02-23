@@ -2,7 +2,7 @@ include Makefile.local
 CFLAGS=-Wall -I../
 LDFLAGS=-Wall -L../ -lcgenerics
 
-BINARIES=0125_AppState 0250_Integer 0375_CGString 0500_Array 0750_LinkedList
+BINARIES=0125_AppState 0250_Integer 0375_CGString 0500_Array 0510_ArrayIterator 0750_LinkedList
 PERFORMANCE_BINARIES=0501_ArrayPerformance 
 
 clean-all: clean all
