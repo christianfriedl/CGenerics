@@ -26,13 +26,22 @@ void CGAppState_throwException(CGAppState* this, CGException* exception) {
     this->exception = exception;
 }
 
-bool CGAppState_catchException(CGAppState* this) {
+bool CGAppState_catchAndDeleteException(CGAppState* this) {
     if (CGAppState_isExceptionRaised(this)) {
         CGException_delete(this->exception);
         this->exception = NULL;
         return true;
     } else
         return false;
+}
+
+CGException* CGAppState_catchException(CGAppState* this) {
+    if (CGAppState_isExceptionRaised(this)) {
+        CGException* e = this->exception;
+        this->exception = NULL;
+        return e;
+    } else
+        return NULL;
 }
 
 bool CGAppState_isExceptionRaised(CGAppState* this) {
@@ -44,20 +53,18 @@ bool CGAppState_isExceptionRaisedWithID(CGAppState* this, int exceptionID) {
 bool CGAppState_isExceptionRaisedWithSeverity(CGAppState* this, Severity severity) {
     return ((this->exception != NULL && this->exception->severity == severity) ? true : false);
 }
-bool CGAppState_catchExceptionWithID(CGAppState* this, int exceptionID) {
+CGException* CGAppState_catchExceptionWithID(CGAppState* this, int exceptionID) {
     if (this->exception != NULL && this->exception->id == exceptionID) {
-        CGAppState_catchException(this);
-        return true;
+        return CGAppState_catchException(this);
     }
-    return false;
+    return NULL;
 }
 
-bool CGAppState_catchExceptionWithSeverity(CGAppState* this, Severity severity) {
+CGException* CGAppState_catchExceptionWithSeverity(CGAppState* this, Severity severity) {
     if (this->exception != NULL && this->exception->severity == severity) {
-        CGAppState_catchException(this);
-        return true;
+        return CGAppState_catchException(this);
     }
-    return false;
+    return NULL;
 }
 
 CGException* CGAppState_getException(CGAppState* this) {

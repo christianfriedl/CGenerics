@@ -11,9 +11,10 @@ typedef struct {
 CGAppState* CGAppState__new();
 void CGAppState_delete(CGAppState* this);
 void CGAppState_throwException(CGAppState* this, CGException* exception);
-bool CGAppState_catchException(CGAppState* this);
-bool CGAppState_catchExceptionWithID(CGAppState* this, int exceptionID);
-bool CGAppState_catchExceptionWithSeverity(CGAppState* this, Severity severity);
+bool CGAppState_catchAndDeleteException(CGAppState* this);
+CGException* CGAppState_catchException(CGAppState* this);
+CGException* CGAppState_catchExceptionWithID(CGAppState* this, int exceptionID);
+CGException* CGAppState_catchExceptionWithSeverity(CGAppState* this, Severity severity);
 bool CGAppState_isExceptionRaised(CGAppState* this);
 bool CGAppState_isExceptionRaisedWithID(CGAppState* this, int exceptionID);
 bool CGAppState_isExceptionRaisedWithSeverity(CGAppState* this, Severity severity);

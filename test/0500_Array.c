@@ -243,20 +243,22 @@ void testCGArrayGrow() {
 
 void testCGExceptions() {
     printf("%s...\n", __func__);
+    
+    CGException* e = NULL;
 
     CGArray(Int)* intCGArray = CGArray__new(appState, Int, 1);
     CGArray_removeValueAt(appState, Int, intCGArray, 1);
     assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_ArrayIndexOutOfBounds));
-    CGAppState_catchException(appState);
+    CGAppState_catchAndDeleteException(appState);
     CGArray_pop(appState, Int, intCGArray);
     assert(CGAppState_isExceptionRaised(appState));
-    CGAppState_catchException(appState);
+    CGAppState_catchAndDeleteException(appState);
     CGArray_shift(appState, Int, intCGArray);
     assert(CGAppState_isExceptionRaised(appState));
-    CGAppState_catchException(appState);
+    CGAppState_catchAndDeleteException(appState);
     CGArray_getValueAt(appState, Int, intCGArray, 20);
     assert(CGAppState_isExceptionRaised(appState));
-    CGAppState_catchException(appState);
+    CGAppState_catchAndDeleteException(appState);
 
     CGArray_delete(appState, Int, intCGArray);
 
@@ -310,7 +312,9 @@ void testFindIndex() {
     x = Int__new(20);
     i = CGArray_findIndex(appState, Int, intCGArray, (const Int*)x, intComparison);
     assert(i == 0);
-    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
+    CGException* e = CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound);
+    assert(e != NULL);
+    CGException_delete(e);
 
     CGArray_deleteValues(appState, Int, intCGArray);
     CGArray_delete(appState, Int, intCGArray);
@@ -335,7 +339,9 @@ void testFind() {
     x = Int__new(20);
     y = CGArray_find(appState, Int, intCGArray, (const Int*)x, intComparison);
     assert(y == NULL);
-    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound) == true);
+    CGException* e = CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound);
+    assert(e != NULL);
+    CGException_delete(e);
 
     CGArray_deleteValues(appState, Int, intCGArray);
     CGArray_delete(appState, Int, intCGArray);

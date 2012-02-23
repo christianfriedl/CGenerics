@@ -37,20 +37,21 @@ void testThrowCatch() {
     assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_CannotAllocate) == false);
     assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_GeneralFatalException) == true);
     assert(CGAppState_getException(appState) == e);
-    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_CannotAllocate) == false);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_CannotAllocate) == NULL);
     assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_GeneralFatalException) == true);
-    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == true);
-    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == false);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == e);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == NULL);
     e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, "testing");
     CGAppState_throwException(appState, e);
-    assert(CGAppState_catchException(appState) == true);
-    assert(CGAppState_catchException(appState) == false);
+    assert(CGAppState_catchException(appState) == e);
+    assert(CGAppState_catchException(appState) == NULL);
+    CGException_delete(e);
     e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, "testing");
     CGAppState_throwException(appState, e);
     assert(CGAppState_isExceptionRaisedWithSeverity(appState, Severity_none) == false);
     assert(CGAppState_isExceptionRaisedWithSeverity(appState, Severity_error) == true);
-    assert(CGAppState_catchExceptionWithSeverity(appState, Severity_none) == false);
-    assert(CGAppState_catchExceptionWithSeverity(appState, Severity_error) == true);
+    assert(CGAppState_catchExceptionWithSeverity(appState, Severity_none) == NULL);
+    assert(CGAppState_catchExceptionWithSeverity(appState, Severity_error) == e);
     CGAppState_delete(appState);
     printf("%s ok\n", __func__);
 }
