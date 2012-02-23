@@ -349,6 +349,12 @@ void addOne(CGAppState* appState, Int* x) {
 void printInt(CGAppState* appState, const Int* x) {
     printf("%i ", *x);
 }
+static int globalIndex;
+static bool globalOk;
+static void intIsEqualToIndex(CGAppState* appState, const Int* x) {
+    globalOk &= (*x == globalIndex);
+    globalIndex++;
+}
 void testMap() {
     printf("%s...\n", __func__);
 
@@ -360,9 +366,16 @@ void testMap() {
         CGArray_push(appState, Int, intCGArray, x);
     }
     CGArray(Int)* mappedCGArray = CGArray_map(appState, Int, intCGArray, addOne);
-    CGArray_mapConstant(appState, Int, intCGArray, printInt);
-    printf("\n new: ");
-    CGArray_mapConstant(appState, Int, mappedCGArray, printInt);
+
+    globalOk = true;
+    globalIndex = 0;
+    CGArray_mapConstant(appState, Int, intCGArray, intIsEqualToIndex);
+    assert(globalOk);
+
+    globalOk = true;
+    globalIndex = 1;
+    CGArray_mapConstant(appState, Int, mappedCGArray, intIsEqualToIndex);
+    assert(globalOk);
 
     CGArray_deleteValues(appState, Int, intCGArray);
     CGArray_delete(appState, Int, intCGArray);

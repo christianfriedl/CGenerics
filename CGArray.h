@@ -78,15 +78,16 @@ CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__new(CGAppState* appState, const unsi
     return this; \
 } \
 \
+/**
+    this expects a sentinel parameter (NULL) at the end of the initializer list
+*/ \
 CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__newFromInitializerList(CGAppState* appState, TYPENAME* item, ...) { \
     CGArrayOf##TYPENAME* this = CGArrayOf##TYPENAME##__new(appState, 1); \
     if (this != NULL) { \
         va_list args; \
         va_start(args, item); \
         while (item) { \
-            printf("before: %i (%i)\n", this->usedElements, *item); \
             CGArrayOf##TYPENAME##_add(appState, this, item); \
-            printf("after: %i\n", this->usedElements); \
             if (CGAppState_isExceptionRaised(appState)) \
                 break; \
             item = va_arg(args, TYPENAME*); \
