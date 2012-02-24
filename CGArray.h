@@ -72,9 +72,9 @@ CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__new(CGAppState* appState, const unsi
         this->capacityElements = calculateNeededElementCount(appState, 1, initialCapacity, MAX_GROWTH_COUNT); \
         this->vector = malloc(sizeof(TYPENAME*) * initialCapacity); \
         if (this->vector == NULL) \
-            CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray")); \
+            CGAppState_THROW(appState, Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray"); \
     } else \
-        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray")); \
+        CGAppState_THROW(appState, Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray"); \
     return this; \
 } \
 \
@@ -130,7 +130,7 @@ void CGArrayOf##TYPENAME##_grow_(CGAppState* appState, CGArrayOf##TYPENAME* this
     unsigned int newCapacity = calculateNeededElementCount(appState, this->capacityElements, requestedCapacity, MAX_GROWTH_COUNT); \
     this->vector = realloc(this->vector, sizeof(TYPENAME*) * newCapacity); \
     if (this->vector == NULL) \
-        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray")); \
+        CGAppState_THROW(appState, Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray"); \
     else \
         this->capacityElements = newCapacity; \
 } \
@@ -145,7 +145,7 @@ TYPENAME* CGArrayOf##TYPENAME##_add(CGAppState* appState, CGArrayOf##TYPENAME* t
 \
 TYPENAME* CGArrayOf##TYPENAME##_getValueAt(CGAppState* appState, CGArrayOf##TYPENAME* this, const unsigned int at) { \
     if (at >= this->usedElements) { \
-        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot get value beyond array end (requested position: %u)", at)); \
+        CGAppState_THROW(appState, Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot get value beyond array end (requested position: %u)", at); \
         return *(this->vector); \
     } \
     return *(this->vector + at); \
@@ -153,7 +153,7 @@ TYPENAME* CGArrayOf##TYPENAME##_getValueAt(CGAppState* appState, CGArrayOf##TYPE
 \
 TYPENAME* CGArrayOf##TYPENAME##_pop(CGAppState* appState, CGArrayOf##TYPENAME* this) { \
     if (this->usedElements == 0) { \
-        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot pop from empty array")); \
+        CGAppState_THROW(appState, Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot pop from empty array"); \
         return *(this->vector); \
     } \
     --this->usedElements; \
@@ -162,7 +162,7 @@ TYPENAME* CGArrayOf##TYPENAME##_pop(CGAppState* appState, CGArrayOf##TYPENAME* t
 \
 TYPENAME* CGArrayOf##TYPENAME##_shift(CGAppState* appState, CGArrayOf##TYPENAME* this) { \
     if (this->usedElements == 0) {\
-        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot shift from empty array")); \
+        CGAppState_THROW(appState, Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot shift from empty array"); \
         return *(this->vector); \
     } \
     TYPENAME* firstValue = *(this->vector); \
@@ -200,7 +200,7 @@ void CGArrayOf##TYPENAME##_insertValueAt(CGAppState* appState, CGArrayOf##TYPENA
 \
 TYPENAME* CGArrayOf##TYPENAME##_removeValueAt(CGAppState* appState, CGArrayOf##TYPENAME* this, unsigned int at) { \
     if (at >= this->usedElements) { \
-        CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot remove value beyond array end")); \
+        CGAppState_THROW(appState, Severity_error, CGExceptionID_ArrayIndexOutOfBounds, "cannot remove value beyond array end"); \
         return *(this->vector); \
     } \
     TYPENAME* value = *(this->vector + at); \
@@ -239,7 +239,7 @@ unsigned int CGArrayOf##TYPENAME##_findIndex(CGAppState *appState, CGArrayOf##TY
     for (i = 0; i < this->usedElements; ++i) \
         if ((comparingFunction)((const TYPENAME**)this->vector + i, (const TYPENAME**)&elementPointer) == 0) \
             return i; \
-    CGAppState_throwException(appState, CGException__new(Severity_none, CGExceptionID_ElementNotFound, "")); \
+    CGAppState_THROW(appState, Severity_none, CGExceptionID_ElementNotFound, NULL); \
     return 0; \
 } \
 \
