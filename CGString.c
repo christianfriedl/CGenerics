@@ -1,5 +1,7 @@
 #include<string.h>
 #include<stdlib.h>
+#include<stdio.h>
+#include<stdarg.h>
 #include"CGString.h"
 #include"CGAppState.h"
 
@@ -19,6 +21,16 @@ CGString* CGString__newFromLengthAndPreset(CGAppState* appState, unsigned int le
     } else
         CGAppState_throwException(appState, CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString"));
     return this;
+}
+CGString* CGString__newWithSprintf(CGAppState* appState, const char* fmt, ...) {
+    char mystrbuf[65536]; /* TODO pffft.... */
+    va_list args;
+    va_start(args, fmt);
+    int rv = vsprintf(mystrbuf, fmt, args);
+    if (rv < 0)
+        CGAppState_THROW(appState, Severity_fatal, CGExceptionID_GeneralFatalException, "unable to print via vsprintf (fmt '%s')", fmt);
+    va_end(args);
+    return CGString__new(appState, mystrbuf);
 }
 CGString* CGString_clone(CGAppState* appState, const CGString* this) {
     return CGString__new(appState, (const char*)this);

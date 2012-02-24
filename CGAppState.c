@@ -1,4 +1,5 @@
 #include<stdlib.h>
+#include<stdio.h>
 #include"CGLogger.h"
 #include"CGAppState.h"
 
@@ -25,6 +26,7 @@ void CGAppState_throwException(CGAppState* this, CGException* exception) {
         CGException_log(exception);
     if (exception->severity == Severity_fatal) {
         CGAppState_delete(this); /* yeah */
+        printf("ABORTING PROGRAM DUE TO FATAL EXCEPTION.\n");
         abort();
     }
 

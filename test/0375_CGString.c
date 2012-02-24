@@ -84,6 +84,15 @@ void testSubstring() {
     printf("%s ok\n", __func__);
 }
 
+void testNewWithSprintf() {
+    printf("%s...\n", __func__);
+    CGString* s = CGString__newWithSprintf(appState, "%s %i", "abcde", 20);
+    assert(!CGString__compare(appState, s, "abcde 20"));
+
+    CGString_delete(appState, s);
+    printf("%s ok\n", __func__);
+}
+
 
 
 int main() {
@@ -93,6 +102,7 @@ int main() {
 
     testNewDelete();
     testNewFromLengthAndPreset();
+    testNewWithSprintf();
     testClone();
     testToVector();
     testAppend();
