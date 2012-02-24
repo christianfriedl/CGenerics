@@ -58,7 +58,7 @@ void testManyShifts() {
 }
 
 int main() {
-    appState = CGAppState__new();
+    appState = CGAppState__new(__FILE__);
     
     testManyPushes();
     testManyShifts();

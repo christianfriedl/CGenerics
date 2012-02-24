@@ -7,7 +7,7 @@
 
 void testNewDelete() {
     printf("%s...\n", __func__);
-    CGAppState* appState = CGAppState__new();
+    CGAppState* appState = CGAppState__new(__FILE__);
     assert(appState != NULL);
     CGAppState_delete(appState);
     printf("%s ok\n", __func__);
@@ -29,7 +29,7 @@ void testExceptionNewDelete() {
 }
 void testThrowCatch() {
     printf("%s...\n", __func__);
-    CGAppState* appState = CGAppState__new();
+    CGAppState* appState = CGAppState__new(__FILE__);
     assert(CGAppState_isExceptionRaised(appState) == false);
     CGException* e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, "testing");
     CGAppState_throwException(appState, e);

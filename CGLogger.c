@@ -1,5 +1,8 @@
 #include"CGLogger.h"
 
+void CGLogger__init(const char* ident) {
+    openlog(ident, LOG_PERROR, LOG_USER);
+}
 void CGLogger__log(int priority, char* msg, ...) {
     va_list args;
     va_start(args, msg);

@@ -5,10 +5,11 @@
 #include"CGException.h"
 
 typedef struct {
+    const char* name;
     CGException *exception;
 } CGAppState;
 
-CGAppState* CGAppState__new();
+CGAppState* CGAppState__new(const char* name);
 void CGAppState_delete(CGAppState* this);
 void CGAppState_throwException(CGAppState* this, CGException* exception);
 bool CGAppState_catchAndDeleteException(CGAppState* this);

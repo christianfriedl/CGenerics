@@ -4,6 +4,7 @@
 #include<syslog.h>
 #include<stdarg.h>
 
+void CGLogger__init(const char* ident);
 void CGLogger__log(int priority, char* msg, ...);
 void CGLogger__vlog(int priority, char* msg, va_list args);
 void CGLogger__debug(char* msg, ...);

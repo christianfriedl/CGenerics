@@ -1,10 +1,14 @@
 #include<stdlib.h>
+#include"CGLogger.h"
 #include"CGAppState.h"
 
-CGAppState* CGAppState__new() {
+CGAppState* CGAppState__new(const char* name) {
     CGAppState* this = malloc(sizeof(*this));
     if (this) {
+        this->name = name;
         this->exception = NULL;
+
+        CGLogger__init(name);
     } else
         CGAppState_throwException(this, &CGGeneralFatalException);
     return this;
