@@ -39,3 +39,14 @@ void CGString_append(CGAppState* appState, CGString* this, const CGString* that)
 size_t CGString_getSize(CGAppState* appState, const CGString* this) {
     return strlen(this);
 }
+CGString* CGString_createSubstring(CGAppState* appState, const CGString* this, unsigned startIndex, unsigned length) {
+    if (startIndex > strlen(this)) {
+        CGAppState_throwException(appState, CGException__new(Severity_notice, CGExceptionID_StringError, "startIndex %u > strlen %u in createSubstring", startIndex, strlen(this)));
+        return NULL;
+    }
+    if (startIndex + length > strlen(this))
+        length = strlen(this) - startIndex;
+    CGString* newString = CGString__newFromLengthAndPreset(appState, length, '\0');
+    strncpy(newString, (this + startIndex), length);
+    return newString;
+}

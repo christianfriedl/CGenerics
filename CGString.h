@@ -14,6 +14,7 @@ char* CGString_toVector(CGAppState* appState, const CGString* this);
 int CGString__compare(CGAppState* appState, const CGString* i1, const CGString* i2);
 void CGString_append(CGAppState* appState, CGString* this, const CGString* that);
 size_t CGString_getSize(CGAppState* appState, const CGString* this);
+CGString* CGString_createSubstring(CGAppState* appState, const CGString* this, unsigned startIndex, unsigned length);
 
 
 /* TODO missing functions:

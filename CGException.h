@@ -3,8 +3,9 @@
 
 #define CGExceptionID_GeneralFatalException       (0)
 #define CGExceptionID_CannotAllocate              (1) 
-#define CGExceptionID_ArrayIndexOutOfBounds   (100) 
-#define CGExceptionID_ElementNotFound (102)
+#define CGExceptionID_ArrayIndexOutOfBounds     (100) 
+#define CGExceptionID_ElementNotFound           (102)
+#define CGExceptionID_StringError               (103)
 
 
 typedef enum { Severity_none = 0, Severity_notice = 1, Severity_warning = 2, Severity_error = 3, Severity_fatal = 4 } Severity;

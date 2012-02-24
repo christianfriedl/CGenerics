@@ -67,6 +67,23 @@ void testSize() {
     printf("%s ok\n", __func__);
 }
 
+void testSubstring() {
+    printf("%s...\n", __func__);
+    CGString* s = CGString__new(appState, "abcde");
+    CGString* s2 = CGString_createSubstring(appState, s, 1, 3);
+    assert(!CGString__compare(appState, s2, "bcd"));
+    CGString_delete(appState, s2);
+    s2 = CGString_createSubstring(appState, s, 1, 300);
+    assert(!CGString__compare(appState, s2, "bcde"));
+    CGString_delete(appState, s2);
+    s2 = CGString_createSubstring(appState, s, 10, 1);
+    assert(CGAppState_catchAndDeleteExceptionWithID(appState, CGExceptionID_StringError) == true);
+    assert(s2 == NULL);
+
+    CGString_delete(appState, s);
+    printf("%s ok\n", __func__);
+}
+
 
 
 int main() {
@@ -80,6 +97,7 @@ int main() {
     testToVector();
     testAppend();
     testSize();
+    testSubstring();
 
     CGAppState_delete(appState);
     printf("=== %s ok ===\n", __FILE__);
