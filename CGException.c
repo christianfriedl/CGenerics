@@ -13,10 +13,13 @@ CGException* CGException__new(const Severity severity, const int id, const char*
     if (this != NULL) {
         this->severity = severity;
         this->id = id;
-        va_list args;
-        va_start(args, msg);
-        vasprintf(&this->msg, msg, args);
-        va_end(args);
+        if (msg != NULL) {
+            va_list args;
+            va_start(args, msg);
+            vasprintf(&this->msg, msg, args);
+            va_end(args);
+        } else
+            this->msg = NULL;
     } else {
         CGLogger__error("Cannot allocate exception, aborting.");
         abort();
@@ -54,5 +57,8 @@ int CGException_getId(const CGException* this) {
     return this->id;
 }
 char *CGException_getMsg(const CGException* this) {
-    return strdup(this->msg);
+    if (this->msg != NULL)
+        return strdup(this->msg);
+    else
+        return NULL;
 }

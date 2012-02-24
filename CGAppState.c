@@ -21,7 +21,8 @@ void CGAppState_delete(CGAppState* this) {
 }
 
 void CGAppState_throwException(CGAppState* this, CGException* exception) {
-    CGException_log(exception);
+    if (CGException_getMsg(exception) != NULL)
+        CGException_log(exception);
     if (exception->severity == Severity_fatal) {
         CGAppState_delete(this); /* yeah */
         abort();

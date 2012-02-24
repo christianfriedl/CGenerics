@@ -25,6 +25,10 @@ void testExceptionNewDelete() {
     free(msg);
     CGException_delete(e);
 
+    e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, NULL);
+    assert(CGException_getMsg(e) == NULL);
+    CGException_delete(e);
+
     printf("%s ok\n", __func__);
 }
 void testThrowCatch() {
@@ -55,6 +59,26 @@ void testThrowCatch() {
     CGAppState_delete(appState);
     printf("%s ok\n", __func__);
 }
+void testThrowCatchNoMsg() {
+    printf("%s...\n", __func__);
+    CGAppState* appState = CGAppState__new(__FILE__);
+
+    assert(CGAppState_isExceptionRaised(appState) == false);
+    CGException* e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, NULL);
+    CGAppState_throwException(appState, e);
+    assert(CGAppState_isExceptionRaised(appState) == true);
+    assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_CannotAllocate) == false);
+    assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_GeneralFatalException) == true);
+    assert(CGAppState_getException(appState) == e);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_CannotAllocate) == NULL);
+    assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_GeneralFatalException) == true);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == e);
+    assert(CGAppState_catchExceptionWithID(appState, CGExceptionID_GeneralFatalException) == NULL);
+    CGException_delete(e);
+
+    CGAppState_delete(appState);
+    printf("%s ok\n", __func__);
+}
 
 
 int main() {
@@ -63,6 +87,7 @@ int main() {
     testNewDelete();
     testExceptionNewDelete();
     testThrowCatch();
+    testThrowCatchNoMsg();
 
     printf("=== %s ok ===\n", __FILE__);
     return 0;
