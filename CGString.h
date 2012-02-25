@@ -6,16 +6,16 @@
 
 typedef char CGString;
 
-CGString* CGString__new(CGAppState* appState, const char* value);
-CGString* CGString__newFromLengthAndPreset(CGAppState* appState, unsigned int length, const char preset);
-CGString* CGString__newWithSprintf(CGAppState* appState, const char* fmt, ...);
-CGString* CGString_clone(CGAppState* appState, const CGString* this);
-void CGString_delete(CGAppState* appState, CGString* this);
-char* CGString_toVector(CGAppState* appState, const CGString* this);
-int CGString__compare(CGAppState* appState, const CGString* i1, const CGString* i2);
-void CGString_append(CGAppState* appState, CGString* this, const CGString* that);
-size_t CGString_getSize(CGAppState* appState, const CGString* this);
-CGString* CGString_createSubstring(CGAppState* appState, const CGString* this, unsigned startIndex, unsigned length);
+CGString* CGString__new(const char* value);
+CGString* CGString__newFromLengthAndPreset(unsigned int length, const char preset);
+CGString* CGString__newWithSprintf(const char* fmt, ...);
+CGString* CGString_clone(const CGString* this);
+void CGString_delete(CGString* this);
+char* CGString_toVector(const CGString* this);
+int CGString__compare(const CGString* i1, const CGString* i2);
+void CGString_append(CGString* this, const CGString* that);
+size_t CGString_getSize(const CGString* this);
+CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, unsigned length);
 
 
 /* TODO missing functions:

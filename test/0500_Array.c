@@ -19,16 +19,16 @@ Int* Int__new(int value) {
     *this = value;
     return this;
 }
-Int* Int_clone(CGAppState* appState, Int* this) {
+Int* Int_clone(Int* this) {
     return Int__new(*this);
 }
-void Int_delete(CGAppState* appState, int* this) {
+void Int_delete(int* this) {
     free(this);
 }
-Person* Person_clone(CGAppState* appState, Person* this) {
+Person* Person_clone(Person* this) {
     return NULL; /* stub, unneeded */
 }
-void Person_delete(CGAppState* appState, Person* this) {
+void Person_delete(Person* this) {
     free(this);
 }
 
@@ -41,20 +41,20 @@ CGAppState *appState;
 
 void printCGArray(CGArray(Int)* array) {
     unsigned i;
-    for (i = 0; i < CGArray_getSize(appState, Int, array); ++i)
-        printf("%i ", *(CGArray_getValueAt(appState, Int, array, i)));
+    for (i = 0; i < CGArray_getSize(Int, array); ++i)
+        printf("%i ", *(CGArray_getValueAt(Int, array, i)));
     printf("\n");
 }
 void testNewDelete() {
     printf("%s...\n", __func__);
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 20);
-    CGArray(Person)* personCGArray = CGArray__new(appState, Person, 20);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 20);
+    CGArray(Person)* personCGArray = CGArray__new(Person, 20);
 
-    CGArray_deleteValues(appState, Int, intCGArray);
-    CGArray_delete(appState, Int, intCGArray);
-    CGArray_deleteValues(appState, Person, personCGArray);
-    CGArray_delete(appState, Person, personCGArray);
+    CGArray_deleteValues(Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
+    CGArray_deleteValues(Person, personCGArray);
+    CGArray_delete(Person, personCGArray);
     
     printf("ok\n");
 }
@@ -64,23 +64,23 @@ void testNewFromInitializerList() {
 
     Int* i1 = Int__new(1);
     Int* i2 = Int__new(2);
-    CGArray(Int)* intCGArray = CGArray__newFromInitializerList(appState, Int, i1, NULL);
+    CGArray(Int)* intCGArray = CGArray__newFromInitializerList(Int, i1, NULL);
     assert(intCGArray != NULL);
-    assert(CGArray_getValueAt(appState, Int, intCGArray, 0) == i1);
-    assert(CGArray_getSize(appState, Int, intCGArray) == 1);
-    assert(CGArray_getCapacity(appState, Int, intCGArray) >= 1);
-    CGArray_delete(appState, Int, intCGArray);
+    assert(CGArray_getValueAt(Int, intCGArray, 0) == i1);
+    assert(CGArray_getSize(Int, intCGArray) == 1);
+    assert(CGArray_getCapacity(Int, intCGArray) >= 1);
+    CGArray_delete(Int, intCGArray);
     assert(!CGAppState_isExceptionRaised(appState));
 
-    CGArray(Int)* intCGArray2 = CGArray__newFromInitializerList(appState, Int, i1, i2, NULL);
+    CGArray(Int)* intCGArray2 = CGArray__newFromInitializerList(Int, i1, i2, NULL);
     assert(intCGArray2 != NULL);
-    assert(CGArray_getValueAt(appState, Int, intCGArray2, 0) == i1);
-    assert(CGArray_getValueAt(appState, Int, intCGArray2, 1) == i2);
-    assert(CGArray_getSize(appState, Int, intCGArray2) == 2);
-    assert(CGArray_getCapacity(appState, Int, intCGArray2) >= 2);
-    CGArray_delete(appState, Int, intCGArray2);
-    Int_delete(appState, i1);
-    Int_delete(appState, i2);
+    assert(CGArray_getValueAt(Int, intCGArray2, 0) == i1);
+    assert(CGArray_getValueAt(Int, intCGArray2, 1) == i2);
+    assert(CGArray_getSize(Int, intCGArray2) == 2);
+    assert(CGArray_getCapacity(Int, intCGArray2) >= 2);
+    CGArray_delete(Int, intCGArray2);
+    Int_delete(i1);
+    Int_delete(i2);
     assert(!CGAppState_isExceptionRaised(appState));
     
     printf("ok\n");
@@ -89,113 +89,113 @@ void testNewFromInitializerList() {
 void testClone() {
     printf("%s...\n", __func__);
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 20);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
     srandom(time(NULL));
     for (i=0; i < 20; ++i) {
         Int* x = Int__new(i);
-        CGArray_push(appState, Int, intCGArray, x);
+        CGArray_push(Int, intCGArray, x);
     }
-    CGArray(Int)* clonedCGArray = CGArray_clone(appState, Int, intCGArray);
+    CGArray(Int)* clonedCGArray = CGArray_clone(Int, intCGArray);
     assert(clonedCGArray != NULL);
     assert(CGAppState_isExceptionRaised(appState) == false);
-    assert(CGArray_getSize(appState, Int, clonedCGArray) == CGArray_getSize(appState, Int, intCGArray));
-    assert(CGArray_getCapacity(appState, Int, clonedCGArray) == CGArray_getCapacity(appState, Int, intCGArray));
+    assert(CGArray_getSize(Int, clonedCGArray) == CGArray_getSize(Int, intCGArray));
+    assert(CGArray_getCapacity(Int, clonedCGArray) == CGArray_getCapacity(Int, intCGArray));
     for (i=0; i < 20; ++i) {
-        assert(*(CGArray_getValueAt(appState, Int, clonedCGArray, i)) == *(CGArray_getValueAt(appState, Int, intCGArray, i)));
+        assert(*(CGArray_getValueAt(Int, clonedCGArray, i)) == *(CGArray_getValueAt(Int, intCGArray, i)));
     }
 
-    CGArray_deleteValues(appState, Int, clonedCGArray);
-    CGArray_delete(appState, Int, clonedCGArray);
-    CGArray_deleteValues(appState, Int, intCGArray);
-    CGArray_delete(appState, Int, intCGArray);
+    CGArray_deleteValues(Int, clonedCGArray);
+    CGArray_delete(Int, clonedCGArray);
+    CGArray_deleteValues(Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
 
     printf("ok\n");
 }
 void testIntCGArray() {
     printf("%s...\n", __func__);
     Int *x;
-    CGArray(Int)* array = CGArray__new(appState, Int, 20);
+    CGArray(Int)* array = CGArray__new(Int, 20);
 
-    assert(CGArray_getCapacity(appState, Int, array) == 32);
-    assert(CGArray_getSize(appState, Int, array) == 0);
+    assert(CGArray_getCapacity(Int, array) == 32);
+    assert(CGArray_getSize(Int, array) == 0);
 
     x = Int__new(2);
-    CGArray_add(appState, Int, array, x);
+    CGArray_add(Int, array, x);
     x = Int__new(3);
-    CGArray_add(appState, Int, array, x);
+    CGArray_add(Int, array, x);
     x = Int__new(4);
-    CGArray_push(appState, Int, array, x);
+    CGArray_push(Int, array, x);
 
-    assert(CGArray_getSize(appState, Int, array) == 3);
+    assert(CGArray_getSize(Int, array) == 3);
 
-    x = CGArray_shift(appState, Int, array);
+    x = CGArray_shift(Int, array);
     assert(*x == 2);
-    assert(*(CGArray_getValueAt(appState, Int, array, 0)) == 3);
-    assert(*(CGArray_getValueAt(appState, Int, array, 1)) == 4);
+    assert(*(CGArray_getValueAt(Int, array, 0)) == 3);
+    assert(*(CGArray_getValueAt(Int, array, 1)) == 4);
 
-    assert(CGArray_getSize(appState, Int, array) == 2);
+    assert(CGArray_getSize(Int, array) == 2);
 
     x = Int__new(2);
-    CGArray_unshift(appState, Int, array, x);
+    CGArray_unshift(Int, array, x);
 
-    x = CGArray_getValueAt(appState, Int, array, 0);
+    x = CGArray_getValueAt(Int, array, 0);
     assert(*x == 2);
-    x = CGArray_getValueAt(appState, Int, array, 1);
+    x = CGArray_getValueAt(Int, array, 1);
     assert(*x == 3);
-    x = CGArray_getValueAt(appState, Int, array, 2);
+    x = CGArray_getValueAt(Int, array, 2);
     assert(*x == 4);
 
     x = Int__new(2);
-    CGArray_insertValueAt(appState, Int, array, x, 0);
-    assert(CGArray_getSize(appState, Int, array) == 4);
-    assert(*(CGArray_getValueAt(appState, Int, array, 0)) == 2);
-    assert(*(CGArray_getValueAt(appState, Int, array, 1)) == 2);
-    assert(*(CGArray_getValueAt(appState, Int, array, 2)) == 3);
-    assert(*(CGArray_getValueAt(appState, Int, array, 3)) == 4);
-    CGArray_removeValueAt(appState, Int, array, 0);
-    assert(CGArray_getSize(appState, Int, array) == 3);
+    CGArray_insertValueAt(Int, array, x, 0);
+    assert(CGArray_getSize(Int, array) == 4);
+    assert(*(CGArray_getValueAt(Int, array, 0)) == 2);
+    assert(*(CGArray_getValueAt(Int, array, 1)) == 2);
+    assert(*(CGArray_getValueAt(Int, array, 2)) == 3);
+    assert(*(CGArray_getValueAt(Int, array, 3)) == 4);
+    CGArray_removeValueAt(Int, array, 0);
+    assert(CGArray_getSize(Int, array) == 3);
     x = Int__new(3);
-    CGArray_insertValueAt(appState, Int, array, x, 1);
-    assert(CGArray_getSize(appState, Int, array) == 4);
-    assert(*CGArray_getValueAt(appState, Int, array, 0) == 2);
-    assert(*CGArray_getValueAt(appState, Int, array, 1) == 3);
-    assert(*CGArray_getValueAt(appState, Int, array, 2) == 3);
-    assert(*CGArray_getValueAt(appState, Int, array, 3) == 4);
-    CGArray_removeValueAt(appState, Int, array, 1);
-    assert(CGArray_getSize(appState, Int, array) == 3);
+    CGArray_insertValueAt(Int, array, x, 1);
+    assert(CGArray_getSize(Int, array) == 4);
+    assert(*CGArray_getValueAt(Int, array, 0) == 2);
+    assert(*CGArray_getValueAt(Int, array, 1) == 3);
+    assert(*CGArray_getValueAt(Int, array, 2) == 3);
+    assert(*CGArray_getValueAt(Int, array, 3) == 4);
+    CGArray_removeValueAt(Int, array, 1);
+    assert(CGArray_getSize(Int, array) == 3);
     x = Int__new(4);
-    CGArray_insertValueAt(appState, Int, array, x, 2);
-    assert(CGArray_getSize(appState, Int, array) == 4);
-    assert(*CGArray_getValueAt(appState, Int, array, 0) == 2);
-    assert(*CGArray_getValueAt(appState, Int, array, 1) == 3);
-    assert(*CGArray_getValueAt(appState, Int, array, 2) == 4);
-    assert(*CGArray_getValueAt(appState, Int, array, 3) == 4);
-    CGArray_removeValueAt(appState, Int, array, 2);
-    assert(CGArray_getSize(appState, Int, array) == 3);
+    CGArray_insertValueAt(Int, array, x, 2);
+    assert(CGArray_getSize(Int, array) == 4);
+    assert(*CGArray_getValueAt(Int, array, 0) == 2);
+    assert(*CGArray_getValueAt(Int, array, 1) == 3);
+    assert(*CGArray_getValueAt(Int, array, 2) == 4);
+    assert(*CGArray_getValueAt(Int, array, 3) == 4);
+    CGArray_removeValueAt(Int, array, 2);
+    assert(CGArray_getSize(Int, array) == 3);
     x = Int__new(5);
-    CGArray_insertValueAt(appState, Int, array, x, 3);
-    assert(CGArray_getSize(appState, Int, array) == 4);
-    assert(*CGArray_getValueAt(appState, Int, array, 0) == 2);
-    assert(*CGArray_getValueAt(appState, Int, array, 1) == 3);
-    assert(*CGArray_getValueAt(appState, Int, array, 2) == 4);
-    assert(*CGArray_getValueAt(appState, Int, array, 3) == 5);
-    CGArray_removeValueAt(appState, Int, array, 3);
-    assert(CGArray_getSize(appState, Int, array) == 3);
-    assert(*CGArray_getValueAt(appState, Int, array, 0) == 2);
-    assert(*CGArray_getValueAt(appState, Int, array, 1) == 3);
-    assert(*CGArray_getValueAt(appState, Int, array, 2) == 4);
+    CGArray_insertValueAt(Int, array, x, 3);
+    assert(CGArray_getSize(Int, array) == 4);
+    assert(*CGArray_getValueAt(Int, array, 0) == 2);
+    assert(*CGArray_getValueAt(Int, array, 1) == 3);
+    assert(*CGArray_getValueAt(Int, array, 2) == 4);
+    assert(*CGArray_getValueAt(Int, array, 3) == 5);
+    CGArray_removeValueAt(Int, array, 3);
+    assert(CGArray_getSize(Int, array) == 3);
+    assert(*CGArray_getValueAt(Int, array, 0) == 2);
+    assert(*CGArray_getValueAt(Int, array, 1) == 3);
+    assert(*CGArray_getValueAt(Int, array, 2) == 4);
 
-    x = CGArray_pop(appState, Int, array);
+    x = CGArray_pop(Int, array);
     assert(*x == 4);
-    x = CGArray_pop(appState, Int, array);
+    x = CGArray_pop(Int, array);
     assert(*x == 3);
-    x = CGArray_pop(appState, Int, array);
+    x = CGArray_pop(Int, array);
     assert(*x == 2);
 
-    assert(CGArray_getSize(appState, Int, array) == 0);
+    assert(CGArray_getSize(Int, array) == 0);
 
-    CGArray_delete(appState, Int, array);
+    CGArray_delete(Int, array);
 
     printf("ok\n");
 }
@@ -203,23 +203,23 @@ void testPersonCGArray() {
     printf("%s...\n", __func__);
     Person* x = malloc(sizeof(*x));
     Person* y = malloc(sizeof(*y));
-    CGArray(Person)* array = CGArray__new(appState, Person, 20);
+    CGArray(Person)* array = CGArray__new(Person, 20);
     strcpy(x->first_name, "Christian");
     strcpy(x->last_name, "Friedl");
-    CGArray_push(appState, Person, array, x);
-    y = CGArray_getValueAt(appState, Person, array, 0);
+    CGArray_push(Person, array, x);
+    y = CGArray_getValueAt(Person, array, 0);
     assert(!strcmp(y->first_name, x->first_name));
     assert(!strcmp(y->last_name, x->last_name));
     x = malloc(sizeof(*x));
     strcpy(x->first_name, "Cornelia");
     strcpy(x->last_name, "Nalepka");
-    CGArray_push(appState, Person, array, x);
-    y = CGArray_getValueAt(appState, Person, array, 1);
+    CGArray_push(Person, array, x);
+    y = CGArray_getValueAt(Person, array, 1);
     assert(!strcmp(y->first_name, x->first_name));
     assert(!strcmp(y->last_name, x->last_name));
 
-    CGArray_deleteValues(appState, Person, array);
-    CGArray_delete(appState, Person, array);
+    CGArray_deleteValues(Person, array);
+    CGArray_delete(Person, array);
 
     printf("ok\n");
 }
@@ -227,15 +227,15 @@ void testPersonCGArray() {
 void testCGArrayGrow() {
     printf("%s...\n", __func__);
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 1);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 1);
 
     Int *x = Int__new(20);
-    CGArray_insertValueAt(appState, Int, intCGArray, x, 20);
-    assert(*CGArray_getValueAt(appState, Int, intCGArray, 20) == 20);
-    assert(CGArray_getCapacity(appState, Int, intCGArray) >= 21);
-    assert(CGArray_getSize(appState, Int, intCGArray) == 21);
+    CGArray_insertValueAt(Int, intCGArray, x, 20);
+    assert(*CGArray_getValueAt(Int, intCGArray, 20) == 20);
+    assert(CGArray_getCapacity(Int, intCGArray) >= 21);
+    assert(CGArray_getSize(Int, intCGArray) == 21);
 
-    CGArray_delete(appState, Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
 
     free(x);
     printf("ok\n");
@@ -246,21 +246,21 @@ void testCGExceptions() {
     
     CGException* e = NULL;
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 1);
-    CGArray_removeValueAt(appState, Int, intCGArray, 1);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 1);
+    CGArray_removeValueAt(Int, intCGArray, 1);
     assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_ArrayIndexOutOfBounds));
     CGAppState_catchAndDeleteException(appState);
-    CGArray_pop(appState, Int, intCGArray);
+    CGArray_pop(Int, intCGArray);
     assert(CGAppState_isExceptionRaised(appState));
     CGAppState_catchAndDeleteException(appState);
-    CGArray_shift(appState, Int, intCGArray);
+    CGArray_shift(Int, intCGArray);
     assert(CGAppState_isExceptionRaised(appState));
     CGAppState_catchAndDeleteException(appState);
-    CGArray_getValueAt(appState, Int, intCGArray, 20);
+    CGArray_getValueAt(Int, intCGArray, 20);
     assert(CGAppState_isExceptionRaised(appState));
     CGAppState_catchAndDeleteException(appState);
 
-    CGArray_delete(appState, Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
 
     printf("ok\n");
 }
@@ -275,22 +275,22 @@ int intComparisonReversed(const Int **i1, const Int **i2) {
 void testSorting() {
     printf("%s...\n", __func__);
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 20);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
     srandom(time(NULL));
     for (i=0; i < 20; ++i) {
         Int *x = Int__new(random() % 65536);
-        CGArray_push(appState, Int, intCGArray, x);
+        CGArray_push(Int, intCGArray, x);
     }
-    CGArray_qsort(appState, Int, intCGArray, intComparison);
+    CGArray_qsort(Int, intCGArray, intComparison);
     for (i=0; i < 19; ++i)
-        assert(*CGArray_getValueAt(appState, Int, intCGArray, i) <= *CGArray_getValueAt(appState, Int, intCGArray, i+1));
-    CGArray_qsort(appState, Int, intCGArray, intComparisonReversed);
+        assert(*CGArray_getValueAt(Int, intCGArray, i) <= *CGArray_getValueAt(Int, intCGArray, i+1));
+    CGArray_qsort(Int, intCGArray, intComparisonReversed);
     for (i=0; i < 19; ++i)
-        assert(*CGArray_getValueAt(appState, Int, intCGArray, i) >= *CGArray_getValueAt(appState, Int, intCGArray, i+1));
+        assert(*CGArray_getValueAt(Int, intCGArray, i) >= *CGArray_getValueAt(Int, intCGArray, i+1));
 
-    CGArray_deleteValues(appState, Int, intCGArray);
-    CGArray_delete(appState, Int, intCGArray);
+    CGArray_deleteValues(Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
 
     printf("ok\n");
 }
@@ -298,26 +298,26 @@ void testSorting() {
 void testFindIndex() {
     printf("%s...\n", __func__);
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 20);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
     srandom(time(NULL));
     for (i=0; i < 20; ++i) {
         Int* x = Int__new(i);
-        CGArray_push(appState, Int, intCGArray, x);
+        CGArray_push(Int, intCGArray, x);
     }
 
     Int *x = Int__new(2);
-    i = CGArray_findIndex(appState, Int, intCGArray, (const Int*)x, intComparison);
+    i = CGArray_findIndex(Int, intCGArray, (const Int*)x, intComparison);
     assert(i == 2);
     x = Int__new(20);
-    i = CGArray_findIndex(appState, Int, intCGArray, (const Int*)x, intComparison);
+    i = CGArray_findIndex(Int, intCGArray, (const Int*)x, intComparison);
     assert(i == 0);
     CGException* e = CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound);
     assert(e != NULL);
     CGException_delete(e);
 
-    CGArray_deleteValues(appState, Int, intCGArray);
-    CGArray_delete(appState, Int, intCGArray);
+    CGArray_deleteValues(Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
 
     printf("ok\n");
 }
@@ -325,73 +325,74 @@ void testFindIndex() {
 void testFind() {
     printf("%s...\n", __func__);
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 20);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
     srandom(time(NULL));
     for (i=0; i < 20; ++i) {
         Int* x = Int__new(i);
-        CGArray_push(appState, Int, intCGArray, x);
+        CGArray_push(Int, intCGArray, x);
     }
 
     Int *x = Int__new(2);
-    Int *y = CGArray_find(appState, Int, intCGArray, (const Int*)x, intComparison);
+    Int *y = CGArray_find(Int, intCGArray, (const Int*)x, intComparison);
     assert(*y == *x);
     x = Int__new(20);
-    y = CGArray_find(appState, Int, intCGArray, (const Int*)x, intComparison);
+    y = CGArray_find(Int, intCGArray, (const Int*)x, intComparison);
     assert(y == NULL);
     CGException* e = CGAppState_catchExceptionWithID(appState, CGExceptionID_ElementNotFound);
     assert(e != NULL);
     CGException_delete(e);
 
-    CGArray_deleteValues(appState, Int, intCGArray);
-    CGArray_delete(appState, Int, intCGArray);
+    CGArray_deleteValues(Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
 
     printf("ok\n");
 }
 
-void addOne(CGAppState* appState, Int* x) {
+void addOne(Int* x) {
     *x += 1;
 }
-void printInt(CGAppState* appState, const Int* x) {
+void printInt(const Int* x) {
     printf("%i ", *x);
 }
 static int globalIndex;
 static bool globalOk;
-static void intIsEqualToIndex(CGAppState* appState, const Int* x) {
+static void intIsEqualToIndex(const Int* x) {
     globalOk &= (*x == globalIndex);
     globalIndex++;
 }
 void testMap() {
     printf("%s...\n", __func__);
 
-    CGArray(Int)* intCGArray = CGArray__new(appState, Int, 20);
+    CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
     srandom(time(NULL));
     for (i=0; i < 20; ++i) {
         Int* x = Int__new(i);
-        CGArray_push(appState, Int, intCGArray, x);
+        CGArray_push(Int, intCGArray, x);
     }
-    CGArray(Int)* mappedCGArray = CGArray_map(appState, Int, intCGArray, addOne);
+    CGArray(Int)* mappedCGArray = CGArray_map(Int, intCGArray, addOne);
 
     globalOk = true;
     globalIndex = 0;
-    CGArray_mapConstant(appState, Int, intCGArray, intIsEqualToIndex);
+    CGArray_mapConstant(Int, intCGArray, intIsEqualToIndex);
     assert(globalOk);
 
     globalOk = true;
     globalIndex = 1;
-    CGArray_mapConstant(appState, Int, mappedCGArray, intIsEqualToIndex);
+    CGArray_mapConstant(Int, mappedCGArray, intIsEqualToIndex);
     assert(globalOk);
 
-    CGArray_deleteValues(appState, Int, intCGArray);
-    CGArray_delete(appState, Int, intCGArray);
+    CGArray_deleteValues(Int, intCGArray);
+    CGArray_delete(Int, intCGArray);
 
     printf("ok\n");
 }
 
 int main() {
     printf("=== %s ===\n", __FILE__);
-    appState = CGAppState__new(__FILE__);
+    CGAppState__init(__FILE__);
+    appState = CGAppState__getInstance();
     testNewDelete();
     testNewFromInitializerList();
     testClone();
@@ -403,7 +404,7 @@ int main() {
     testFindIndex();
     testFind();
     testMap();
-    CGAppState_delete(appState);
+    CGAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

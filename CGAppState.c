@@ -3,19 +3,42 @@
 #include"CGLogger.h"
 #include"CGAppState.h"
 
-CGAppState* CGAppState__new(const char* name) {
+static CGAppState* CGAppState__instance = NULL;
+static CGAppState* CGAppState__new_(const char* name);
+static void CGAppState_delete_(CGAppState* this);
+
+void CGAppState__init(const char* name) {
+    CGAppState__instance = CGAppState__new_(name);
+}
+
+void CGAppState__deInit() {
+    if (CGAppState__instance != NULL)
+        CGAppState_delete_(CGAppState__instance);
+}
+
+CGAppState* CGAppState__getInstance() {
+    if (CGAppState__instance == NULL) {
+        printf("CGAppState has to be initialized via CGAppState__init(). ABORTING PROGRAM DUE TO FATAL EXCEPTION.\n");
+        abort();
+    } else
+        return CGAppState__instance;
+}
+
+static CGAppState* CGAppState__new_(const char* name) {
     CGAppState* this = malloc(sizeof(*this));
     if (this) {
         this->name = name;
         this->exception = NULL;
 
         CGLogger__init(name);
-    } else
-        CGAppState_throwException(this, &CGGeneralFatalException);
+    } else {
+        printf("Unable to initialize CGAppState. ABORTING PROGRAM DUE TO FATAL EXCEPTION.\n");
+        abort();
+    }
     return this;
 }
 
-void CGAppState_delete(CGAppState* this) {
+static void CGAppState_delete_(CGAppState* this) {
     if (this->exception != NULL)
         CGException_delete(this->exception);
     free(this);
@@ -25,7 +48,7 @@ void CGAppState_throwException(CGAppState* this, CGException* exception) {
     if (CGException_getMsg(exception) != NULL)
         CGException_log(exception);
     if (exception->severity == Severity_fatal) {
-        CGAppState_delete(this); /* yeah */
+        CGAppState_delete_(this); /* yeah */
         printf("ABORTING PROGRAM DUE TO FATAL EXCEPTION.\n");
         abort();
     }

@@ -10,27 +10,27 @@ CGAppState* appState;
 
 void testNewDelete() {
     printf("%s...\n", __func__);
-    CGInteger* i = CGInteger__new(appState, 1);
+    CGInteger* i = CGInteger__new(1);
     assert(i != NULL);
     assert(*i == 1);
-    CGInteger_delete(appState, i);
+    CGInteger_delete(i);
     printf("%s ok\n", __func__);
 }
 void testToInt() {
     printf("%s...\n", __func__);
-    CGInteger* i = CGInteger__new(appState, 1);
-    assert(CGInteger_toInt(appState, i) == 1);
-    CGInteger_delete(appState, i);
+    CGInteger* i = CGInteger__new(1);
+    assert(CGInteger_toInt(i) == 1);
+    CGInteger_delete(i);
     printf("%s ok\n", __func__);
 }
 
 void testClone() {
     printf("%s...\n", __func__);
-    CGInteger* i = CGInteger__new(appState, 1);
-    CGInteger* i2 = CGInteger_clone(appState, i);
+    CGInteger* i = CGInteger__new(1);
+    CGInteger* i2 = CGInteger_clone(i);
     assert(i2 != NULL);
-    assert(CGInteger_toInt(appState, i2) == 1);
-    CGInteger_delete(appState, i);
+    assert(CGInteger_toInt(i2) == 1);
+    CGInteger_delete(i);
     printf("%s ok\n", __func__);
 }
 
@@ -38,13 +38,14 @@ void testClone() {
 int main() {
     printf("=== %s ===\n", __FILE__);
 
-    appState = CGAppState__new(__FILE__);
+    CGAppState__init(__FILE__);
+    appState = CGAppState__getInstance();
 
     testNewDelete();
     testClone();
     testToInt();
 
-    CGAppState_delete(appState);
+    CGAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }
