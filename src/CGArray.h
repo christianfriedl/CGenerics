@@ -1,12 +1,15 @@
 #ifndef _CGARRAY_H
 #define _CGARRAY_H
 
+/* NOMAKEMAN */
+
 #include<stdlib.h>
 #include<string.h>
 #include<stdarg.h>
 #include"CGAppState.h"
 
 #define MAX_GROWTH_COUNT 65536
+
 
 /** 
     calculate the needed element count from the current given count, the requested count, and the maximum size to grow per iteration
@@ -279,12 +282,14 @@ void CGArrayOf##TYPENAME##_mapConstant(CGArrayOf##TYPENAME* this, void (*mapFunc
     DEFINE_ARRAY(TYPENAME)
 
 
+/* MAKEMAN */
 /* type definition */
 
 #define CGArray(TYPENAME) CGArrayOf##TYPENAME
 
 
 /* callers */
+
 
 #define CGArray__new(TYPENAME, initialCapacity) CGArrayOf##TYPENAME##__new((initialCapacity))
 #define CGArray__newFromInitializerList(TYPENAME, ...) CGArrayOf##TYPENAME##__newFromInitializerList(__VA_ARGS__)

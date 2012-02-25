@@ -17,8 +17,9 @@ STATIC_LIBRARY=libcgenerics.a
 PREFIX=/usr
 INSTALLHEADERS=${PREFIX}/include/cgenerics
 INSTALLLIB=${PREFIX}/lib
+INSTALLMAN=${PREFIX}/share/man/man3
 
-clean-tests: clean tests test
+all-tests: tests manpages test
 
 necessary-tests: tests test
 
@@ -54,7 +55,13 @@ clean:
 test:
 	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then echo "ERROR..."; exit 1; fi; done
 
+manpages:
+	rm -f ../doc/man/*.3
+	for i in *.h; do o=`basename $$i .h`; ../makeman.pl $$i ../doc/man/; done
+	gzip -f ../doc/man/*.3
+
 install:
 	if [ ! -d ${INSTALLHEADERS} ]; then mkdir -p ${INSTALLHEADERS}; fi
 	cp $(HEADERS) ${INSTALLHEADERS}
 	cp $(STATIC_LIBRARY) $(INSTALLLIB)
+	cp ../doc/man/*.3.gz $(INSTALLMAN)/

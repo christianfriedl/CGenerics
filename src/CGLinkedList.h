@@ -1,6 +1,8 @@
 #ifndef _CGLINKEDLIST_H
 #define _CGLINKEDLIST_H
 
+/* NOMAKEMAN */
+
 #include<stdlib.h>
 #include<string.h>
 #include"CGenerics.h"
@@ -133,6 +135,7 @@ TYPENAME* CGLinkedListOf##TYPENAME##_findValue(CGLinkedListOf##TYPENAME* this, c
 } \
 \
 
+/* MAKEMAN */
 /* type definition */
 
 #define CGLinkedListElement(TYPENAME) CGLinkedListElementOf##TYPENAME

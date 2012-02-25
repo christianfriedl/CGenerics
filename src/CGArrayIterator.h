@@ -1,6 +1,8 @@
 #ifndef _CGARRAY_ITERATOR_H
 #define _CGARRAY_ITERATOR_H
 
+/* NOMAKEMAN */
+
 #include"CGArray.h"
 
 #define DECLARE_ARRAY_ITERATOR_TYPE(TYPENAME) \
@@ -89,6 +91,8 @@ void CGArrayOf##TYPENAME##Iterator_reset(CGArrayOf##TYPENAME##Iterator* this) { 
 
 
 /* type definition */
+
+/* MAKEMAN */
 
 #define CGArrayIterator(TYPENAME) CGArrayOf##TYPENAME##Iterator
 
