@@ -22,7 +22,6 @@
         TYPENAME* value; \
         CGArrayOfCGTreeOf##TYPENAME* subTrees; \
     }; \
-    DECLARE_ARRAY_TYPE(CGTreeOf##TYPENAME) \
     DECLARE_ARRAY_ITERATOR_TYPE(CGTreeOf##TYPENAME) \
 
 #define DECLARE_TREE_FUNCS(TYPENAME) \
