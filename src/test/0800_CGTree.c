@@ -88,6 +88,7 @@ void testSubTrees() {
     assert(CGTree_getSubTreeAt(Int, root, 1) == subRight);
     CGArray(CGTreeOfInt)* array = CGTree_getSubTrees(Int, root);
     assert(CGArray_getSize(CGTreeOfInt, array) == 2);
+    assert(CGTree_getSubTreeSize(Int, root) == 2);
     CGTree(Int)* testSubLeft = CGArray_getValueAt(CGTreeOfInt, CGTree_getSubTrees(Int, root), 0);
     CGTree(Int)* testSubRight = CGArray_getValueAt(CGTreeOfInt, CGTree_getSubTrees(Int, root), 1);
     assert(testSubLeft == subLeft);

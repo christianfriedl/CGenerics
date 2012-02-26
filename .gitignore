@@ -4,11 +4,15 @@ Makefile.local
 *.e
 *.e.c
 .*.sw?
+*.i
+*.s
 src/test/0125_AppState
 src/test/0250_Integer
+src/test/0375_CGString
 src/test/0500_Array
 src/test/0501_ArrayPerformance
 src/test/0510_ArrayIterator
 src/test/0750_LinkedList
-src/test/0375_CGString
+src/test/0800_CGTree
+src/test/0810_CGTreeIterator
 doc/

@@ -10,7 +10,7 @@ WARNINGS = $(NORMAL_WARNINGS)
 CFLAGS=-ggdb $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
-HEADERS=CGAppState.h CGArray.h CGException.h CGInteger.h CGLinkedList.h CGLogger.h CGString.h CGenerics.h CGArrayIterator.h
+HEADERS=CGAppState.h CGArray.h CGException.h CGInteger.h CGLinkedList.h CGLogger.h CGString.h CGenerics.h CGArrayIterator.h CGTree.h
 LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o
 STATIC_LIBRARY=libcgenerics.a
 
@@ -48,7 +48,7 @@ $(STATIC_LIBRARY): $(LIB_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ -c $?
 
 clean:
-	rm -f *.o $(TEST_BINARIES) $(STATIC_LIBRARY)
+	rm -f *.o $(TEST_BINARIES) $(STATIC_LIBRARY) *.i *.s *.e.c *.BAK
 	(cd test; make clean)
 
 .PHONY: test
