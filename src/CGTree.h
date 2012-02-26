@@ -15,95 +15,93 @@
 /* declarations */
 
 #define DECLARE_TREE_TYPE(TYPENAME) \
-struct CGTreeOf##TYPENAME##_struct; \
-typedef struct CGTreeOf##TYPENAME##_struct CGTreeOf##TYPENAME; \
-DECLARE_ARRAY_TYPE(CGTreeOf##TYPENAME) \
-struct CGTreeOf##TYPENAME##_struct { \
-    TYPENAME* value; \
-    CGArrayOfCGTreeOf##TYPENAME* subTrees; \
-}; \
-DECLARE_ARRAY_ITERATOR_TYPE(CGTreeOf##TYPENAME) \
+    struct CGTreeOf##TYPENAME##_struct; \
+    typedef struct CGTreeOf##TYPENAME##_struct CGTreeOf##TYPENAME; \
+    DECLARE_ARRAY_TYPE(CGTreeOf##TYPENAME) \
+    struct CGTreeOf##TYPENAME##_struct { \
+        TYPENAME* value; \
+        CGArrayOfCGTreeOf##TYPENAME* subTrees; \
+    }; \
+    DECLARE_ARRAY_ITERATOR_TYPE(CGTreeOf##TYPENAME) \
 
 #define DECLARE_TREE_FUNCS(TYPENAME) \
-DECLARE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
-DECLARE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_clone(CGTreeOf##TYPENAME* this); \
-DEFINE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
-DEFINE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__new(TYPENAME* value); \
-void CGTreeOf##TYPENAME##_delete(CGTreeOf##TYPENAME* this); \
-void CGTreeOf##TYPENAME##_addSubTree(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* subTree); \
-CGArrayOfCGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTrees(CGTreeOf##TYPENAME* this); \
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at); \
-TYPENAME* CGTreeOf##TYPENAME##_removeSubTreeAt(CGTreeOf##TYPENAME* this); \
-TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this); \
-/*
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* item, ...); \
-*/
+    DECLARE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
+    DECLARE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_clone(CGTreeOf##TYPENAME* this); \
+    DEFINE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
+    DEFINE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__new(TYPENAME* value); \
+    void CGTreeOf##TYPENAME##_delete(CGTreeOf##TYPENAME* this); \
+    void CGTreeOf##TYPENAME##_addSubTree(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* subTree); \
+    CGArrayOfCGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTrees(CGTreeOf##TYPENAME* this); \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at); \
+    TYPENAME* CGTreeOf##TYPENAME##_removeSubTreeAt(CGTreeOf##TYPENAME* this); \
+    TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this); \
+    /*
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* item, ...); \
+    */
 
 #define DEFINE_TREE_FUNCS(TYPENAME) \
-\
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__new(TYPENAME* value) { \
-    CGTreeOf##TYPENAME* this = malloc(sizeof(*this)); \
-    if (this != NULL) { \
-        this->value = value; \
-        this->subTrees = CGArray__new(CGTreeOf##TYPENAME, 2); \
-    } else \
-        CGAppState_THROW(CGAppState__getInstance(), Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGTree"); \
-    return this; \
-} \
-\
-/**
-    this expects a sentinel parameter (NULL) at the end of the initializer list
-*/ \
-/*
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* value, CGArrayOfCGTreeOf##TYPENAME* subTree, ...) { \
-    CGTreeOf##TYPENAME* this = CGTreeOf##TYPENAME##__new(1); \
-    if (this != NULL) { \
-        va_list args; \
-        va_start(args, item); \
-        while (item) { \
-            CGTreeOf##TYPENAME##_add(this, item); \
-            if (CGAppState_isExceptionRaised(CGAppState__getInstance())) \
-                break; \
-            item = va_arg(args, TYPENAME*); \
+    \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__new(TYPENAME* value) { \
+        CGTreeOf##TYPENAME* this = malloc(sizeof(*this)); \
+        if (this != NULL) { \
+            this->value = value; \
+            this->subTrees = CGArray__new(CGTreeOf##TYPENAME, 2); \
+        } else \
+            CGAppState_THROW(CGAppState__getInstance(), Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGTree"); \
+        return this; \
+    } \
+    \
+    /**
+        this expects a sentinel parameter (NULL) at the end of the initializer list
+    */ \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* value, CGTreeOf##TYPENAME* subTree, ...) { \
+        CGTreeOf##TYPENAME* this = CGTreeOf##TYPENAME##__new(value); \
+        if (this != NULL) { \
+            va_list args; \
+            va_start(args, subTree); \
+            while (subTree) { \
+                CGTreeOf##TYPENAME##_addSubTree(this, subTree); \
+                if (CGAppState_isExceptionRaised(CGAppState__getInstance())) \
+                    break; \
+                subTree = va_arg(args, CGTreeOf##TYPENAME*); \
+            } \
+            va_end(args); \
         } \
-        va_end(args); \
+        return this; \
     } \
-    return this; \
-} \
-\
-*/ \
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_clone(CGTreeOf##TYPENAME* this) { \
-    printf("CGTree_clone called, undefined function - aborting!\n"); \
-    abort(); \
-} \
-\
-void CGTreeOf##TYPENAME##_delete(CGTreeOf##TYPENAME* this) { \
-    CGArrayIterator(CGTreeOf##TYPENAME)* iter = CGArrayIterator__new(CGTreeOf##TYPENAME, this->subTrees); \
-    while (CGArrayIterator_isInsideBounds(CGTreeOf##TYPENAME, iter)) { \
-        free(CGArrayIterator_getCurrentElement(CGTreeOf##TYPENAME, iter)); \
-        CGArrayIterator_moveToNextElement(CGTreeOf##TYPENAME, iter); \
+    \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_clone(CGTreeOf##TYPENAME* this) { \
+        printf("CGTree_clone called, undefined function - aborting!\n"); \
+        abort(); \
     } \
-    free(this); \
-} \
-\
-TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this) { \
-    return this->value; \
-} \
-\
-void CGTreeOf##TYPENAME##_addSubTree(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* subTree) { \
-    CGArray_add(CGTreeOf##TYPENAME, this->subTrees, subTree); \
-} \
-\
-CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at) { \
-    return CGArray_getValueAt(CGTreeOf##TYPENAME, this->subTrees, at); \
-} \
-\
-CGArrayOfCGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTrees(CGTreeOf##TYPENAME* this) { \
-    return this->subTrees; \
-} \
-\
+    \
+    void CGTreeOf##TYPENAME##_delete(CGTreeOf##TYPENAME* this) { \
+        CGArrayIterator(CGTreeOf##TYPENAME)* iter = CGArrayIterator__new(CGTreeOf##TYPENAME, this->subTrees); \
+        while (CGArrayIterator_isInsideBounds(CGTreeOf##TYPENAME, iter)) { \
+            free(CGArrayIterator_getCurrentElement(CGTreeOf##TYPENAME, iter)); \
+            CGArrayIterator_moveToNextElement(CGTreeOf##TYPENAME, iter); \
+        } \
+        free(this); \
+    } \
+    \
+    TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this) { \
+        return this->value; \
+    } \
+    \
+    void CGTreeOf##TYPENAME##_addSubTree(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* subTree) { \
+        CGArray_add(CGTreeOf##TYPENAME, this->subTrees, subTree); \
+    } \
+    \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at) { \
+        return CGArray_getValueAt(CGTreeOf##TYPENAME, this->subTrees, at); \
+    } \
+    \
+    CGArrayOfCGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTrees(CGTreeOf##TYPENAME* this) { \
+        return this->subTrees; \
+    } \
+    \
     
 
 
