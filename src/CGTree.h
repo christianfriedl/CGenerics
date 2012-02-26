@@ -35,7 +35,7 @@
     void CGTreeOf##TYPENAME##_addSubTree(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* subTree); \
     CGArrayOfCGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTrees(CGTreeOf##TYPENAME* this); \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at); \
-    TYPENAME* CGTreeOf##TYPENAME##_removeSubTreeAt(CGTreeOf##TYPENAME* this); \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_removeSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at); \
     TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this); \
     unsigned int CGTreeOf##TYPENAME##_getSubTreeSize(CGTreeOf##TYPENAME* this); \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* value, CGTreeOf##TYPENAME* subTree, ...); \
@@ -106,6 +106,10 @@
         return CGArray_getValueAt(CGTreeOf##TYPENAME, this->subTrees, at); \
     } \
     \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_removeSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at) { \
+        return CGArray_removeValueAt(CGTreeOf##TYPENAME, this->subTrees, at); \
+    } \
+    \
     CGArrayOfCGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTrees(CGTreeOf##TYPENAME* this) { \
         return this->subTrees; \
     } \
@@ -148,6 +152,6 @@
 #define CGTree_getSubTrees(TYPENAME, tree) CGTreeOf##TYPENAME##_getSubTrees((tree))
 #define CGTree_getSubTreeSize(TYPENAME, tree) CGTreeOf##TYPENAME##_getSubTreeSize((tree))
 #define CGTree_getSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_getSubTreeAt((tree), (at))
-#define CGTree_removeSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_removeValueAt((tree), (at))
+#define CGTree_removeSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_removeSubTreeAt((tree), (at))
 
 #endif 

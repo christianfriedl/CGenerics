@@ -101,6 +101,32 @@ void testSubTrees() {
     
     printf("%s ok\n", __func__);
 }
+void testRemoveAt() {
+    printf("%s...\n", __func__);
+
+    Int* i1 = Int__new(1);
+    Int* i2 = Int__new(2);
+    Int* i3 = Int__new(3);
+
+    CGTree(Int)* root = CGTree__new(Int, i1);
+    CGTree(Int)* subLeft = CGTree__new(Int, i2);
+    CGTree(Int)* subRight = CGTree__new(Int, i3);
+
+    CGTree_addSubTree(Int, root, subLeft);
+    CGTree_addSubTree(Int, root, subRight);
+
+
+    CGTree(Int)* removedTree = CGTree_removeSubTreeAt(Int, root, 0);
+
+    assert(removedTree == subLeft);
+    assert(CGTree_getSubTreeAt(Int, root, 0) == subRight);
+
+    Int_delete(i1);
+    Int_delete(i2);
+    Int_delete(i3);
+    CGTree_delete(Int, root);
+    printf("%s ok\n", __func__);
+}
 
 
 int main() {
@@ -111,6 +137,7 @@ int main() {
     testNewDelete();
     testSubTrees();
 	testNewFromInitializerList(); /* this is AFTER testSubTrees because it depends on addSubTree */
+    testRemoveAt();
 
     CGAppState__deInit();
 

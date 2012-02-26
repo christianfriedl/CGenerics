@@ -23,7 +23,6 @@ CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, un
     - strtok
     - insertAt
     - replaceAt
-    - substring
     - toUpper, toLower
 */
 
