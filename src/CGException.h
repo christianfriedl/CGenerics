@@ -2,7 +2,8 @@
 #define _CGEXCEPTION_H
 
 #define CGExceptionID_GeneralFatalException       (0)
-#define CGExceptionID_CannotAllocate              (1) 
+#define CGExceptionID_GeneralNonfatalException    (1)
+#define CGExceptionID_CannotAllocate              (2) 
 #define CGExceptionID_ArrayIndexOutOfBounds     (100) 
 #define CGExceptionID_ElementNotFound           (102)
 #define CGExceptionID_StringError               (103)
