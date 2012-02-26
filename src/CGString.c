@@ -44,9 +44,11 @@ char* CGString_toVector(const CGString* this) {
 int CGString__compare(const CGString* s1, const CGString* s2) {
     return (strcmp(s1, s2));
 }
-void CGString_append(CGString* this, const CGString* that) {
-    this = realloc(this, sizeof(char) * (strlen(this) + strlen(that) + 1));
-    strcat(this, that);
+CGString* CGString_append(CGString* this, const CGString* that) {
+    CGString* newString = CGString__newFromLengthAndPreset(strlen(this) + strlen(that) + 1, '\0');
+	strcpy(newString, this);
+    strcat(newString, that);
+	return newString;
 }
 size_t CGString_getSize(const CGString* this) {
     return strlen(this);

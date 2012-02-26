@@ -13,7 +13,7 @@ CGString* CGString_clone(const CGString* this);
 void CGString_delete(CGString* this);
 char* CGString_toVector(const CGString* this);
 int CGString__compare(const CGString* i1, const CGString* i2);
-void CGString_append(CGString* this, const CGString* that);
+CGString* CGString_append(CGString* this, const CGString* that);
 size_t CGString_getSize(const CGString* this);
 CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, unsigned length);
 

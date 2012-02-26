@@ -50,10 +50,11 @@ void testAppend() {
     printf("%s...\n", __func__);
     CGString* s = CGString__new("abcde");
     CGString* s2 = CGString__new("fghijk");
-    CGString_append(s, s2);
+    CGString* s3 = CGString_append(s, s2);
     CGString* c = CGString__new("abcdefghijk");
-    assert(!CGString__compare(s, c));
+    assert(!CGString__compare(s3, c));
     CGString_delete(c);
+    CGString_delete(s3);
     CGString_delete(s2);
     CGString_delete(s);
     printf("%s ok\n", __func__);
