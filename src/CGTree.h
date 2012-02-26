@@ -22,14 +22,15 @@
         TYPENAME* value; \
         CGArrayOfCGTreeOf##TYPENAME* subTrees; \
     }; \
+    DECLARE_ARRAY_TYPE(CGTreeOf##TYPENAME) \
     DECLARE_ARRAY_ITERATOR_TYPE(CGTreeOf##TYPENAME) \
 
 #define DECLARE_TREE_FUNCS(TYPENAME) \
     DECLARE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
     DECLARE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_clone(CGTreeOf##TYPENAME* this); \
-    DEFINE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
-    DEFINE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
+    DECLARE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
+    DECLARE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__new(TYPENAME* value); \
     void CGTreeOf##TYPENAME##_delete(CGTreeOf##TYPENAME* this); \
     void CGTreeOf##TYPENAME##_addSubTree(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* subTree); \
@@ -42,6 +43,8 @@
 
 #define DEFINE_TREE_FUNCS(TYPENAME) \
     \
+    DEFINE_ARRAY_FUNCS(CGTreeOf##TYPENAME) \
+    DEFINE_ARRAY_ITERATOR_FUNCS(CGTreeOf##TYPENAME) \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__new(TYPENAME* value) { \
         CGTreeOf##TYPENAME* this = malloc(sizeof(*this)); \
         if (this != NULL) { \
