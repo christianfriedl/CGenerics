@@ -244,8 +244,6 @@ void testCGArrayGrow() {
 void testCGExceptions() {
     printf("%s...\n", __func__);
     
-    CGException* e = NULL;
-
     CGArray(Int)* intCGArray = CGArray__new(Int, 1);
     CGArray_removeValueAt(Int, intCGArray, 1);
     assert(CGAppState_isExceptionRaisedWithID(appState, CGExceptionID_ArrayIndexOutOfBounds));
