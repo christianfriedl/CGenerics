@@ -37,9 +37,8 @@
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at); \
     TYPENAME* CGTreeOf##TYPENAME##_removeSubTreeAt(CGTreeOf##TYPENAME* this); \
     TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this); \
-    /*
-    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* item, ...); \
-    */
+    unsigned int CGTreeOf##TYPENAME##_getSubTreeSize(CGTreeOf##TYPENAME* this); \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* value, CGTreeOf##TYPENAME* subTree, ...); \
 
 #define DEFINE_TREE_FUNCS(TYPENAME) \
     \
@@ -86,6 +85,15 @@
         free(this); \
     } \
     \
+    void CGTreeOf##TYPENAME##_deleteValues(CGTreeOf##TYPENAME* this) { \
+        CGArrayOfCGTreeOf##TYPENAME##Iterator* iter = CGArrayOfCGTreeOf##TYPENAME##Iterator__new(this->subTrees); \
+        CGTreeOf##TYPENAME* tree = NULL; \
+        while ((tree = CGArrayOfCGTreeOf##TYPENAME##Iterator_fetch(iter)) != NULL) { \
+            TYPENAME##_delete(CGTreeOf##TYPENAME##_getValue(tree)); \
+        } \
+        TYPENAME##_delete(this->value); \
+    } \
+    \
     TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this) { \
         return this->value; \
     } \
@@ -100,6 +108,10 @@
     \
     CGArrayOfCGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTrees(CGTreeOf##TYPENAME* this) { \
         return this->subTrees; \
+    } \
+    \
+    unsigned int CGTreeOf##TYPENAME##_getSubTreeSize(CGTreeOf##TYPENAME* this) { \
+        return CGArray_getSize(CGTreeOf##TYPENAME, this->subTrees); \
     } \
     \
     
@@ -127,14 +139,15 @@
 
 
 #define CGTree__new(TYPENAME, initialCapacity) CGTreeOf##TYPENAME##__new((initialCapacity))
-#define CGTree__newFromInitializerList(TYPENAME, ...) CGTreeOf##TYPENAME##__newFromInitializerList(__VA_ARGS__)
+#define CGTree__newFromInitializerList(TYPENAME, value, ...) CGTreeOf##TYPENAME##__newFromInitializerList((value), __VA_ARGS__)
 #define CGTree_clone(TYPENAME, tree) CGTreeOf##TYPENAME##_clone((tree))
 #define CGTree_getValue(TYPENAME, tree) CGTreeOf##TYPENAME##_getValue((tree))
-#define CGTree_delete(TYPENAME, array) CGTreeOf##TYPENAME##_delete((array))
-#define CGTree_deleteValues(TYPENAME, array) CGTreeOf##TYPENAME##_deleteValues((array))
+#define CGTree_delete(TYPENAME, tree) CGTreeOf##TYPENAME##_delete((tree))
+#define CGTree_deleteValues(TYPENAME, tree) CGTreeOf##TYPENAME##_deleteValues((tree))
 #define CGTree_addSubTree(TYPENAME, tree, subTree) CGTreeOf##TYPENAME##_addSubTree((tree), (subTree))
 #define CGTree_getSubTrees(TYPENAME, tree) CGTreeOf##TYPENAME##_getSubTrees((tree))
+#define CGTree_getSubTreeSize(TYPENAME, tree) CGTreeOf##TYPENAME##_getSubTreeSize((tree))
 #define CGTree_getSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_getSubTreeAt((tree), (at))
-#define CGTree_removeSubTreeAt(TYPENAME, array, at) CGTreeOf##TYPENAME##_removeValueAt((array), (at))
+#define CGTree_removeSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_removeValueAt((tree), (at))
 
 #endif 
