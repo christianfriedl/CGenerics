@@ -15,10 +15,13 @@ HEADERS=$(CONTAINER_HEADERS) CGAppState.h CGArray.h CGException.h CGInteger.h CG
 LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o
 STATIC_LIBRARY=libcgenerics.a
 
+LOCALMAN=../doc/man
+MANPATH=man3
+
 PREFIX=/usr
 INSTALLHEADERS=${PREFIX}/include/cgenerics
 INSTALLLIB=${PREFIX}/lib
-INSTALLMAN=${PREFIX}/share/man/man3
+INSTALLMAN=${PREFIX}/share/man/${MANPATH}
 
 all-tests: tests manpages test
 
@@ -57,12 +60,12 @@ test:
 	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then echo "ERROR..."; exit 1; fi; done
 
 manpages:
-	rm -f ../doc/man/*.3
-	for i in *.h; do o=`basename $$i .h`; ../makeman.pl $$i ../doc/man/; done
-	gzip -f ../doc/man/*.3
+	rm -f ${LOCALMAN}/${MANPATH}/*.3 ${LOCALMAN}/${MANPATH}/*.3.gz
+	for i in *.h; do makeman.pl $$i ${LOCALMAN}/${MANPATH}; done
+	gzip -f ${LOCALMAN}/${MANPATH}/*.3
 
 install:
 	if [ ! -d ${INSTALLHEADERS} ]; then mkdir -p ${INSTALLHEADERS}; fi
 	cp $(HEADERS) ${INSTALLHEADERS}
 	cp $(STATIC_LIBRARY) $(INSTALLLIB)
-	cp ../doc/man/*.3.gz $(INSTALLMAN)/
+	cp ${LOCALMAN}/${MANPATH}/*.3.gz $(INSTALLMAN)/

@@ -2,7 +2,7 @@
 use POSIX qw(strftime);
 $date = strftime "%Y-%m-%d\n", localtime;
 
-$#ARGV==1 or die "Usage: makeman.pl inputfile outputfile";
+$#ARGV==1 or die "Usage: makeman.pl <inputfile> <outputpath>";
 $infilename = $ARGV[0];
 $infilename =~ /^(.*\/)?(\w+)(\.\w+)$/;
 $srcname = $2;
