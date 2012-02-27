@@ -136,7 +136,7 @@ bool mapSumUpTo6(const Int* i, void* userData) {
     } else
         return false;
 }
-void testMapConstant() {
+void testMapConstantDepthFirst() {
     printf("%s...\n", __func__);
 
     Int* i1 = Int__new(1);
@@ -164,10 +164,59 @@ void testMapConstant() {
 
 
     unsigned int sum = 0;
-    bool rv = CGTree_mapConstant(Int, root, mapSumUpTo6, (void*)&sum);
+    bool rv = CGTree_mapConstant(Int, root, mapSumUpTo6, CGTreeStrategy_depthFirst, (void*)&sum);
     printf("%u\n", sum);
     assert(rv == false);
     assert(sum == 4+5+2+6);
+
+    Int_delete(i1);
+    Int_delete(i2);
+    Int_delete(i3);
+    Int_delete(i4);
+    Int_delete(i5);
+    Int_delete(i6);
+    Int_delete(i7);
+    CGTree_delete(Int, root);
+    printf("%s ok\n", __func__);
+}
+bool mapSum(const Int* i, void* userData) {
+    unsigned int* sum = (unsigned int*) userData;
+    (*sum) += *i;
+    printf("i: %i mapSum: %u\n", *i, *sum);
+    return true;
+}
+void testMapConstantBreadthFirst() {
+    printf("%s...\n", __func__);
+
+    Int* i1 = Int__new(1);
+    Int* i2 = Int__new(2);
+    Int* i3 = Int__new(3);
+    Int* i4 = Int__new(4);
+    Int* i5 = Int__new(5);
+    Int* i6 = Int__new(6);
+    Int* i7 = Int__new(7);
+
+    CGTree(Int)* root = CGTree__new(Int, i1);
+    CGTree(Int)* subLeft = CGTree__new(Int, i2);
+    CGTree(Int)* subRight = CGTree__new(Int, i3);
+    CGTree(Int)* subLeftLeft = CGTree__new(Int, i4);
+    CGTree(Int)* subLeftRight = CGTree__new(Int, i5);
+    CGTree(Int)* subRightLeft = CGTree__new(Int, i6);
+    CGTree(Int)* subRightRight = CGTree__new(Int, i7);
+
+    CGTree_addSubTree(Int, root, subLeft);
+    CGTree_addSubTree(Int, root, subRight);
+    CGTree_addSubTree(Int, subLeft, subLeftLeft);
+    CGTree_addSubTree(Int, subLeft, subLeftRight);
+    CGTree_addSubTree(Int, subRight, subRightLeft);
+    CGTree_addSubTree(Int, subRight, subRightRight);
+
+
+    unsigned int sum = 0;
+    bool rv = CGTree_mapConstant(Int, root, mapSum, CGTreeStrategy_breadthFirst, (void*)&sum);
+    printf("%u\n", sum);
+    assert(rv == true);
+    assert(sum == 1+2+3+4+5+6+7);
 
     Int_delete(i1);
     Int_delete(i2);
@@ -190,7 +239,8 @@ int main() {
     testSubTrees();
 	testNewFromInitializerList(); /* this is AFTER testSubTrees because it depends on addSubTree */
     testRemoveAt();
-    testMapConstant();
+    testMapConstantDepthFirst();
+    testMapConstantBreadthFirst();
 
     CGAppState__deInit();
 

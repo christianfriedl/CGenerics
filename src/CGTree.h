@@ -10,6 +10,8 @@
 #include"CGArray.h"
 #include"CGArrayIterator.h"
 
+typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTreeStrategy;
+
 /* everything below this line is type-specific! */
 
 /* declarations */
@@ -39,7 +41,7 @@
     TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this); \
     unsigned int CGTreeOf##TYPENAME##_getSubTreeSize(CGTreeOf##TYPENAME* this); \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* value, CGTreeOf##TYPENAME* subTree, ...); \
-    bool CGTreeOf##TYPENAME##_mapConstant(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), void *userData); \
+    bool CGTreeOf##TYPENAME##_mapConstant(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), CGTreeStrategy strategy, void *userData); \
 
 #define DEFINE_TREE_FUNCS(TYPENAME) \
     \
@@ -124,16 +126,38 @@
     /*
         returns true if all leaves were mapped, false otherwise
     */ \
-    bool CGTreeOf##TYPENAME##_mapConstant(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), void *userData) { \
+    bool CGTreeOf##TYPENAME##_mapConstantDepthFirst_(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), void *userData) { \
         CGArrayOfCGTreeOf##TYPENAME##Iterator* iter = CGArrayOfCGTreeOf##TYPENAME##Iterator__new(this->subTrees); \
         CGTreeOf##TYPENAME* tree; \
         while ((tree = CGArrayOfCGTreeOf##TYPENAME##Iterator_fetch(iter)) != NULL) { \
-            if (CGTreeOf##TYPENAME##_mapConstant(tree, mapFunction, userData) == false) \
+            if (CGTreeOf##TYPENAME##_mapConstantDepthFirst_(tree, mapFunction, userData) == false) \
                 return false; \
+        } \
+        return mapFunction(CGTreeOf##TYPENAME##_getValue(this), userData); \
+    } \
+    bool CGTreeOf##TYPENAME##_mapConstantBreadthFirst_(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), void *userData, bool isRoot) { \
+        CGArrayOfCGTreeOf##TYPENAME##Iterator* iter = CGArrayOfCGTreeOf##TYPENAME##Iterator__new(this->subTrees); \
+        CGTreeOf##TYPENAME* tree; \
+        if (isRoot == true) { \
+            if (mapFunction(CGTreeOf##TYPENAME##_getValue(this), userData) == false) \
+                return false; \
+        } \
+        while ((tree = CGArrayOfCGTreeOf##TYPENAME##Iterator_fetch(iter)) != NULL) { \
             if (mapFunction(CGTreeOf##TYPENAME##_getValue(tree), userData) == false) \
                 return false; \
         } \
+        CGArrayOfCGTreeOf##TYPENAME##Iterator_reset(iter); \
+        while ((tree = CGArrayOfCGTreeOf##TYPENAME##Iterator_fetch(iter)) != NULL) { \
+            if (CGTreeOf##TYPENAME##_mapConstantBreadthFirst_(tree, mapFunction, userData, false) == false) \
+                return false; \
+        } \
         return true; \
+    } \
+    bool CGTreeOf##TYPENAME##_mapConstant(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), CGTreeStrategy strategy, void *userData) { \
+        if (strategy == CGTreeStrategy_depthFirst) \
+            return CGTreeOf##TYPENAME##_mapConstantDepthFirst_(this, mapFunction, userData); \
+        else \
+            return CGTreeOf##TYPENAME##_mapConstantBreadthFirst_(this, mapFunction, userData, true); \
     } \
     \
 
@@ -170,6 +194,6 @@
 #define CGTree_getSubTreeSize(TYPENAME, tree) CGTreeOf##TYPENAME##_getSubTreeSize((tree))
 #define CGTree_getSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_getSubTreeAt((tree), (at))
 #define CGTree_removeSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_removeSubTreeAt((tree), (at))
-#define CGTree_mapConstant(TYPENAME, tree, function, userData) CGTreeOf##TYPENAME##_mapConstant((tree), (function), (userData))
+#define CGTree_mapConstant(TYPENAME, tree, function, strategy, userData) CGTreeOf##TYPENAME##_mapConstant((tree), (function), (strategy), (userData))
 
 #endif 

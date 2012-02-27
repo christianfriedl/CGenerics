@@ -64,7 +64,7 @@ typedef struct { \
     unsigned int CGArrayOf##TYPENAME##_findIndex(CGArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)); \
     TYPENAME* CGArrayOf##TYPENAME##_find(CGArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)); \
     CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##_map(CGArrayOf##TYPENAME* this, void (*mapFunction)(TYPENAME*, void *), void* userData); \
-    void CGArrayOf##TYPENAME##_mapConstant(CGArrayOf##TYPENAME* this, void (*mapFunction)(const TYPENAME*, void*), void* userData); \
+    bool CGArrayOf##TYPENAME##_mapConstant(CGArrayOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void*), void* userData); \
 
 #define DEFINE_ARRAY_FUNCS(TYPENAME) \
     \
@@ -264,10 +264,12 @@ typedef struct { \
         return that; \
     } \
     \
-    void CGArrayOf##TYPENAME##_mapConstant(CGArrayOf##TYPENAME* this, void (*mapFunction)(const TYPENAME*, void *), void* userData) { \
+    bool CGArrayOf##TYPENAME##_mapConstant(CGArrayOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), void* userData) { \
         unsigned int i; \
         for (i = 0; i < this->usedElements; ++i) \
-            (mapFunction)(*(this->vector + i), userData); \
+            if ((mapFunction)(*(this->vector + i), userData) != true) \
+                return false; \
+        return true; \
     } \
     \
 
@@ -312,8 +314,8 @@ typedef struct { \
 #define CGArray_print(TYPENAME, array, printFormat) CGArrayOf##TYPENAME##_print((array), (printFormat))
 #define CGArray_findIndex(TYPENAME, array, elementPointer, comparingFunction) CGArrayOf##TYPENAME##_findIndex((array), (elementPointer), (comparingFunction))
 #define CGArray_find(TYPENAME, array, elementPointer, comparingFunction) CGArrayOf##TYPENAME##_find((array), (elementPointer), (comparingFunction))
-#define CGArray_map(TYPENAME, array, mapFunction) CGArrayOf##TYPENAME##_map((array), (mapFunction))
-#define CGArray_mapConstant(TYPENAME, array, mapFunction) CGArrayOf##TYPENAME##_mapConstant((array), (mapFunction))
+#define CGArray_map(TYPENAME, array, mapFunction, userData) CGArrayOf##TYPENAME##_map((array), (mapFunction), (userData))
+#define CGArray_mapConstant(TYPENAME, array, mapFunction, userData) CGArrayOf##TYPENAME##_mapConstant((array), (mapFunction), (userData))
 
 
 #endif 

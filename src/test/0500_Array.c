@@ -347,7 +347,7 @@ void testFind() {
     printf("ok\n");
 }
 
-void addOne(Int* x) {
+void addOne(Int* x, void *dummy) {
     *x += 1;
 }
 void printInt(const Int* x) {
@@ -355,9 +355,10 @@ void printInt(const Int* x) {
 }
 static int globalIndex;
 static bool globalOk;
-static void intIsEqualToIndex(const Int* x) {
+static bool intIsEqualToIndex(const Int* x, void *dummy) {
     globalOk &= (*x == globalIndex);
     globalIndex++;
+    return true;
 }
 void testMap() {
     printf("%s...\n", __func__);
@@ -369,16 +370,16 @@ void testMap() {
         Int* x = Int__new(i);
         CGArray_push(Int, intCGArray, x);
     }
-    CGArray(Int)* mappedCGArray = CGArray_map(Int, intCGArray, addOne);
+    CGArray(Int)* mappedCGArray = CGArray_map(Int, intCGArray, addOne, NULL);
 
     globalOk = true;
     globalIndex = 0;
-    CGArray_mapConstant(Int, intCGArray, intIsEqualToIndex);
+    CGArray_mapConstant(Int, intCGArray, intIsEqualToIndex, NULL);
     assert(globalOk);
 
     globalOk = true;
     globalIndex = 1;
-    CGArray_mapConstant(Int, mappedCGArray, intIsEqualToIndex);
+    CGArray_mapConstant(Int, mappedCGArray, intIsEqualToIndex, NULL);
     assert(globalOk);
 
     CGArray_deleteValues(Int, intCGArray);
