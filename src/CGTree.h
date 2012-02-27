@@ -39,6 +39,7 @@
     TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this); \
     unsigned int CGTreeOf##TYPENAME##_getSubTreeSize(CGTreeOf##TYPENAME* this); \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* value, CGTreeOf##TYPENAME* subTree, ...); \
+    bool CGTreeOf##TYPENAME##_mapConstant(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), void *userData); \
 
 #define DEFINE_TREE_FUNCS(TYPENAME) \
     \
@@ -120,7 +121,21 @@
         return CGArray_getSize(CGTreeOf##TYPENAME, this->subTrees); \
     } \
     \
-    
+    /*
+        returns true if all leaves were mapped, false otherwise
+    */ \
+    bool CGTreeOf##TYPENAME##_mapConstant(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), void *userData) { \
+        CGArrayOfCGTreeOf##TYPENAME##Iterator* iter = CGArrayOfCGTreeOf##TYPENAME##Iterator__new(this->subTrees); \
+        CGTreeOf##TYPENAME* tree; \
+        while ((tree = CGArrayOfCGTreeOf##TYPENAME##Iterator_fetch(iter)) != NULL) { \
+            if (CGTreeOf##TYPENAME##_mapConstant(tree, mapFunction, userData) == false) \
+                return false; \
+            if (mapFunction(CGTreeOf##TYPENAME##_getValue(tree), userData) == false) \
+                return false; \
+        } \
+        return true; \
+    } \
+    \
 
 
 #define DECLARE_TREE(TYPENAME) \
@@ -155,5 +170,6 @@
 #define CGTree_getSubTreeSize(TYPENAME, tree) CGTreeOf##TYPENAME##_getSubTreeSize((tree))
 #define CGTree_getSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_getSubTreeAt((tree), (at))
 #define CGTree_removeSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_removeSubTreeAt((tree), (at))
+#define CGTree_mapConstant(TYPENAME, tree, function, userData) CGTreeOf##TYPENAME##_mapConstant((tree), (function), (userData))
 
 #endif 
