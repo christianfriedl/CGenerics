@@ -22,6 +22,7 @@ typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTr
     DECLARE_ARRAY_TYPE(CGTreeOf##TYPENAME) \
     struct CGTreeOf##TYPENAME##_struct { \
         TYPENAME* value; \
+        CGTreeOf##TYPENAME* parent; \
         CGArrayOfCGTreeOf##TYPENAME* subTrees; \
     }; \
     DECLARE_ARRAY_ITERATOR_TYPE(CGTreeOf##TYPENAME) \
@@ -39,6 +40,8 @@ typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTr
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at); \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_removeSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at); \
     TYPENAME* CGTreeOf##TYPENAME##_getValue(CGTreeOf##TYPENAME* this); \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getParent(CGTreeOf##TYPENAME* this); \
+    void CGTreeOf##TYPENAME##_setParent(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* parent); \
     unsigned int CGTreeOf##TYPENAME##_getSubTreeSize(CGTreeOf##TYPENAME* this); \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__newFromInitializerList(TYPENAME* value, CGTreeOf##TYPENAME* subTree, ...); \
     bool CGTreeOf##TYPENAME##_mapConstant(CGTreeOf##TYPENAME* this, bool (*mapFunction)(const TYPENAME*, void *), CGTreeStrategy strategy, void *userData); \
@@ -50,6 +53,7 @@ typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTr
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##__new(TYPENAME* value) { \
         CGTreeOf##TYPENAME* this = malloc(sizeof(*this)); \
         if (this != NULL) { \
+            this->parent = NULL; \
             this->value = value; \
             this->subTrees = CGArray__new(CGTreeOf##TYPENAME, 2); \
         } else \
@@ -103,8 +107,17 @@ typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTr
         return this->value; \
     } \
     \
+    CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getParent(CGTreeOf##TYPENAME* this) { \
+        return this->parent; \
+    } \
+    \
+    void CGTreeOf##TYPENAME##_setParent(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* parent) { \
+        this->parent = parent; \
+    } \
+    \
     void CGTreeOf##TYPENAME##_addSubTree(CGTreeOf##TYPENAME* this, CGTreeOf##TYPENAME* subTree) { \
         CGArray_add(CGTreeOf##TYPENAME, this->subTrees, subTree); \
+        CGTreeOf##TYPENAME##_setParent(subTree, this); \
     } \
     \
     CGTreeOf##TYPENAME* CGTreeOf##TYPENAME##_getSubTreeAt(CGTreeOf##TYPENAME* this, const unsigned int at) { \
@@ -183,7 +196,7 @@ typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTr
 /* callers */
 
 
-#define CGTree__new(TYPENAME, initialCapacity) CGTreeOf##TYPENAME##__new((initialCapacity))
+#define CGTree__new(TYPENAME, value) CGTreeOf##TYPENAME##__new((value))
 #define CGTree__newFromInitializerList(TYPENAME, value, ...) CGTreeOf##TYPENAME##__newFromInitializerList((value), __VA_ARGS__)
 #define CGTree_clone(TYPENAME, tree) CGTreeOf##TYPENAME##_clone((tree))
 #define CGTree_getValue(TYPENAME, tree) CGTreeOf##TYPENAME##_getValue((tree))
@@ -195,5 +208,7 @@ typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTr
 #define CGTree_getSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_getSubTreeAt((tree), (at))
 #define CGTree_removeSubTreeAt(TYPENAME, tree, at) CGTreeOf##TYPENAME##_removeSubTreeAt((tree), (at))
 #define CGTree_mapConstant(TYPENAME, tree, function, strategy, userData) CGTreeOf##TYPENAME##_mapConstant((tree), (function), (strategy), (userData))
+#define CGTree_getParent(TYPENAME, tree) CGTreeOf##TYPENAME##_getParent((tree))
+#define CGTree_setParent(TYPENAME, tree, parent) CGTreeOf##TYPENAME##_setParent((tree), (parent))
 
 #endif 
