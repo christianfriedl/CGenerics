@@ -46,7 +46,7 @@ void printCGArray(CGArray(Int)* array) {
     printf("\n");
 }
 void testNewDelete() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     CGArray(Person)* personCGArray = CGArray__new(Person, 20);
@@ -56,11 +56,11 @@ void testNewDelete() {
     CGArray_deleteValues(Person, personCGArray);
     CGArray_delete(Person, personCGArray);
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testNewFromInitializerList() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
     Int* i2 = Int__new(2);
@@ -83,11 +83,11 @@ void testNewFromInitializerList() {
     Int_delete(i2);
     assert(!CGAppState_isExceptionRaised(appState));
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testClone() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
@@ -110,10 +110,10 @@ void testClone() {
     CGArray_deleteValues(Int, intCGArray);
     CGArray_delete(Int, intCGArray);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 void testIntCGArray() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
     Int *x;
     CGArray(Int)* array = CGArray__new(Int, 20);
 
@@ -197,10 +197,10 @@ void testIntCGArray() {
 
     CGArray_delete(Int, array);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 void testPersonCGArray() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
     Person* x = malloc(sizeof(*x));
     Person* y = malloc(sizeof(*y));
     CGArray(Person)* array = CGArray__new(Person, 20);
@@ -221,11 +221,11 @@ void testPersonCGArray() {
     CGArray_deleteValues(Person, array);
     CGArray_delete(Person, array);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testCGArrayGrow() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(Int)* intCGArray = CGArray__new(Int, 1);
 
@@ -238,11 +238,11 @@ void testCGArrayGrow() {
     CGArray_delete(Int, intCGArray);
 
     free(x);
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testCGExceptions() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
     
     CGArray(Int)* intCGArray = CGArray__new(Int, 1);
     CGArray_removeValueAt(Int, intCGArray, 1);
@@ -260,7 +260,7 @@ void testCGExceptions() {
 
     CGArray_delete(Int, intCGArray);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 int intComparison(const Int **i1, const Int **i2) {
@@ -271,7 +271,7 @@ int intComparisonReversed(const Int **i1, const Int **i2) {
 }
 
 void testSorting() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
@@ -290,11 +290,11 @@ void testSorting() {
     CGArray_deleteValues(Int, intCGArray);
     CGArray_delete(Int, intCGArray);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testFindIndex() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
@@ -317,11 +317,11 @@ void testFindIndex() {
     CGArray_deleteValues(Int, intCGArray);
     CGArray_delete(Int, intCGArray);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testFind() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
@@ -344,7 +344,7 @@ void testFind() {
     CGArray_deleteValues(Int, intCGArray);
     CGArray_delete(Int, intCGArray);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void addOne(Int* x, void *dummy) {
@@ -361,7 +361,7 @@ static bool intIsEqualToIndex(const Int* x, void *dummy) {
     return true;
 }
 void testMap() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(Int)* intCGArray = CGArray__new(Int, 20);
     int i;
@@ -385,7 +385,7 @@ void testMap() {
     CGArray_deleteValues(Int, intCGArray);
     CGArray_delete(Int, intCGArray);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 int main() {

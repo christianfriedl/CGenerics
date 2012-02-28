@@ -12,7 +12,7 @@ INIT_LINKEDLIST(CGInteger)
 CGAppState *appState;
 
 void testElementNewDelete() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGInteger* i = CGInteger__new(22);
     assert(i != NULL);
@@ -23,21 +23,21 @@ void testElementNewDelete() {
     CGLinkedListElement_delete(CGInteger, lle);
     CGInteger_delete(i);
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testListNewDelete() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(CGInteger, CGInteger__new(1));
     CGLinkedList(CGInteger)* ll = CGLinkedList__new(CGInteger, i1);
     CGLinkedList_delete(CGInteger, ll);
     CGLinkedListElement_delete(CGInteger, i1);
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 void testInsertElements() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(CGInteger, CGInteger__new(1));
     CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(CGInteger, CGInteger__new(2));
@@ -73,11 +73,11 @@ void testInsertElements() {
     CGLinkedListElement_delete(CGInteger, i2);
     CGLinkedListElement_delete(CGInteger, i3);
     CGLinkedListElement_delete(CGInteger, i4);
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testMoveToNext() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(CGInteger, CGInteger__new(1));
     CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(CGInteger, CGInteger__new(2));
@@ -119,11 +119,11 @@ void testMoveToNext() {
     cur = CGLinkedList_next(CGInteger, ll);
     assert(cur == NULL);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 void testRemove() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(CGInteger, CGInteger__new(1));
     CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(CGInteger, CGInteger__new(2));
@@ -145,7 +145,7 @@ void testRemove() {
 }
 
 void testFind() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGLinkedListElement(CGInteger)* i1 = CGLinkedListElement__new(CGInteger, CGInteger__new(1));
     CGLinkedListElement(CGInteger)* i2 = CGLinkedListElement__new(CGInteger, CGInteger__new(2));
@@ -186,7 +186,7 @@ void testFind() {
 
     CGLinkedList_delete(CGInteger, ll);
 
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 

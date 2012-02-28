@@ -14,7 +14,7 @@ INIT_ARRAY_ITERATOR(CGInteger)
 CGAppState *appState;
 
 void testNewDelete() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGInteger* i1 = CGInteger__new(1);
     CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, NULL);
@@ -24,10 +24,10 @@ void testNewDelete() {
     CGArray_deleteValues(CGInteger, array);
     CGArray_delete(CGInteger, array);
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 void testIterate() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGInteger* i1 = CGInteger__new(1);
     CGInteger* i2 = CGInteger__new(2);
@@ -57,10 +57,10 @@ void testIterate() {
     CGArray_deleteValues(CGInteger, array);
     CGArray_delete(CGInteger, array);
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 void testFetch() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGInteger* i1 = CGInteger__new(1);
     CGInteger* i2 = CGInteger__new(2);
@@ -81,10 +81,10 @@ void testFetch() {
     CGArray_deleteValues(CGInteger, array);
     CGArray_delete(CGInteger, array);
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 void testFetchEmptyArray() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(CGInteger)* array = CGArray__new(CGInteger, 1);
     CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
@@ -96,7 +96,7 @@ void testFetchEmptyArray() {
     CGArray_deleteValues(CGInteger, array);
     CGArray_delete(CGInteger, array);
     
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 int main() {

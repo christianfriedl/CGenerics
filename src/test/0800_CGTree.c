@@ -28,7 +28,7 @@ DEFINE_TREE_FUNCS(Int)
 CGAppState *appState;
 
 void testNewDelete() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
 
@@ -39,11 +39,11 @@ void testNewDelete() {
     Int_delete(i1);
     CGTree_delete(Int, tree);
     
-    printf("%s ok\n", __func__);
+    printf("ok -- ");
 }
 
 void testNewFromInitializerList() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
     Int* i2 = Int__new(1);
@@ -67,11 +67,11 @@ void testNewFromInitializerList() {
     Int_delete(i3);
     CGTree_delete(Int, root);
     
-    printf("%s ok\n", __func__);
+    printf("ok -- ");
 }
 
 void testSubTrees() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
     Int* i2 = Int__new(2);
@@ -99,10 +99,10 @@ void testSubTrees() {
     Int_delete(i3);
     CGTree_delete(Int, root);
     
-    printf("%s ok\n", __func__);
+    printf("ok -- ");
 }
 void testRemoveAt() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
     Int* i2 = Int__new(2);
@@ -125,7 +125,7 @@ void testRemoveAt() {
     Int_delete(i2);
     Int_delete(i3);
     CGTree_delete(Int, root);
-    printf("%s ok\n", __func__);
+    printf("ok -- ");
 }
 bool mapSumUpTo6(const Int* i, void* userData) {
     unsigned int* sum = (unsigned int*) userData;
@@ -137,7 +137,7 @@ bool mapSumUpTo6(const Int* i, void* userData) {
         return false;
 }
 void testMapConstantDepthFirst() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
     Int* i2 = Int__new(2);
@@ -177,7 +177,7 @@ void testMapConstantDepthFirst() {
     Int_delete(i6);
     Int_delete(i7);
     CGTree_delete(Int, root);
-    printf("%s ok\n", __func__);
+    printf("ok -- ");
 }
 bool mapSum(const Int* i, void* userData) {
     unsigned int* sum = (unsigned int*) userData;
@@ -186,7 +186,7 @@ bool mapSum(const Int* i, void* userData) {
     return true;
 }
 void testMapConstantBreadthFirst() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
     Int* i2 = Int__new(2);
@@ -226,7 +226,7 @@ void testMapConstantBreadthFirst() {
     Int_delete(i6);
     Int_delete(i7);
     CGTree_delete(Int, root);
-    printf("%s ok\n", __func__);
+    printf("ok -- ");
 }
 
 

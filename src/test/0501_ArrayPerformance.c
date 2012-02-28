@@ -13,7 +13,7 @@ void int_delete(int* this) {
 INIT_ARRAY(int)
 
 void testManyPushes() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(int)* intCGArray = CGArray__new(int, 1);
 
@@ -32,10 +32,10 @@ void testManyPushes() {
         int_delete(x);
     }
     printf("cap %u size %u\n", CGArray_getCapacity(int, intCGArray), CGArray_getSize(appState, int, intCGArray));
-    printf("ok\n");
+    printf("ok -- ");
 }
 void testManyShifts() {
-    printf("%s...\n", __func__);
+    printf("%s... ", __func__);
 
     CGArray(int)* intCGArray = CGArray__new(int, 1);
 
@@ -54,7 +54,7 @@ void testManyShifts() {
 
     //printCGArray(intCGArray);   
     CGArray_delete(int, intCGArray);
-    printf("ok\n");
+    printf("ok -- ");
 }
 
 int main() {
