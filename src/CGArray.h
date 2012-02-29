@@ -73,7 +73,7 @@ typedef struct { \
         if (this != NULL) { \
             this->usedElements = 0; \
             this->capacityElements = calculateNeededElementCount(1, initialCapacity, MAX_GROWTH_COUNT); \
-            this->vector = malloc(sizeof(TYPENAME*) * initialCapacity); \
+            this->vector = malloc(sizeof(TYPENAME*) * this->capacityElements); \
             if (this->vector == NULL) \
                 CGAppState_THROW(CGAppState__getInstance(), Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArray"); \
         } else \

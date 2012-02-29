@@ -7,7 +7,7 @@ MEGA_WARNINGS = -Wall -Wdeclaration-after-statement \
 	-Wundef -Waggregate-return -Wmissing-format-attribute \
 	-Wnested-externs -Werror
 WARNINGS = $(NORMAL_WARNINGS)
-CFLAGS=-ggdb $(WARNINGS)
+CFLAGS=-ggdb -save-temps $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
 CONTAINER_HEADERS=CGArray.h CGLinkedList.h CGArrayIterator.h CGTree.h
