@@ -50,6 +50,7 @@ typedef struct { \
     void CGArrayOf##TYPENAME##_delete(CGArrayOf##TYPENAME* this); \
     void CGArrayOf##TYPENAME##_grow_(CGArrayOf##TYPENAME* this, unsigned int requestedCapacity); \
     TYPENAME* CGArrayOf##TYPENAME##_add(CGArrayOf##TYPENAME* this, TYPENAME* value); \
+    void CGArrayOf##TYPENAME##_append(CGArrayOf##TYPENAME* this, CGArrayOf##TYPENAME* that); \
     TYPENAME* CGArrayOf##TYPENAME##_getValueAt(CGArrayOf##TYPENAME* this, const unsigned int at); \
     TYPENAME* CGArrayOf##TYPENAME##_pop(CGArrayOf##TYPENAME* this); \
     TYPENAME* CGArrayOf##TYPENAME##_shift(CGArrayOf##TYPENAME* this); \
@@ -144,6 +145,13 @@ typedef struct { \
         *(this->vector + this->usedElements) = value; \
         ++(this->usedElements); \
         return value; \
+    } \
+    \
+    void CGArrayOf##TYPENAME##_append(CGArrayOf##TYPENAME* this, CGArrayOf##TYPENAME* that) { \
+        if (this->usedElements + that->usedElements >= this->capacityElements) \
+            CGArrayOf##TYPENAME##_grow_(this, this->usedElements + that->usedElements); \
+        memmove(this->vector + this->usedElements, that->vector, (that->usedElements * sizeof(TYPENAME*))); \
+        this->usedElements += that->usedElements; \
     } \
     \
     TYPENAME* CGArrayOf##TYPENAME##_getValueAt(CGArrayOf##TYPENAME* this, const unsigned int at) { \
@@ -300,6 +308,7 @@ typedef struct { \
 #define CGArray_delete(TYPENAME, array) CGArrayOf##TYPENAME##_delete((array))
 #define CGArray_deleteValues(TYPENAME, array) CGArrayOf##TYPENAME##_deleteValues((array))
 #define CGArray_add(TYPENAME, array, value) CGArrayOf##TYPENAME##_add((array), (value))
+#define CGArray_append(TYPENAME, this, that) CGArrayOf##TYPENAME##_append((this), (that))
 #define CGArray_getValueAt(TYPENAME, array, at) CGArrayOf##TYPENAME##_getValueAt((array), (at))
 #define CGArray_push CGArray_add
 #define CGArray_pop(TYPENAME, array) CGArrayOf##TYPENAME##_pop((array))

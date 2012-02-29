@@ -99,6 +99,29 @@ void testFetchEmptyArray() {
     printf("ok -- ");
 }
 
+void testUnFetch() {
+    printf("%s... ", __func__);
+
+    CGInteger* i1 = CGInteger__new(1);
+    CGInteger* i2 = CGInteger__new(2);
+    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, i2, NULL);
+    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
+
+	CGInteger* iFetch;
+	iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    assert(iFetch == i1);
+    CGArrayIterator_unFetch(CGInteger, iter);
+
+	iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    assert(iFetch == i1);
+
+    CGArrayIterator_delete(CGInteger, iter);
+
+    CGArray_deleteValues(CGInteger, array);
+    CGArray_delete(CGInteger, array);
+    
+    printf("ok -- ");
+}
 int main() {
     printf("=== %s ===\n", __FILE__);
     CGAppState__init(__FILE__);
@@ -108,6 +131,7 @@ int main() {
     testIterate();
 	testFetch();
 	testFetchEmptyArray();
+    testUnFetch();
 
     CGAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);

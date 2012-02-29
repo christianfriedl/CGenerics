@@ -409,7 +409,31 @@ void testEdge_initialCapacity0() {
     
     printf("ok -- ");
 }
+void testAppend() {
+    printf("%s... ", __func__);
 
+
+    Int* i1 = Int__new(0);
+    Int* i2 = Int__new(1);
+    CGArray(Int)* array1 = CGArray__newFromInitializerList(Int, i1, i2, NULL);
+    Int* i3 = Int__new(2);
+    Int* i4 = Int__new(3);
+    CGArray(Int)* array2 = CGArray__newFromInitializerList(Int, i3, i4, NULL);
+
+    CGArray_append(Int, array1, array2);
+
+    assert(CGArray_getCapacity(Int, array1) >= 4);
+    assert(CGArray_getSize(Int, array1) == 4);
+
+    int i;
+    for (i=0; i<4; ++i) // printf("-> %i <- ", *(CGArray_getValueAt(Int, array1, i))); 
+        assert(*(CGArray_getValueAt(Int, array1, i)) == i);
+
+    CGArray_deleteValues(Int, array1);
+    CGArray_delete(Int, array2);
+    
+    printf("ok -- ");
+}
 int main() {
     printf("=== %s ===\n", __FILE__);
     CGAppState__init(__FILE__);
@@ -425,6 +449,7 @@ int main() {
     testFindIndex();
     testFind();
     testMap();
+    testAppend();
     testEdge_initialCapacity0();
     CGAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
