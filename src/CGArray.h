@@ -86,11 +86,12 @@ typedef struct { \
         this expects a sentinel parameter (NULL) at the end of the initializer list
     */ \
     CGArrayOf##TYPENAME* CGArrayOf##TYPENAME##__newFromInitializerList(TYPENAME* item, ...) { \
-        CGArrayOf##TYPENAME* this = CGArrayOf##TYPENAME##__new(1); \
+        CGArrayOf##TYPENAME* this = CGArrayOf##TYPENAME##__new(2); \
         if (this != NULL) { \
             va_list args; \
             va_start(args, item); \
-            while (item) { \
+            while (item != NULL) { \
+                CGAppState_catchAndDeleteException(CGAppState__getInstance()); \
                 CGArrayOf##TYPENAME##_add(this, item); \
                 if (CGAppState_isExceptionRaised(CGAppState__getInstance())) \
                     break; \
