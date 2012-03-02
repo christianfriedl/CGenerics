@@ -93,8 +93,10 @@ typedef struct { \
             while (item != NULL) { \
                 CGAppState_catchAndDeleteException(CGAppState__getInstance()); \
                 CGArrayOf##TYPENAME##_add(this, item); \
-                if (CGAppState_isExceptionRaised(CGAppState__getInstance())) \
+                if (CGAppState_isExceptionRaised(CGAppState__getInstance())) { \
+                    printf("warning - exception %s\n", CGException_getMsg(CGAppState_getException(CGAppState__getInstance()))); \
                     break; \
+                } \
                 item = va_arg(args, TYPENAME*); \
             } \
             va_end(args); \
@@ -247,6 +249,7 @@ typedef struct { \
     } \
     \
     unsigned int CGArrayOf##TYPENAME##_findIndex(CGArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
+        CGAppState_catchAndDeleteExceptionWithID(CGAppState__getInstance(), CGExceptionID_ElementNotFound); \
         unsigned int i; \
         for (i = 0; i < this->usedElements; ++i) \
             if ((comparingFunction)((const TYPENAME**)this->vector + i, (const TYPENAME**)&elementPointer) == 0) \
@@ -256,6 +259,7 @@ typedef struct { \
     } \
     \
     TYPENAME* CGArrayOf##TYPENAME##_find(CGArrayOf##TYPENAME* this, const TYPENAME* elementPointer, int (*comparingFunction)(const TYPENAME**, const TYPENAME**)) { \
+        CGAppState_catchAndDeleteExceptionWithID(CGAppState__getInstance(), CGExceptionID_ElementNotFound); \
         unsigned int index = CGArrayOf##TYPENAME##_findIndex(this, elementPointer, comparingFunction); \
         if (CGAppState_isExceptionRaisedWithID(CGAppState__getInstance(), CGExceptionID_ElementNotFound)) \
             return NULL; \
