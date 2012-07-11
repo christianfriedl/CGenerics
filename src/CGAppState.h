@@ -23,5 +23,7 @@ bool CGAppState_isExceptionRaised(CGAppState* this);
 bool CGAppState_isExceptionRaisedWithID(CGAppState* this, int exceptionID);
 bool CGAppState_isExceptionRaisedWithSeverity(CGAppState* this, Severity severity);
 CGException* CGAppState_getException(CGAppState* this);
+/* sometimes it's useful to reset the whole AppState, e.g. in test suites */
+void CGAppState_reset(CGAppState* this);
 
 #endif

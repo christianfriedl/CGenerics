@@ -78,6 +78,20 @@ void testThrowCatchNoMsg() {
     printf("ok -- ");
 }
 
+void testReset() {
+    printf("%s... ", __func__);
+
+    assert(CGAppState_isExceptionRaised(appState) == false);
+    CGException* e = CGException__new(Severity_error, CGExceptionID_GeneralFatalException, NULL);
+    CGAppState_throwException(appState, e);
+    assert(CGAppState_isExceptionRaised(appState) == true);
+
+    CGAppState_reset(appState);
+    assert(CGAppState_isExceptionRaised(appState) == false);
+
+    printf("ok -- ");
+}
+
 
 int main() {
     printf("=== %s ===\n", __FILE__);
@@ -86,6 +100,7 @@ int main() {
     testExceptionNewDelete();
     testThrowCatch();
     testThrowCatchNoMsg();
+    testReset();
 
     printf("=== %s ok ===\n", __FILE__);
     return 0;

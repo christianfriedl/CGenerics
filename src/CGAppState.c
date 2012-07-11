@@ -109,3 +109,7 @@ CGException* CGAppState_catchExceptionWithSeverity(CGAppState* this, Severity se
 CGException* CGAppState_getException(CGAppState* this) {
     return this->exception;
 }
+
+void CGAppState_reset(CGAppState* this) {
+    CGAppState_catchAndDeleteException(this);
+}
