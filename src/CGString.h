@@ -16,6 +16,7 @@ int CGString__compare(const CGString* i1, const CGString* i2);
 CGString* CGString_append(CGString* this, const CGString* that);
 size_t CGString_getSize(const CGString* this);
 CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, unsigned length);
+char CGString_getCharAt(const CGString* this, unsigned index);
 
 
 /* TODO missing functions:

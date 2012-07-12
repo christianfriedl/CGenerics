@@ -21,6 +21,7 @@ typedef struct {
 extern CGException CGGeneralFatalException;
 
 CGException* CGException__new(const Severity severity, const int id, const char* msg, ...);
+CGException* CGException__newWithMetadata(const Severity severity, const int id, const char* file, const char* func, const int line, const char* msg, ...);
 void CGException_delete(CGException* this);
 Severity CGException_getSeverity(const CGException* this);
 int CGException_getId(const CGException* this);

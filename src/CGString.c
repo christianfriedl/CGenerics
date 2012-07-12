@@ -10,7 +10,7 @@ CGString* CGString__new(const char* value) {
     if (this != NULL)
         strcpy(this, value);
     else
-        CGAppState_throwException(CGAppState__getInstance(), CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString for '%s'", value));
+        CGAppState_THROW(CGAppState__getInstance(), Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString for '%s'", value);
     return this;
 }
 CGString* CGString__newFromLengthAndPreset(unsigned int length, const char preset) {
@@ -19,7 +19,7 @@ CGString* CGString__newFromLengthAndPreset(unsigned int length, const char prese
         memset(this, preset, length);
         *(this + length) = '\0';
     } else
-        CGAppState_throwException(CGAppState__getInstance(), CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString"));
+        CGAppState_THROW(CGAppState__getInstance(), Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGString");
     return this;
 }
 CGString* CGString__newWithSprintf(const char* fmt, ...) {
@@ -54,8 +54,8 @@ size_t CGString_getSize(const CGString* this) {
     return strlen(this);
 }
 CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, unsigned length) {
-    if (startIndex > strlen(this)) {
-        CGAppState_throwException(CGAppState__getInstance(), CGException__new(Severity_notice, CGExceptionID_StringError, "startIndex %u > strlen %u in createSubstring", startIndex, strlen(this)));
+    if (startIndex >= strlen(this)) {
+        CGAppState_THROW(CGAppState__getInstance(), Severity_notice, CGExceptionID_StringError, "startIndex %u >= strlen %u in createSubstring", startIndex, strlen(this));
         return NULL;
     }
     if (startIndex + length > strlen(this))
@@ -63,4 +63,12 @@ CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, un
     CGString* newString = CGString__newFromLengthAndPreset(length, '\0');
     strncpy(newString, (this + startIndex), length);
     return newString;
+}
+
+char CGString_getCharAt(const CGString* this, unsigned index) {
+    if (index >= strlen(this)) {
+        CGAppState_THROW(CGAppState__getInstance(), Severity_notice, CGExceptionID_StringError, "index %u >= strlen %u", index, strlen(this));
+        return '\0';
+    }
+    return this[index];
 }

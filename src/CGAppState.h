@@ -13,7 +13,7 @@ void CGAppState__init(const char* name);
 void CGAppState__deInit();
 CGAppState* CGAppState__getInstance();
 void CGAppState_throwException(CGAppState* this, CGException* exception);
-#define CGAppState_THROW(this, severity, id, ...) CGAppState_throwException((this), CGException__new((severity), (id), __VA_ARGS__))
+#define CGAppState_THROW(this, severity, id, ...) CGAppState_throwException((this), CGException__newWithMetadata((severity), (id), __FILE__, __func__, __LINE__, __VA_ARGS__))
 bool CGAppState_catchAndDeleteException(CGAppState* this);
 bool CGAppState_catchAndDeleteExceptionWithID(CGAppState* this, int exceptionID);
 CGException* CGAppState_catchException(CGAppState* this);

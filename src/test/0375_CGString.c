@@ -94,6 +94,20 @@ void testNewWithSprintf() {
     printf("ok -- ");
 }
 
+void testGetCharAt() {
+    printf("%s... ", __func__);
+    CGString* s = CGString__new("xyz");
+    assert(CGString_getCharAt(s, 0) == 'x');
+    assert(CGString_getCharAt(s, 1) == 'y');
+    assert(CGString_getCharAt(s, 2) == 'z');
+    assert(CGString_getCharAt(s, 3) == '\0');
+    assert(CGAppState_isExceptionRaisedWithID(CGAppState__getInstance(), CGExceptionID_StringError) == true);
+
+    CGString_delete(s);
+    printf("ok -- ");
+}
+
+
 
 
 int main() {
@@ -110,6 +124,7 @@ int main() {
     testAppend();
     testSize();
     testSubstring();
+    testGetCharAt();
 
     CGAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
