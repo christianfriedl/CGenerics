@@ -59,6 +59,19 @@ void testAppend() {
     CGString_delete(s);
     printf("ok -- ");
 }
+void testAppend2() {
+    printf("%s... ", __func__);
+    CGString* s = CGString__new("");
+    CGString* s3 = CGString__newWithSprintf("%i", 1);
+    CGString* s2 = CGString_append(s, s3);
+    CGString* s4 = CGString__new("1");
+    assert(!CGString__compare(s2, s4));
+    CGString_delete(s);
+    CGString_delete(s2);
+    CGString_delete(s3);
+    CGString_delete(s4);
+    printf("ok -- ");
+}
 
 void testSize() {
     printf("%s... ", __func__);
@@ -122,6 +135,7 @@ int main() {
     testClone();
     testToVector();
     testAppend();
+    testAppend2();
     testSize();
     testSubstring();
     testGetCharAt();

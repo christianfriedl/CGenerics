@@ -46,6 +46,8 @@ int CGString__compare(const CGString* s1, const CGString* s2) {
 }
 CGString* CGString_append(CGString* this, const CGString* that) {
     CGString* newString = CGString__newFromLengthAndPreset(strlen(this) + strlen(that) + 1, '\0');
+    if (newString == NULL)
+        CGAppState_THROW(CGAppState__getInstance(), Severity_fatal, CGExceptionID_GeneralFatalException, "unable to allocate new string via CGString__newFromLengthAndPreset");
 	strcpy(newString, this);
     strcat(newString, that);
 	return newString;
