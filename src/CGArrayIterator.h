@@ -9,7 +9,7 @@
 typedef struct { \
     CGArrayOf##TYPENAME* array; \
     unsigned int currentIndex; \
-	bool hasStarted; \
+    bool hasStarted; \
 } CGArrayOf##TYPENAME##Iterator; \
 \
 
@@ -34,10 +34,10 @@ typedef struct { \
         if (this != NULL) { \
             this->array = array; \
             this->currentIndex = 0; \
-			this->hasStarted = false; \
+            this->hasStarted = false; \
         } else {\
             CGAppState_throwException(CGAppState__getInstance(), CGException__new(Severity_error, CGExceptionID_CannotAllocate, "cannot allocate CGArrayIterator")); \
-		} \
+        } \
         return this; \
     } \
     \
@@ -64,7 +64,7 @@ typedef struct { \
     } \
     \
     bool CGArrayOf##TYPENAME##Iterator_moveToNextElement(CGArrayOf##TYPENAME##Iterator* this) { \
-		this->hasStarted = true; \
+        this->hasStarted = true; \
         ++this->currentIndex; \
         if (CGArrayOf##TYPENAME##Iterator_isInsideBounds(this)) \
             return true; \
@@ -72,8 +72,17 @@ typedef struct { \
             return false; \
     } \
     \
+    bool CGArrayOf##TYPENAME##Iterator_moveToIndex(CGArrayOf##TYPENAME##Iterator* this, unsigned int index) { \
+        this->hasStarted = true; \
+        this->currentIndex = index; \
+        if (CGArrayOf##TYPENAME##Iterator_isInsideBounds(this)) \
+            return true; \
+        else \
+            return false; \
+    } \
+    \
     TYPENAME* CGArrayOf##TYPENAME##Iterator_getNextElement(CGArrayOf##TYPENAME##Iterator* this) { \
-		this->hasStarted = true; \
+        this->hasStarted = true; \
         if (CGArrayOf##TYPENAME##Iterator_moveToNextElement(this)) \
             return CGArrayOf##TYPENAME##_getValueAt(this->array, this->currentIndex); \
         else { \
@@ -81,15 +90,15 @@ typedef struct { \
             return NULL; \
         } \
     } \
-	\
+    \
     TYPENAME* CGArrayOf##TYPENAME##Iterator_fetch(CGArrayOf##TYPENAME##Iterator* this) { \
-		if (this->hasStarted == true) \
-			return CGArrayOf##TYPENAME##Iterator_getNextElement(this); \
-		else { \
-			this->hasStarted = true; \
-			return CGArrayOf##TYPENAME##Iterator_getCurrentElement(this); \
-		} \
-	} \
+        if (this->hasStarted == true) \
+            return CGArrayOf##TYPENAME##Iterator_getNextElement(this); \
+        else { \
+            this->hasStarted = true; \
+            return CGArrayOf##TYPENAME##Iterator_getCurrentElement(this); \
+        } \
+    } \
     \
     void CGArrayOf##TYPENAME##Iterator_unFetch(CGArrayOf##TYPENAME##Iterator* this) { \
         if (this->hasStarted == true) { \
@@ -103,7 +112,10 @@ typedef struct { \
     \
     void CGArrayOf##TYPENAME##Iterator_reset(CGArrayOf##TYPENAME##Iterator* this) { \
         this->currentIndex = 0; \
-		this->hasStarted = false; \
+        this->hasStarted = false; \
+    } \
+    bool CGArrayOf##TYPENAME##Iterator_getHasStarted(CGArrayOf##TYPENAME##Iterator* this) { \
+        return this->hasStarted; \
     } \
 \
 
@@ -134,9 +146,11 @@ typedef struct { \
 #define CGArrayIterator_getCurrentIndex(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_getCurrentIndex((this)) 
 #define CGArrayIterator_getCurrentElement(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_getCurrentElement((this)) 
 #define CGArrayIterator_moveToNextElement(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_moveToNextElement((this)) 
+#define CGArrayIterator_moveToIndex(TYPENAME, this, index) CGArrayOf##TYPENAME##Iterator_moveToIndex((this), (index)) 
 #define CGArrayIterator_getNextElement(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_getNextElement((this)) 
 #define CGArrayIterator_fetch(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_fetch((this)) 
 #define CGArrayIterator_unFetch(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_unFetch((this)) 
 #define CGArrayIterator_reset(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_reset((this)) 
+#define CGArrayIterator_getHasStarted(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_getHasStarted((this))
 
 #endif
