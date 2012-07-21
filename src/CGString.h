@@ -13,7 +13,15 @@ CGString* CGString_clone(const CGString* this);
 void CGString_delete(CGString* this);
 char* CGString_toVector(const CGString* this);
 int CGString__compare(const CGString* i1, const CGString* i2);
+/*
+ * append a string, returning a new string
+ */
 CGString* CGString_append(CGString* this, const CGString* that);
+/*
+ * append a string in-place
+ */
+CGString* CGString_append_I(CGString* this, const CGString* that);
+CGString* CGString_appendWithSprintf_I(CGString* this, const CGString* fmt, ...);
 size_t CGString_getSize(const CGString* this);
 CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, unsigned length);
 char CGString_getCharAt(const CGString* this, unsigned index);

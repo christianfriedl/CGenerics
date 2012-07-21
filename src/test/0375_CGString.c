@@ -120,6 +120,19 @@ void testGetCharAt() {
     printf("ok -- ");
 }
 
+void testAppendI() {
+    printf("%s... ", __func__);
+    CGString* s = CGString__new("xyz");
+    CGString* s2 = CGString__new("abc");
+    s = CGString_append_I(s, s2);
+    assert(!CGString__compare(s, "xyzabc"));
+    s = CGString_appendWithSprintf_I(s, "--%s", s2);
+    assert(!CGString__compare(s, "xyzabc--abc"));
+    CGString_delete(s);
+    CGString_delete(s2);
+    printf("ok -- ");
+}
+
 
 
 
@@ -136,6 +149,7 @@ int main() {
     testToVector();
     testAppend();
     testAppend2();
+    testAppendI();
     testSize();
     testSubstring();
     testGetCharAt();
