@@ -54,6 +54,7 @@ $(STATIC_LIBRARY): $(LIB_OBJECTS)
 clean:
 	rm -f *.o $(TEST_BINARIES) $(STATIC_LIBRARY) *.i *.s *.e.c *.BAK
 	(cd test; make clean)
+	(cd benchmark; make clean)
 
 .PHONY: test
 test:

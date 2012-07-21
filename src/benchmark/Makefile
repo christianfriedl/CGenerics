@@ -1,0 +1,28 @@
+include Makefile.local
+CFLAGS=-Wall -I../ -save-temps
+LDFLAGS=-Wall -L../ -lcgenerics
+
+BINARIES=0500_Array # 0510_ArrayIterator 0750_LinkedList 0800_CGTree
+
+clean-all: clean all
+
+all: clean tests
+
+tests: $(BINARIES)
+
+clean:
+	rm -f *.o *.e *.e.c *.BAK *.i *.s $(BINARIES)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $?
+
+%: %.c
+	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CFLAGS)
+
+pp:
+	for i in $(BINARIES); do gcc $(CFLAGS) -E -o - -c $$i.c; done
+
+pp-indent:
+	for i in $(BINARIES); do gcc $(CFLAGS) -E -o $$i.e.c -c $$i.c && indent -bad -bap -i4 $$i.e.c && gcc -o $$i.e $$i.e.c; done
+
+
