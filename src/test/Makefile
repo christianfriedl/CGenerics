@@ -11,6 +11,7 @@ clean-all: clean all
 all: clean tests # performance
 
 tests: $(BINARIES)
+	rm -rf *.dSYM
 
 performance: $(PERFORMANCE_BINARIES)
 
