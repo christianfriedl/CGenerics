@@ -53,6 +53,9 @@ char* CGString_toVector(const CGString* this) {
 int CGString__compare(const CGString* s1, const CGString* s2) {
     return (strcmp(s1, s2));
 }
+bool CGString_isEqual(const CGString* this, const CGString* that) {
+    return (strcmp(this, that) == 0);
+}
 CGString* CGString_append(CGString* this, const CGString* that) {
     CGString* newString = CGString__newFromLengthAndPreset(strlen(this) + strlen(that) + 1, '\0');
     if (newString == NULL)
@@ -84,6 +87,9 @@ CGString* CGString_appendWithSprintf_I(CGString* this, const CGString* fmt, ...)
     return this;
 }
 size_t CGString_getSize(const CGString* this) {
+    return strlen(this);
+}
+size_t CGString_getByteSize(const CGString* this) {
     return strlen(this);
 }
 CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, unsigned length) {

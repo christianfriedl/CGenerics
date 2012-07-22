@@ -10,9 +10,9 @@ WARNINGS = $(NORMAL_WARNINGS)
 CFLAGS=-ggdb -save-temps $(WARNINGS)
 LDFLAGS=-ggdb $(WARNINGS) 
 
-CONTAINER_HEADERS=CGArray.h CGLinkedList.h CGArrayIterator.h CGTree.h
-HEADERS=$(CONTAINER_HEADERS) CGAppState.h CGArray.h CGException.h CGInteger.h CGLinkedList.h CGLogger.h CGString.h CGenerics.h CGArrayIterator.h CGTree.h
-LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o
+CONTAINER_HEADERS=CGArray.h CGLinkedList.h CGArrayIterator.h CGTree.h CGKVMap.h
+HEADERS=$(CONTAINER_HEADERS) CGAppState.h CGException.h CGInteger.h CGLogger.h CGString.h CGenerics.h CGArrayIterator.h
+LIB_OBJECTS=CGException.o CGAppState.o CGLogger.o CGInteger.o CGString.o lookup3.o
 STATIC_LIBRARY=libcgenerics.a
 
 LOCALMAN=../doc/man
@@ -28,6 +28,10 @@ all-tests: tests manpages test
 necessary-tests: tests test
 
 clean-all-test: clean all test
+
+current-test: localall
+	(cd test; make current)
+	for i in `find test -type f -not -name "*.*" -name "0*" |sort -n`; do $$i; if [ $$? != 0 ]; then echo "ERROR..."; exit 1; fi; done
 
 all-test: all test
 

@@ -15,6 +15,7 @@ void CGString_delete(CGString* this);
 void CGString_deleteAll(CGString* item, ...);
 char* CGString_toVector(const CGString* this);
 int CGString__compare(const CGString* i1, const CGString* i2);
+bool CGString_isEqual(const CGString* this, const CGString* that);
 /*
  * append a string, returning a new string
  */
@@ -25,6 +26,7 @@ CGString* CGString_append(CGString* this, const CGString* that);
 CGString* CGString_append_I(CGString* this, const CGString* that);
 CGString* CGString_appendWithSprintf_I(CGString* this, const CGString* fmt, ...);
 size_t CGString_getSize(const CGString* this);
+size_t CGString_getByteSize(const CGString* this);
 CGString* CGString_createSubstring(const CGString* this, unsigned startIndex, unsigned length);
 char CGString_getCharAt(const CGString* this, unsigned index);
 

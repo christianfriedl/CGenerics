@@ -341,4 +341,4 @@ typedef struct { \
 #define CGArray_mapConstant(TYPENAME, array, mapFunction, userData) CGArrayOf##TYPENAME##_mapConstant((array), (mapFunction), (userData))
 
 
-#endif 
+#endif
