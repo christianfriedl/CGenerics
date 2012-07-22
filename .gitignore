@@ -16,5 +16,6 @@ src/test/0750_LinkedList
 src/test/0800_CGTree
 src/test/0810_CGTreeIterator
 src/test/0900_KVPair
+src/test/0950_HashMap
 doc/
 tags
