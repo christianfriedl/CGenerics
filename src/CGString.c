@@ -38,6 +38,15 @@ CGString* CGString_clone(const CGString* this) {
 void CGString_delete(CGString* this) {
     free(this);
 }
+void CGString_deleteAll(CGString* item, ...) {
+    va_list args;
+    va_start(args, item);
+    while (item != NULL) {
+        CGString_delete(item);
+        item = va_arg(args, CGString*);
+    }
+    va_end(args);
+}
 char* CGString_toVector(const CGString* this) {
     return strdup(this);
 }

@@ -1,6 +1,14 @@
 #ifndef _CGLINKEDLIST_H
 #define _CGLINKEDLIST_H
 
+/*
+ * general note for container types:
+ * containers contain references - that means that the objects in the
+ * container are never automatically delete'd by delete'ing the
+ * continer, and that *_clone never returns a deep copy, nor does *_add
+ * etc. copy the object
+ */
+
 /* NOMAKEMAN */
 
 #include<stdlib.h>

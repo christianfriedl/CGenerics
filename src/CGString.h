@@ -11,6 +11,8 @@ CGString* CGString__newFromLengthAndPreset(unsigned int length, const char prese
 CGString* CGString__newWithSprintf(const char* fmt, ...);
 CGString* CGString_clone(const CGString* this);
 void CGString_delete(CGString* this);
+/* requires a sentinel NULL */
+void CGString_deleteAll(CGString* item, ...);
 char* CGString_toVector(const CGString* this);
 int CGString__compare(const CGString* i1, const CGString* i2);
 /*

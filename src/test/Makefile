@@ -1,8 +1,8 @@
 include Makefile.local
-CFLAGS=-Wall -I../ -save-temps
-LDFLAGS=-Wall -L../ -lcgenerics
+CFLAGS=-Wall -I../ -save-temps -ggdb
+LDFLAGS=-Wall -L../ -lcgenerics -ggdb
 
-BINARIES=0125_AppState 0250_Integer 0375_CGString 0500_Array 0510_ArrayIterator 0750_LinkedList 0800_CGTree
+BINARIES=0125_AppState 0250_Integer 0375_CGString 0500_Array 0510_ArrayIterator 0750_LinkedList 0800_CGTree 0900_KVPair
 PERFORMANCE_BINARIES=0501_ArrayPerformance 
 
 clean-all: clean all

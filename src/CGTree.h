@@ -1,6 +1,14 @@
 #ifndef _CGTREE_H
 #define _CGTREE_H
 
+/*
+ * general note for container types:
+ * containers contain references - that means that the objects in the
+ * container are never automatically delete'd by delete'ing the
+ * continer, and that *_clone never returns a deep copy, nor does *_add
+ * etc. copy the object
+ */
+
 /* NOMAKEMAN */
 
 #include<stdlib.h>
@@ -198,6 +206,7 @@ typedef enum { CGTreeStrategy_depthFirst = 0, CGTreeStrategy_breadthFirst } CGTr
 
 #define CGTree__new(TYPENAME, value) CGTreeOf##TYPENAME##__new((value))
 #define CGTree__newFromInitializerList(TYPENAME, value, ...) CGTreeOf##TYPENAME##__newFromInitializerList((value), __VA_ARGS__)
+/* NOTE: clone for container types does not provide a deep copy, as we cannot know the signature of the constructors of the hosted types */
 #define CGTree_clone(TYPENAME, tree) CGTreeOf##TYPENAME##_clone((tree))
 #define CGTree_getValue(TYPENAME, tree) CGTreeOf##TYPENAME##_getValue((tree))
 #define CGTree_delete(TYPENAME, tree) CGTreeOf##TYPENAME##_delete((tree))
