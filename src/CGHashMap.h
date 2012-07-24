@@ -59,7 +59,10 @@ typedef struct { \
         CGHashMapOf##TYPENAME1##TYPENAME2* that = CGHashMapOf##TYPENAME1##TYPENAME2##__new(); \
         if (CGAppState_isExceptionRaisedWithID(CGAppState__getInstance(), CGExceptionID_CannotAllocate)) \
             return NULL; \
-        /* TODO clone the buckets */ \
+        unsigned int i=0; \
+        /* NOTE: this implies that we actually do clone the objects in the Pairs, i.e. the original keys and values */ \
+        for (i=0; i < CGArrayOfCGKVPairOf##TYPENAME1##TYPENAME2##_getSize(this->buckets); ++i) \
+            that->buckets[i] = CGArrayOfCGKVPairOf##TYPENAME1##TYPENAME2##_clone(this->buckets[i]); \
         return that; \
     } \
     \

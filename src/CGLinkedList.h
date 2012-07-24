@@ -1,14 +1,6 @@
 #ifndef _CGLINKEDLIST_H
 #define _CGLINKEDLIST_H
 
-/*
- * general note for container types:
- * containers contain references - that means that the objects in the
- * container are never automatically delete'd by delete'ing the
- * continer, and that *_clone never returns a deep copy, nor does *_add
- * etc. copy the object
- */
-
 /* NOMAKEMAN */
 
 #include<stdlib.h>
@@ -53,6 +45,14 @@ void CGLinkedListElementOf##TYPENAME##_delete(CGLinkedListElementOf##TYPENAME* t
 	free(this); \
 } \
 \
+CGLinkedListElementOf##TYPENAME* CGLinkedListElementOf##TYPENAME##_clone(CGLinkedListElementOf##TYPENAME* this) { \
+    CGLinkedListElementOf##TYPENAME* elem = CGLinkedListElementOf##TYPENAME##__new(this->value); \
+    if (this->nextElement == NULL) \
+        return elem; \
+    else \
+        return CGLinkedListElementOf##TYPENAME##_clone(this->nextElement); \
+} \
+\
 CGLinkedListElementOf##TYPENAME* CGLinkedListElementOf##TYPENAME##_getNextElement(CGLinkedListElementOf##TYPENAME* this) { \
     return this->nextElement; \
 } \
@@ -73,6 +73,10 @@ CGLinkedListOf##TYPENAME* CGLinkedListOf##TYPENAME##__new(CGLinkedListElementOf#
 	} else \
 		CGAppState_throwException(CGAppState__getInstance(), CGException__new(Severity_error, CGExceptionID_CannotAllocate, "unable to allocate CGLinkedList for '%s'", "TYPENAME")); \
 	return this; \
+} \
+\
+CGLinkedListOf##TYPENAME* CGLinkedListOf##TYPENAME##_clone(CGLinkedListOf##TYPENAME* this) { \
+    return CGLinkedListOf##TYPENAME##__new(CGLinkedListElementOf##TYPENAME##_clone(this->rootElement)); \
 } \
 \
 void CGLinkedListOf##TYPENAME##_delete(CGLinkedListOf##TYPENAME* this) { \
@@ -157,9 +161,11 @@ TYPENAME* CGLinkedListOf##TYPENAME##_findValue(CGLinkedListOf##TYPENAME* this, c
 #define CGLinkedListElement_getValue(TYPENAME, element) CGLinkedListElementOf##TYPENAME##_getValue(element)
 #define CGLinkedListElement_setNextElement(TYPENAME, element, nextElement) CGLinkedListElementOf##TYPENAME##_getNextElement((element), (nextElement))
 #define CGLinkedListElement_getNextElement(TYPENAME, element) CGLinkedListElementOf##TYPENAME##_getNextElement(element)
+#define CGLinkedListElement_clone(TYPENAME, element) CGLinkedListElementOf##TYPENAME##_clone((element))
 
 #define CGLinkedList__new(TYPENAME, rootElement) CGLinkedListOf##TYPENAME##__new((rootElement))
 #define CGLinkedList_delete(TYPENAME, list) CGLinkedListOf##TYPENAME##_delete((list))
+#define CGLinkedList_clone(TYPENAME, list) CGLinkedListOf##TYPENAME##_clone((list))
 #define CGLinkedList_addElement(TYPENAME, list, element) CGLinkedListOf##TYPENAME##_addElement((list), (element))
 #define CGLinkedList_insertElementAfter(TYPENAME, list, afterElement, element) CGLinkedListOf##TYPENAME##_insertElementAfter((list), (afterElement), (element))
 #define CGLinkedList_remove(TYPENAME, list, element) CGLinkedListOf##TYPENAME##_remove((list), (element))
