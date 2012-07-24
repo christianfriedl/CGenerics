@@ -103,6 +103,8 @@ void testClone() {
     assert(CGArray_getCapacity(Int, clonedCGArray) == CGArray_getCapacity(Int, intCGArray));
     for (i=0; i < 20; ++i) {
         assert(*(CGArray_getValueAt(Int, clonedCGArray, i)) == *(CGArray_getValueAt(Int, intCGArray, i)));
+        /* assert deep copy */
+        assert(CGArray_getValueAt(Int, clonedCGArray, i) != CGArray_getValueAt(Int, intCGArray, i));
     }
 
     CGArray_deleteValues(Int, clonedCGArray);

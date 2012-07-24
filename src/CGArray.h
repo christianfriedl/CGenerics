@@ -1,14 +1,6 @@
 #ifndef _CGARRAY_H
 #define _CGARRAY_H
 
-/*
- * general note for container types:
- * containers contain references - that means that the objects in the
- * container are never automatically delete'd by delete'ing the
- * continer, and that *_clone never returns a deep copy, nor does *_add
- * etc. copy the object
- */
-
 /* NOMAKEMAN */
 
 #include<stdlib.h>
@@ -317,7 +309,9 @@ typedef struct { \
 
 #define CGArray__new(TYPENAME, initialCapacity) CGArrayOf##TYPENAME##__new((initialCapacity))
 #define CGArray__newFromInitializerList(TYPENAME, ...) CGArrayOf##TYPENAME##__newFromInitializerList(__VA_ARGS__)
-/* NOTE: clone for container types does not provide a deep copy, as we cannot know the signature of the constructors of the hosted types */
+/**
+ * CGArray_clone: returns a deep copy of the array
+ */
 #define CGArray_clone(TYPENAME, array) CGArrayOf##TYPENAME##_clone((array))
 #define CGArray_delete(TYPENAME, array) CGArrayOf##TYPENAME##_delete((array))
 #define CGArray_deleteValues(TYPENAME, array) CGArrayOf##TYPENAME##_deleteValues((array))

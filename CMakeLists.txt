@@ -4,6 +4,8 @@ project (CGenerics)
 set (CGenerics_VERSION_MAJOR 0)
 set (CGenerics_VERSION_MINOR 5)
 
+set (GENERIC_HEADERS "CGArray.h CGArrayIterator.h CGHashMap.h CGKVPair.h CGLinkedList.h CGTree.h CGenerics.h debug.h")
+
 enable_testing()
 
 if (CMAKE_COMPILER_IS_GNUCXX)
