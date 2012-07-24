@@ -152,6 +152,30 @@ void testMoveToIndex() {
     
     printf("ok -- ");
 }
+void testClone() {
+    printf("%s... ", __func__);
+
+    CGInteger* i1 = CGInteger__new(1);
+    CGInteger* i2 = CGInteger__new(2);
+    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, i2, NULL);
+    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
+    CGInteger* iFetch;
+    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    assert(iFetch == i1);
+    CGArrayIterator(CGInteger)* iter2 = CGArrayIterator_clone(CGInteger, iter);
+    assert(iter2 != NULL);
+    assert(iter2 != iter);
+    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    assert(iFetch == i2);
+
+    CGArrayIterator_delete(CGInteger, iter);
+    CGArrayIterator_delete(CGInteger, iter2);
+
+    CGArray_deleteValues(CGInteger, array);
+    CGArray_delete(CGInteger, array);
+    
+    printf("ok -- ");
+}
 int main() {
     printf("=== %s ===\n", __FILE__);
     CGAppState__init(__FILE__);
@@ -163,6 +187,7 @@ int main() {
     testFetchEmptyArray();
     testUnFetch();
     testMoveToIndex();
+    testClone();
 
     CGAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);

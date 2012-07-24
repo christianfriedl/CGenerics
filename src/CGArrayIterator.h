@@ -25,6 +25,8 @@ typedef struct { \
     TYPENAME* CGArrayOf##TYPENAME##Iterator_fetch(CGArrayOf##TYPENAME##Iterator* this); \
     void CGArrayOf##TYPENAME##Iterator_unFetch(CGArrayOf##TYPENAME##Iterator* this); \
     void CGArrayOf##TYPENAME##Iterator_reset(CGArrayOf##TYPENAME##Iterator* this); \
+    CGArrayOf##TYPENAME##Iterator* CGArrayOf##TYPENAME##Iterator_clone(CGArrayOf##TYPENAME##Iterator* this); \
+    bool CGArrayOf##TYPENAME##Iterator_getHasStarted(CGArrayOf##TYPENAME##Iterator* this); \
 \
 
 #define DEFINE_ARRAY_ITERATOR_FUNCS(TYPENAME) \
@@ -114,6 +116,14 @@ typedef struct { \
         this->currentIndex = 0; \
         this->hasStarted = false; \
     } \
+    \
+    CGArrayOf##TYPENAME##Iterator* CGArrayOf##TYPENAME##Iterator_clone(CGArrayOf##TYPENAME##Iterator* this) { \
+        CGArrayOf##TYPENAME##Iterator* iter = CGArrayOf##TYPENAME##Iterator__new(this->array); \
+        iter->currentIndex = this->currentIndex; \
+        iter->hasStarted = this->hasStarted; \
+        return iter; \
+    } \
+    \
     bool CGArrayOf##TYPENAME##Iterator_getHasStarted(CGArrayOf##TYPENAME##Iterator* this) { \
         return this->hasStarted; \
     } \
@@ -152,5 +162,6 @@ typedef struct { \
 #define CGArrayIterator_unFetch(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_unFetch((this)) 
 #define CGArrayIterator_reset(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_reset((this)) 
 #define CGArrayIterator_getHasStarted(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_getHasStarted((this))
+#define CGArrayIterator_clone(TYPENAME, this) CGArrayOf##TYPENAME##Iterator_clone((this))
 
 #endif
