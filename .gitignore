@@ -19,6 +19,6 @@ src/test/0900_KVPair
 src/test/0950_HashMap
 doc/
 tags
-bin_debug/
+/build*/
 CMakeCache.txt
 CMakeFiles/
