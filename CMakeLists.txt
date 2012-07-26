@@ -9,8 +9,6 @@ set (GENERIC_HEADERS "CGArray.h CGArrayIterator.h CGHashMap.h CGKVPair.h CGLinke
 enable_testing()
 
 if (CMAKE_COMPILER_IS_GNUCXX)
-    ### damn it, this does not work because cmake will add double-quotes to "gccfilter --colorize gcc"
-    # set(CMAKE_C_COMPILER "/usr/bin/gccfilter --colorize ${CMAKE_C_COMPILER}")
     set(NORMAL_WARNINGS -Wall)
     set(MEGA_WARNINGS "${USEFUL_WARNINGS} -Wredundant-decls -Wshadow -Wcast-align -Wwrite-strings -Winline -Wformat-nonliteral -Wformat-security -Wswitch -Wswitch-default -Winit-self -Wmissing-include-dirs -Wundef -Waggregate-return -Wmissing-format-attribute -Wnested-externs ")
     set(MEGA_WARNINGS "${INTENSIVE_WARNINGS} -Wdeclaration-after-statement -Wredundant-decls -Wmissing-noreturn -Wshadow -Wcast-align -Wwrite-strings -Winline -Wformat-nonliteral -Wformat-security -Wswitch -Wswitch-default -Winit-self -Wmissing-include-dirs -Wundef -Waggregate-return -Wmissing-format-attribute -Wnested-externs ")
