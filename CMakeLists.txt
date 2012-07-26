@@ -4,7 +4,6 @@ project (CGenerics)
 set (CGenerics_VERSION_MAJOR 0)
 set (CGenerics_VERSION_MINOR 5)
 
-set (GENERIC_HEADERS "CGArray.h CGArrayIterator.h CGHashMap.h CGKVPair.h CGLinkedList.h CGTree.h CGenerics.h debug.h")
 
 enable_testing()
 
@@ -29,3 +28,4 @@ include_directories("${PROJECT_BINARY_DIR}")
  
 add_subdirectory("src")
 add_subdirectory("test")
+

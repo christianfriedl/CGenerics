@@ -4,153 +4,153 @@
 #include<time.h>
 #include<assert.h>
 #include<string.h>
-#include"CGAppState.h"
-#include"CGString.h"
+#include"cgAppState.h"
+#include"cgString.h"
 
-CGAppState* appState;
+cgAppState* appState;
 
 void testNewDelete() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("abcde");
+    cgString* s = cgString__new("abcde");
     assert(s != NULL);
     assert(!strcmp(s, "abcde"));
-    CGString_delete(s);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testDeleteAll() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("abcde");
-    CGString* s2 = CGString__new("fgh");
+    cgString* s = cgString__new("abcde");
+    cgString* s2 = cgString__new("fgh");
     assert(s != NULL);
     assert(s2 != NULL);
-    CGString_deleteAll(s, s2, NULL);
+    cgString_deleteAll(s, s2, NULL);
     printf("ok -- ");
 }
 
 void testNewFromLengthAndPreset() {
     printf("%s... ", __func__);
-    CGString* s = CGString__newFromLengthAndPreset(20, 'x');
+    cgString* s = cgString__newFromLengthAndPreset(20, 'x');
     assert(s != NULL);
     assert(!strcmp(s, "xxxxxxxxxxxxxxxxxxxx"));
-    CGString_delete(s);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testToVector() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("abcde");
-    char *v = CGString_toVector(s);
+    cgString* s = cgString__new("abcde");
+    char *v = cgString_toVector(s);
     assert(!strcmp(v, s));
     free(v);
-    CGString_delete(s);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testClone() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("abcde");
-    CGString* s2 = CGString_clone(s);
+    cgString* s = cgString__new("abcde");
+    cgString* s2 = cgString_clone(s);
     assert(s2 != NULL);
     assert(!strcmp(s2, "abcde"));
-    CGString_delete(s2);
-    CGString_delete(s);
+    cgString_delete(s2);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testAppend() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("abcde");
-    CGString* s2 = CGString__new("fghijk");
-    CGString* s3 = CGString_append(s, s2);
-    CGString* c = CGString__new("abcdefghijk");
-    assert(!CGString__compare(s3, c));
-    CGString_delete(c);
-    CGString_delete(s3);
-    CGString_delete(s2);
-    CGString_delete(s);
+    cgString* s = cgString__new("abcde");
+    cgString* s2 = cgString__new("fghijk");
+    cgString* s3 = cgString_append(s, s2);
+    cgString* c = cgString__new("abcdefghijk");
+    assert(!cgString__compare(s3, c));
+    cgString_delete(c);
+    cgString_delete(s3);
+    cgString_delete(s2);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testAppend2() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("");
-    CGString* s3 = CGString__newWithSprintf("%i", 1);
-    CGString* s2 = CGString_append(s, s3);
-    CGString* s4 = CGString__new("1");
-    assert(!CGString__compare(s2, s4));
-    CGString_delete(s);
-    CGString_delete(s2);
-    CGString_delete(s3);
-    CGString_delete(s4);
+    cgString* s = cgString__new("");
+    cgString* s3 = cgString__newWithSprintf("%i", 1);
+    cgString* s2 = cgString_append(s, s3);
+    cgString* s4 = cgString__new("1");
+    assert(!cgString__compare(s2, s4));
+    cgString_delete(s);
+    cgString_delete(s2);
+    cgString_delete(s3);
+    cgString_delete(s4);
     printf("ok -- ");
 }
 
 void testSize() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("abcde");
-    assert(CGString_getSize(s) == 5);
-    CGString_delete(s);
+    cgString* s = cgString__new("abcde");
+    assert(cgString_getSize(s) == 5);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testSubstring() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("abcde");
-    CGString* s2 = CGString_createSubstring(s, 1, 3);
-    assert(!CGString__compare(s2, "bcd"));
-    CGString_delete(s2);
-    s2 = CGString_createSubstring(s, 1, 300);
-    assert(!CGString__compare(s2, "bcde"));
-    CGString_delete(s2);
-    s2 = CGString_createSubstring(s, 10, 1);
-    assert(CGAppState_catchAndDeleteExceptionWithID(appState, CGExceptionID_StringError) == true);
+    cgString* s = cgString__new("abcde");
+    cgString* s2 = cgString_createSubstring(s, 1, 3);
+    assert(!cgString__compare(s2, "bcd"));
+    cgString_delete(s2);
+    s2 = cgString_createSubstring(s, 1, 300);
+    assert(!cgString__compare(s2, "bcde"));
+    cgString_delete(s2);
+    s2 = cgString_createSubstring(s, 10, 1);
+    assert(cgAppState_catchAndDeleteExceptionWithID(appState, cgExceptionID_StringError) == true);
     assert(s2 == NULL);
 
-    CGString_delete(s);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testNewWithSprintf() {
     printf("%s... ", __func__);
-    CGString* s = CGString__newWithSprintf("%s %i", "abcde", 20);
-    assert(!CGString__compare(s, "abcde 20"));
+    cgString* s = cgString__newWithSprintf("%s %i", "abcde", 20);
+    assert(!cgString__compare(s, "abcde 20"));
 
-    CGString_delete(s);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testGetCharAt() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("xyz");
-    assert(CGString_getCharAt(s, 0) == 'x');
-    assert(CGString_getCharAt(s, 1) == 'y');
-    assert(CGString_getCharAt(s, 2) == 'z');
-    assert(CGString_getCharAt(s, 3) == '\0');
-    assert(CGAppState_isExceptionRaisedWithID(CGAppState__getInstance(), CGExceptionID_StringError) == true);
+    cgString* s = cgString__new("xyz");
+    assert(cgString_getCharAt(s, 0) == 'x');
+    assert(cgString_getCharAt(s, 1) == 'y');
+    assert(cgString_getCharAt(s, 2) == 'z');
+    assert(cgString_getCharAt(s, 3) == '\0');
+    assert(cgAppState_isExceptionRaisedWithID(cgAppState__getInstance(), cgExceptionID_StringError) == true);
 
-    CGString_delete(s);
+    cgString_delete(s);
     printf("ok -- ");
 }
 
 void testAppendI() {
     printf("%s... ", __func__);
-    CGString* s = CGString__new("xyz");
-    CGString* s2 = CGString__new("abc");
-    s = CGString_append_I(s, s2);
-    assert(!CGString__compare(s, "xyzabc"));
-    s = CGString_appendWithSprintf_I(s, "--%s", s2);
-    assert(!CGString__compare(s, "xyzabc--abc"));
-    CGString_delete(s);
-    CGString_delete(s2);
+    cgString* s = cgString__new("xyz");
+    cgString* s2 = cgString__new("abc");
+    s = cgString_append_I(s, s2);
+    assert(!cgString__compare(s, "xyzabc"));
+    s = cgString_appendWithSprintf_I(s, "--%s", s2);
+    assert(!cgString__compare(s, "xyzabc--abc"));
+    cgString_delete(s);
+    cgString_delete(s2);
     printf("ok -- ");
 }
 
 int main() {
     printf("=== %s ===\n", __FILE__);
 
-    CGAppState__init(__FILE__);
-    appState = CGAppState__getInstance();
+    cgAppState__init(__FILE__);
+    appState = cgAppState__getInstance();
 
     testNewDelete();
     testDeleteAll();
@@ -165,7 +165,7 @@ int main() {
     testSubstring();
     testGetCharAt();
 
-    CGAppState__deInit();
+    cgAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

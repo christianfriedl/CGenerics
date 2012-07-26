@@ -3,8 +3,8 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"CGAppState.h"
-#include"CGTree.h"
+#include"cgAppState.h"
+#include"cgTree.h"
 
 typedef int Int;
 
@@ -25,19 +25,19 @@ DECLARE_TREE_TYPE(Int)
 DECLARE_TREE_FUNCS(Int)
 DEFINE_TREE_FUNCS(Int)
 
-CGAppState *appState;
+cgAppState *appState;
 
 void testNewDelete() {
     printf("%s... ", __func__);
 
     Int* i1 = Int__new(1);
 
-    CGTree(Int)* tree = CGTree__new(Int, i1);
+    cgTree(Int)* tree = cgTree__new(Int, i1);
     assert(tree != NULL);
-    assert(CGTree_getValue(Int, tree) == i1);
+    assert(cgTree_getValue(Int, tree) == i1);
     
     Int_delete(i1);
-    CGTree_delete(Int, tree);
+    cgTree_delete(Int, tree);
     
     printf("ok -- ");
 }
@@ -49,23 +49,23 @@ void testNewFromInitializerList() {
     Int* i2 = Int__new(1);
     Int* i3 = Int__new(1);
 
-    CGTree(Int)* subLeft = CGTree__new(Int, i2);
-    CGTree(Int)* subRight = CGTree__new(Int, i3);
-    CGTree(Int)* root = CGTree__newFromInitializerList(Int, i1, subLeft, subRight, NULL);
+    cgTree(Int)* subLeft = cgTree__new(Int, i2);
+    cgTree(Int)* subRight = cgTree__new(Int, i3);
+    cgTree(Int)* root = cgTree__newFromInitializerList(Int, i1, subLeft, subRight, NULL);
 
-    assert(CGTree_getSubTreeAt(Int, root, 0) == subLeft);
-    assert(CGTree_getSubTreeAt(Int, root, 1) == subRight);
-    CGArray(CGTreeOfInt)* array = CGTree_getSubTrees(Int, root);
-    assert(CGArray_getSize(CGTreeOfInt, array) == 2);
-    CGTree(Int)* testSubLeft = CGArray_getValueAt(CGTreeOfInt, CGTree_getSubTrees(Int, root), 0);
-    CGTree(Int)* testSubRight = CGArray_getValueAt(CGTreeOfInt, CGTree_getSubTrees(Int, root), 1);
+    assert(cgTree_getSubTreeAt(Int, root, 0) == subLeft);
+    assert(cgTree_getSubTreeAt(Int, root, 1) == subRight);
+    cgArray(cgTreeOfInt)* array = cgTree_getSubTrees(Int, root);
+    assert(cgArray_getSize(cgTreeOfInt, array) == 2);
+    cgTree(Int)* testSubLeft = cgArray_getValueAt(cgTreeOfInt, cgTree_getSubTrees(Int, root), 0);
+    cgTree(Int)* testSubRight = cgArray_getValueAt(cgTreeOfInt, cgTree_getSubTrees(Int, root), 1);
     assert(testSubLeft == subLeft);
     assert(testSubRight == subRight);
     
     Int_delete(i1);
     Int_delete(i2);
     Int_delete(i3);
-    CGTree_delete(Int, root);
+    cgTree_delete(Int, root);
     
     printf("ok -- ");
 }
@@ -77,27 +77,27 @@ void testSubTrees() {
     Int* i2 = Int__new(2);
     Int* i3 = Int__new(3);
 
-    CGTree(Int)* root = CGTree__new(Int, i1);
-    CGTree(Int)* subLeft = CGTree__new(Int, i2);
-    CGTree(Int)* subRight = CGTree__new(Int, i3);
+    cgTree(Int)* root = cgTree__new(Int, i1);
+    cgTree(Int)* subLeft = cgTree__new(Int, i2);
+    cgTree(Int)* subRight = cgTree__new(Int, i3);
 
-    CGTree_addSubTree(Int, root, subLeft);
-    CGTree_addSubTree(Int, root, subRight);
+    cgTree_addSubTree(Int, root, subLeft);
+    cgTree_addSubTree(Int, root, subRight);
 
-    assert(CGTree_getSubTreeAt(Int, root, 0) == subLeft);
-    assert(CGTree_getSubTreeAt(Int, root, 1) == subRight);
-    CGArray(CGTreeOfInt)* array = CGTree_getSubTrees(Int, root);
-    assert(CGArray_getSize(CGTreeOfInt, array) == 2);
-    assert(CGTree_getSubTreeSize(Int, root) == 2);
-    CGTree(Int)* testSubLeft = CGArray_getValueAt(CGTreeOfInt, CGTree_getSubTrees(Int, root), 0);
-    CGTree(Int)* testSubRight = CGArray_getValueAt(CGTreeOfInt, CGTree_getSubTrees(Int, root), 1);
+    assert(cgTree_getSubTreeAt(Int, root, 0) == subLeft);
+    assert(cgTree_getSubTreeAt(Int, root, 1) == subRight);
+    cgArray(cgTreeOfInt)* array = cgTree_getSubTrees(Int, root);
+    assert(cgArray_getSize(cgTreeOfInt, array) == 2);
+    assert(cgTree_getSubTreeSize(Int, root) == 2);
+    cgTree(Int)* testSubLeft = cgArray_getValueAt(cgTreeOfInt, cgTree_getSubTrees(Int, root), 0);
+    cgTree(Int)* testSubRight = cgArray_getValueAt(cgTreeOfInt, cgTree_getSubTrees(Int, root), 1);
     assert(testSubLeft == subLeft);
     assert(testSubRight == subRight);
     
     Int_delete(i1);
     Int_delete(i2);
     Int_delete(i3);
-    CGTree_delete(Int, root);
+    cgTree_delete(Int, root);
     
     printf("ok -- ");
 }
@@ -108,23 +108,23 @@ void testRemoveAt() {
     Int* i2 = Int__new(2);
     Int* i3 = Int__new(3);
 
-    CGTree(Int)* root = CGTree__new(Int, i1);
-    CGTree(Int)* subLeft = CGTree__new(Int, i2);
-    CGTree(Int)* subRight = CGTree__new(Int, i3);
+    cgTree(Int)* root = cgTree__new(Int, i1);
+    cgTree(Int)* subLeft = cgTree__new(Int, i2);
+    cgTree(Int)* subRight = cgTree__new(Int, i3);
 
-    CGTree_addSubTree(Int, root, subLeft);
-    CGTree_addSubTree(Int, root, subRight);
+    cgTree_addSubTree(Int, root, subLeft);
+    cgTree_addSubTree(Int, root, subRight);
 
 
-    CGTree(Int)* removedTree = CGTree_removeSubTreeAt(Int, root, 0);
+    cgTree(Int)* removedTree = cgTree_removeSubTreeAt(Int, root, 0);
 
     assert(removedTree == subLeft);
-    assert(CGTree_getSubTreeAt(Int, root, 0) == subRight);
+    assert(cgTree_getSubTreeAt(Int, root, 0) == subRight);
 
     Int_delete(i1);
     Int_delete(i2);
     Int_delete(i3);
-    CGTree_delete(Int, root);
+    cgTree_delete(Int, root);
     printf("ok -- ");
 }
 bool mapSumUpTo6(const Int* i, void* userData) {
@@ -147,24 +147,24 @@ void testMapConstantDepthFirst() {
     Int* i6 = Int__new(6);
     Int* i7 = Int__new(7);
 
-    CGTree(Int)* root = CGTree__new(Int, i1);
-    CGTree(Int)* subLeft = CGTree__new(Int, i2);
-    CGTree(Int)* subRight = CGTree__new(Int, i3);
-    CGTree(Int)* subLeftLeft = CGTree__new(Int, i4);
-    CGTree(Int)* subLeftRight = CGTree__new(Int, i5);
-    CGTree(Int)* subRightLeft = CGTree__new(Int, i6);
-    CGTree(Int)* subRightRight = CGTree__new(Int, i7);
+    cgTree(Int)* root = cgTree__new(Int, i1);
+    cgTree(Int)* subLeft = cgTree__new(Int, i2);
+    cgTree(Int)* subRight = cgTree__new(Int, i3);
+    cgTree(Int)* subLeftLeft = cgTree__new(Int, i4);
+    cgTree(Int)* subLeftRight = cgTree__new(Int, i5);
+    cgTree(Int)* subRightLeft = cgTree__new(Int, i6);
+    cgTree(Int)* subRightRight = cgTree__new(Int, i7);
 
-    CGTree_addSubTree(Int, root, subLeft);
-    CGTree_addSubTree(Int, root, subRight);
-    CGTree_addSubTree(Int, subLeft, subLeftLeft);
-    CGTree_addSubTree(Int, subLeft, subLeftRight);
-    CGTree_addSubTree(Int, subRight, subRightLeft);
-    CGTree_addSubTree(Int, subRight, subRightRight);
+    cgTree_addSubTree(Int, root, subLeft);
+    cgTree_addSubTree(Int, root, subRight);
+    cgTree_addSubTree(Int, subLeft, subLeftLeft);
+    cgTree_addSubTree(Int, subLeft, subLeftRight);
+    cgTree_addSubTree(Int, subRight, subRightLeft);
+    cgTree_addSubTree(Int, subRight, subRightRight);
 
 
     unsigned int sum = 0;
-    bool rv = CGTree_mapConstant(Int, root, mapSumUpTo6, CGTreeStrategy_depthFirst, (void*)&sum);
+    bool rv = cgTree_mapConstant(Int, root, mapSumUpTo6, cgTreeStrategy_depthFirst, (void*)&sum);
     printf("%u\n", sum);
     assert(rv == false);
     assert(sum == 4+5+2+6);
@@ -176,7 +176,7 @@ void testMapConstantDepthFirst() {
     Int_delete(i5);
     Int_delete(i6);
     Int_delete(i7);
-    CGTree_delete(Int, root);
+    cgTree_delete(Int, root);
     printf("ok -- ");
 }
 bool mapSum(const Int* i, void* userData) {
@@ -196,24 +196,24 @@ void testMapConstantBreadthFirst() {
     Int* i6 = Int__new(6);
     Int* i7 = Int__new(7);
 
-    CGTree(Int)* root = CGTree__new(Int, i1);
-    CGTree(Int)* subLeft = CGTree__new(Int, i2);
-    CGTree(Int)* subRight = CGTree__new(Int, i3);
-    CGTree(Int)* subLeftLeft = CGTree__new(Int, i4);
-    CGTree(Int)* subLeftRight = CGTree__new(Int, i5);
-    CGTree(Int)* subRightLeft = CGTree__new(Int, i6);
-    CGTree(Int)* subRightRight = CGTree__new(Int, i7);
+    cgTree(Int)* root = cgTree__new(Int, i1);
+    cgTree(Int)* subLeft = cgTree__new(Int, i2);
+    cgTree(Int)* subRight = cgTree__new(Int, i3);
+    cgTree(Int)* subLeftLeft = cgTree__new(Int, i4);
+    cgTree(Int)* subLeftRight = cgTree__new(Int, i5);
+    cgTree(Int)* subRightLeft = cgTree__new(Int, i6);
+    cgTree(Int)* subRightRight = cgTree__new(Int, i7);
 
-    CGTree_addSubTree(Int, root, subLeft);
-    CGTree_addSubTree(Int, root, subRight);
-    CGTree_addSubTree(Int, subLeft, subLeftLeft);
-    CGTree_addSubTree(Int, subLeft, subLeftRight);
-    CGTree_addSubTree(Int, subRight, subRightLeft);
-    CGTree_addSubTree(Int, subRight, subRightRight);
+    cgTree_addSubTree(Int, root, subLeft);
+    cgTree_addSubTree(Int, root, subRight);
+    cgTree_addSubTree(Int, subLeft, subLeftLeft);
+    cgTree_addSubTree(Int, subLeft, subLeftRight);
+    cgTree_addSubTree(Int, subRight, subRightLeft);
+    cgTree_addSubTree(Int, subRight, subRightRight);
 
 
     unsigned int sum = 0;
-    bool rv = CGTree_mapConstant(Int, root, mapSum, CGTreeStrategy_breadthFirst, (void*)&sum);
+    bool rv = cgTree_mapConstant(Int, root, mapSum, cgTreeStrategy_breadthFirst, (void*)&sum);
     printf("%u\n", sum);
     assert(rv == true);
     assert(sum == 1+2+3+4+5+6+7);
@@ -225,15 +225,15 @@ void testMapConstantBreadthFirst() {
     Int_delete(i5);
     Int_delete(i6);
     Int_delete(i7);
-    CGTree_delete(Int, root);
+    cgTree_delete(Int, root);
     printf("ok -- ");
 }
 
 
 int main() {
     printf("=== %s ===\n", __FILE__);
-    CGAppState__init(__FILE__);
-    appState = CGAppState__getInstance();
+    cgAppState__init(__FILE__);
+    appState = cgAppState__getInstance();
 
     testNewDelete();
     testSubTrees();
@@ -242,7 +242,7 @@ int main() {
     testMapConstantDepthFirst();
     testMapConstantBreadthFirst();
 
-    CGAppState__deInit();
+    cgAppState__deInit();
 
     printf("=== %s ok ===\n", __FILE__);
     return 0;

@@ -3,59 +3,59 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"CGAppState.h"
-#include"CGInteger.h"
-#include"CGString.h"
+#include"cgAppState.h"
+#include"cgInteger.h"
+#include"cgString.h"
 
 typedef struct {
-    CGString* firstName;
-    CGString* lastName;
+    cgString* firstName;
+    cgString* lastName;
 } Person;
 
-#include"CGKVPair.h"
+#include"cgKVPair.h"
 
-Person* Person__new(CGString* firstName, CGString* lastName) {
+Person* Person__new(cgString* firstName, cgString* lastName) {
     Person* this = malloc(sizeof(*this));
     if (this != NULL) {
         this->firstName = firstName;
         this->lastName = lastName;
     } else
-        CGAppState_THROW(CGAppState__getInstance(), Severity_fatal, CGExceptionID_GeneralFatalException, "unable to allocate Person");
+        cgAppState_THROW(cgAppState__getInstance(), Severity_fatal, cgExceptionID_GeneralFatalException, "unable to allocate Person");
     return this;
 }
         
 
 Person* Person_clone(Person* this) {
-    return Person__new(CGString_clone(this->firstName), CGString_clone(this->lastName));
+    return Person__new(cgString_clone(this->firstName), cgString_clone(this->lastName));
 }
 void Person_delete(Person* this) {
-    CGString_delete(this->firstName);
-    CGString_delete(this->lastName);
+    cgString_delete(this->firstName);
+    cgString_delete(this->lastName);
     free(this);
 }
 
-DECLARE_KV_PAIR_TYPE(CGString, Person)
-DECLARE_KV_PAIR_FUNCS(CGString, Person)
-DEFINE_KV_PAIR(CGString, Person)
+DECLARE_KV_PAIR_TYPE(cgString, Person)
+DECLARE_KV_PAIR_FUNCS(cgString, Person)
+DEFINE_KV_PAIR(cgString, Person)
 
-DECLARE_KV_PAIR_TYPE(CGString, CGString)
-DECLARE_KV_PAIR_FUNCS(CGString, CGString)
-DEFINE_KV_PAIR(CGString, CGString)
+DECLARE_KV_PAIR_TYPE(cgString, cgString)
+DECLARE_KV_PAIR_FUNCS(cgString, cgString)
+DEFINE_KV_PAIR(cgString, cgString)
 
-CGAppState *appState;
+cgAppState *appState;
 
 void testNewDelete() {
     printf("%s... ", __func__);
 
-    CGString* s1 = CGString__new("s1");
-    Person* p1 = Person__new(CGString__new("vorname"), CGString__new("nachname"));
+    cgString* s1 = cgString__new("s1");
+    Person* p1 = Person__new(cgString__new("vorname"), cgString__new("nachname"));
 
-    CGKVPair(CGString, Person)* spPair = CGKVPair__new(CGString, Person, s1, p1);
-    assert(CGKVPair_getKey(CGString, Person, spPair) == s1);
-    assert(CGKVPair_getValue(CGString, Person, spPair) == p1);
+    cgKVPair(cgString, Person)* spPair = cgKVPair__new(cgString, Person, s1, p1);
+    assert(cgKVPair_getKey(cgString, Person, spPair) == s1);
+    assert(cgKVPair_getValue(cgString, Person, spPair) == p1);
 
-    CGKVPair_deleteValues(CGString, Person, spPair);
-    CGKVPair_delete(CGString, Person, spPair);
+    cgKVPair_deleteValues(cgString, Person, spPair);
+    cgKVPair_delete(cgString, Person, spPair);
 
     printf("ok -- ");
 }
@@ -63,22 +63,22 @@ void testNewDelete() {
 void testClone() {
     printf("%s... ", __func__);
 
-    CGString* s1 = CGString__new("s1");
-    Person* p1 = Person__new(CGString__new("vorname"), CGString__new("nachname"));
+    cgString* s1 = cgString__new("s1");
+    Person* p1 = Person__new(cgString__new("vorname"), cgString__new("nachname"));
 
-    CGKVPair(CGString, Person)* spPair = CGKVPair__new(CGString, Person, s1, p1);
-    CGKVPair(CGString, Person)* spPair2 = CGKVPair_clone(CGString, Person, spPair);
+    cgKVPair(cgString, Person)* spPair = cgKVPair__new(cgString, Person, s1, p1);
+    cgKVPair(cgString, Person)* spPair2 = cgKVPair_clone(cgString, Person, spPair);
 
-    assert(CGString__compare(s1, CGKVPair_getKey(CGString, Person, spPair2)) == 0);
-    assert(CGString__compare(p1->firstName, (CGKVPair_getValue(CGString, Person, spPair2))->firstName) == 0);
-    assert(CGString__compare(p1->lastName, (CGKVPair_getValue(CGString, Person, spPair2))->lastName) == 0);
-    assert(CGKVPair_getKey(CGString, Person, spPair2) != s1);
-    assert(CGKVPair_getValue(CGString, Person, spPair2) != p1);
+    assert(cgString__compare(s1, cgKVPair_getKey(cgString, Person, spPair2)) == 0);
+    assert(cgString__compare(p1->firstName, (cgKVPair_getValue(cgString, Person, spPair2))->firstName) == 0);
+    assert(cgString__compare(p1->lastName, (cgKVPair_getValue(cgString, Person, spPair2))->lastName) == 0);
+    assert(cgKVPair_getKey(cgString, Person, spPair2) != s1);
+    assert(cgKVPair_getValue(cgString, Person, spPair2) != p1);
 
-    CGKVPair_deleteValues(CGString, Person, spPair);
-    CGKVPair_delete(CGString, Person, spPair);
-    CGKVPair_deleteValues(CGString, Person, spPair2);
-    CGKVPair_delete(CGString, Person, spPair2);
+    cgKVPair_deleteValues(cgString, Person, spPair);
+    cgKVPair_delete(cgString, Person, spPair);
+    cgKVPair_deleteValues(cgString, Person, spPair2);
+    cgKVPair_delete(cgString, Person, spPair2);
 
 
     printf("ok -- ");
@@ -87,24 +87,24 @@ void testClone() {
 void testGetterSetter() {
     printf("%s... ", __func__);
 
-    CGString* key1 = CGString__new("key1");
-    CGString* key2 = CGString__new("key2");
-    CGString* value1 = CGString__new("value1");
-    CGString* value2 = CGString__new("value2");
+    cgString* key1 = cgString__new("key1");
+    cgString* key2 = cgString__new("key2");
+    cgString* value1 = cgString__new("value1");
+    cgString* value2 = cgString__new("value2");
 
-    CGKVPair(CGString, CGString)* ssPair = CGKVPair__new(CGString, CGString, key1, value1);
+    cgKVPair(cgString, cgString)* ssPair = cgKVPair__new(cgString, cgString, key1, value1);
 
-    assert(CGKVPair_getKey(CGString, CGString, ssPair) == key1);
-    assert(CGKVPair_getValue(CGString, CGString, ssPair) == value1);
+    assert(cgKVPair_getKey(cgString, cgString, ssPair) == key1);
+    assert(cgKVPair_getValue(cgString, cgString, ssPair) == value1);
 
-    CGKVPair_setKey(CGString, CGString, ssPair, key2);
-    CGKVPair_setValue(CGString, CGString, ssPair, value2);
+    cgKVPair_setKey(cgString, cgString, ssPair, key2);
+    cgKVPair_setValue(cgString, cgString, ssPair, value2);
 
-    assert(CGKVPair_getKey(CGString, CGString, ssPair) == key2);
-    assert(CGKVPair_getValue(CGString, CGString, ssPair) == value2);
+    assert(cgKVPair_getKey(cgString, cgString, ssPair) == key2);
+    assert(cgKVPair_getValue(cgString, cgString, ssPair) == value2);
 
-    CGString_deleteAll(key1, key2, value1, value2, NULL);
-    CGKVPair_delete(CGString, CGString, ssPair);
+    cgString_deleteAll(key1, key2, value1, value2, NULL);
+    cgKVPair_delete(cgString, cgString, ssPair);
 
 
     printf("ok -- ");
@@ -113,12 +113,12 @@ void testGetterSetter() {
 int main() {
     printf("=== %s ===\n", __FILE__);
 
-    CGAppState__init(__FILE__);
-    appState = CGAppState__getInstance();
+    cgAppState__init(__FILE__);
+    appState = cgAppState__getInstance();
     testNewDelete();
     testClone();
 
-    CGAppState__deInit();
+    cgAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

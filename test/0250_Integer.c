@@ -3,34 +3,34 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"CGAppState.h"
-#include"CGInteger.h"
+#include"cgAppState.h"
+#include"cgInteger.h"
 
-CGAppState* appState;
+cgAppState* appState;
 
 void testNewDelete() {
     printf("%s... ", __func__);
-    CGInteger* i = CGInteger__new(1);
+    cgInteger* i = cgInteger__new(1);
     assert(i != NULL);
     assert(*i == 1);
-    CGInteger_delete(i);
+    cgInteger_delete(i);
     printf("ok -- ");
 }
 void testToInt() {
     printf("%s... ", __func__);
-    CGInteger* i = CGInteger__new(1);
-    assert(CGInteger_toInt(i) == 1);
-    CGInteger_delete(i);
+    cgInteger* i = cgInteger__new(1);
+    assert(cgInteger_toInt(i) == 1);
+    cgInteger_delete(i);
     printf("ok -- ");
 }
 
 void testClone() {
     printf("%s... ", __func__);
-    CGInteger* i = CGInteger__new(1);
-    CGInteger* i2 = CGInteger_clone(i);
+    cgInteger* i = cgInteger__new(1);
+    cgInteger* i2 = cgInteger_clone(i);
     assert(i2 != NULL);
-    assert(CGInteger_toInt(i2) == 1);
-    CGInteger_delete(i);
+    assert(cgInteger_toInt(i2) == 1);
+    cgInteger_delete(i);
     printf("ok -- ");
 }
 
@@ -38,14 +38,14 @@ void testClone() {
 int main() {
     printf("=== %s ===\n", __FILE__);
 
-    CGAppState__init(__FILE__);
-    appState = CGAppState__getInstance();
+    cgAppState__init(__FILE__);
+    appState = cgAppState__getInstance();
 
     testNewDelete();
     testClone();
     testToInt();
 
-    CGAppState__deInit();
+    cgAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }

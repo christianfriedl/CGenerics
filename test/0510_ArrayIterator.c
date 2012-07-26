@@ -3,98 +3,98 @@
 #include<stdlib.h>
 #include<time.h>
 #include<assert.h>
-#include"CGAppState.h"
-#include"CGArray.h"
-#include"CGArrayIterator.h"
-#include"CGInteger.h"
+#include"cgAppState.h"
+#include"cgArray.h"
+#include"cgArrayIterator.h"
+#include"cgInteger.h"
 
-INIT_ARRAY(CGInteger)
-INIT_ARRAY_ITERATOR(CGInteger)
+INIT_ARRAY(cgInteger)
+INIT_ARRAY_ITERATOR(cgInteger)
 
-CGAppState *appState;
+cgAppState *appState;
 
 void testNewDelete() {
     printf("%s... ", __func__);
 
-    CGInteger* i1 = CGInteger__new(1);
-    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, NULL);
-    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
-    CGArrayIterator_delete(CGInteger, iter);
+    cgInteger* i1 = cgInteger__new(1);
+    cgArray(cgInteger)* array = cgArray__newFromInitializerList(cgInteger, i1, NULL);
+    cgArrayIterator(cgInteger)* iter = cgArrayIterator__new(cgInteger, array);
+    cgArrayIterator_delete(cgInteger, iter);
 
-    CGArray_deleteValues(CGInteger, array);
-    CGArray_delete(CGInteger, array);
+    cgArray_deleteValues(cgInteger, array);
+    cgArray_delete(cgInteger, array);
     
     printf("ok -- ");
 }
 void testIterate() {
     printf("%s... ", __func__);
 
-    CGInteger* i1 = CGInteger__new(1);
-    CGInteger* i2 = CGInteger__new(2);
-    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, i2, NULL);
-    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
+    cgInteger* i1 = cgInteger__new(1);
+    cgInteger* i2 = cgInteger__new(2);
+    cgArray(cgInteger)* array = cgArray__newFromInitializerList(cgInteger, i1, i2, NULL);
+    cgArrayIterator(cgInteger)* iter = cgArrayIterator__new(cgInteger, array);
 
-    assert(CGArrayIterator_isInsideBounds(CGInteger, iter) == true);
-    assert(CGArrayIterator_getCurrentIndex(CGInteger, iter) == 0);
-    assert(CGArrayIterator_getCurrentElement(CGInteger, iter) == i1);
+    assert(cgArrayIterator_isInsideBounds(cgInteger, iter) == true);
+    assert(cgArrayIterator_getCurrentIndex(cgInteger, iter) == 0);
+    assert(cgArrayIterator_getCurrentElement(cgInteger, iter) == i1);
 
-    assert(CGArrayIterator_moveToNextElement(CGInteger, iter) == true);
-    assert(CGArrayIterator_isInsideBounds(CGInteger, iter) == true);
-    assert(CGArrayIterator_getCurrentIndex(CGInteger, iter) == 1);
-    assert(CGArrayIterator_getCurrentElement(CGInteger, iter) == i2);
+    assert(cgArrayIterator_moveToNextElement(cgInteger, iter) == true);
+    assert(cgArrayIterator_isInsideBounds(cgInteger, iter) == true);
+    assert(cgArrayIterator_getCurrentIndex(cgInteger, iter) == 1);
+    assert(cgArrayIterator_getCurrentElement(cgInteger, iter) == i2);
 
-    assert(CGArrayIterator_moveToNextElement(CGInteger, iter) == false);
-    assert(CGArrayIterator_isInsideBounds(CGInteger, iter) == false);
-    assert(CGArrayIterator_getCurrentElement(CGInteger, iter) == NULL);
+    assert(cgArrayIterator_moveToNextElement(cgInteger, iter) == false);
+    assert(cgArrayIterator_isInsideBounds(cgInteger, iter) == false);
+    assert(cgArrayIterator_getCurrentElement(cgInteger, iter) == NULL);
 
-    CGArrayIterator_reset(CGInteger, iter);
-    assert(CGArrayIterator_isInsideBounds(CGInteger, iter) == true);
-    assert(CGArrayIterator_getCurrentIndex(CGInteger, iter) == 0);
-    assert(CGArrayIterator_getCurrentElement(CGInteger, iter) == i1);
+    cgArrayIterator_reset(cgInteger, iter);
+    assert(cgArrayIterator_isInsideBounds(cgInteger, iter) == true);
+    assert(cgArrayIterator_getCurrentIndex(cgInteger, iter) == 0);
+    assert(cgArrayIterator_getCurrentElement(cgInteger, iter) == i1);
 
-    CGArrayIterator_delete(CGInteger, iter);
+    cgArrayIterator_delete(cgInteger, iter);
 
-    CGArray_deleteValues(CGInteger, array);
-    CGArray_delete(CGInteger, array);
+    cgArray_deleteValues(cgInteger, array);
+    cgArray_delete(cgInteger, array);
     
     printf("ok -- ");
 }
 void testFetch() {
     printf("%s... ", __func__);
 
-    CGInteger* i1 = CGInteger__new(1);
-    CGInteger* i2 = CGInteger__new(2);
-    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, i2, NULL);
-    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
+    cgInteger* i1 = cgInteger__new(1);
+    cgInteger* i2 = cgInteger__new(2);
+    cgArray(cgInteger)* array = cgArray__newFromInitializerList(cgInteger, i1, i2, NULL);
+    cgArrayIterator(cgInteger)* iter = cgArrayIterator__new(cgInteger, array);
 
     int i = 0;
-    CGInteger* iVector[2] = { i1, i2 };
-    CGInteger* iFetch;
-    while ((iFetch = CGArrayIterator_fetch(CGInteger, iter)) != NULL) {
+    cgInteger* iVector[2] = { i1, i2 };
+    cgInteger* iFetch;
+    while ((iFetch = cgArrayIterator_fetch(cgInteger, iter)) != NULL) {
         assert(iVector[i] == iFetch);
         i++;
     }
     assert(i==2);
 
-    CGArrayIterator_delete(CGInteger, iter);
+    cgArrayIterator_delete(cgInteger, iter);
 
-    CGArray_deleteValues(CGInteger, array);
-    CGArray_delete(CGInteger, array);
+    cgArray_deleteValues(cgInteger, array);
+    cgArray_delete(cgInteger, array);
     
     printf("ok -- ");
 }
 void testFetchEmptyArray() {
     printf("%s... ", __func__);
 
-    CGArray(CGInteger)* array = CGArray__new(CGInteger, 1);
-    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
+    cgArray(cgInteger)* array = cgArray__new(cgInteger, 1);
+    cgArrayIterator(cgInteger)* iter = cgArrayIterator__new(cgInteger, array);
 
-    assert(CGArrayIterator_fetch(CGInteger, iter) == NULL);
+    assert(cgArrayIterator_fetch(cgInteger, iter) == NULL);
 
-    CGArrayIterator_delete(CGInteger, iter);
+    cgArrayIterator_delete(cgInteger, iter);
 
-    CGArray_deleteValues(CGInteger, array);
-    CGArray_delete(CGInteger, array);
+    cgArray_deleteValues(cgInteger, array);
+    cgArray_delete(cgInteger, array);
     
     printf("ok -- ");
 }
@@ -102,84 +102,84 @@ void testFetchEmptyArray() {
 void testUnFetch() {
     printf("%s... ", __func__);
 
-    CGInteger* i1 = CGInteger__new(1);
-    CGInteger* i2 = CGInteger__new(2);
-    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, i2, NULL);
-    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
+    cgInteger* i1 = cgInteger__new(1);
+    cgInteger* i2 = cgInteger__new(2);
+    cgArray(cgInteger)* array = cgArray__newFromInitializerList(cgInteger, i1, i2, NULL);
+    cgArrayIterator(cgInteger)* iter = cgArrayIterator__new(cgInteger, array);
 
-    CGInteger* iFetch;
-    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    cgInteger* iFetch;
+    iFetch = cgArrayIterator_fetch(cgInteger, iter);
     assert(iFetch == i1);
-    CGArrayIterator_unFetch(CGInteger, iter);
+    cgArrayIterator_unFetch(cgInteger, iter);
 
-    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    iFetch = cgArrayIterator_fetch(cgInteger, iter);
     assert(iFetch == i1);
 
-    CGArrayIterator_delete(CGInteger, iter);
+    cgArrayIterator_delete(cgInteger, iter);
 
-    CGArray_deleteValues(CGInteger, array);
-    CGArray_delete(CGInteger, array);
+    cgArray_deleteValues(cgInteger, array);
+    cgArray_delete(cgInteger, array);
     
     printf("ok -- ");
 }
 void testMoveToIndex() {
     printf("%s... ", __func__);
 
-    CGInteger* i1 = CGInteger__new(1);
-    CGInteger* i2 = CGInteger__new(2);
-    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, i2, NULL);
-    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
+    cgInteger* i1 = cgInteger__new(1);
+    cgInteger* i2 = cgInteger__new(2);
+    cgArray(cgInteger)* array = cgArray__newFromInitializerList(cgInteger, i1, i2, NULL);
+    cgArrayIterator(cgInteger)* iter = cgArrayIterator__new(cgInteger, array);
 
-    CGArrayIterator_moveToIndex(CGInteger, iter, 0);
+    cgArrayIterator_moveToIndex(cgInteger, iter, 0);
 
-    CGInteger* iFetch;
-    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    cgInteger* iFetch;
+    iFetch = cgArrayIterator_fetch(cgInteger, iter);
     assert(iFetch == i2);
 
-    CGArrayIterator_moveToIndex(CGInteger, iter, 1);
-    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    cgArrayIterator_moveToIndex(cgInteger, iter, 1);
+    iFetch = cgArrayIterator_fetch(cgInteger, iter);
     assert(iFetch == NULL);
 
-    CGArrayIterator_moveToIndex(CGInteger, iter, 0);
-    CGArrayIterator_unFetch(CGInteger, iter);
-    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    cgArrayIterator_moveToIndex(cgInteger, iter, 0);
+    cgArrayIterator_unFetch(cgInteger, iter);
+    iFetch = cgArrayIterator_fetch(cgInteger, iter);
     assert(iFetch == i1);
 
-    CGArrayIterator_delete(CGInteger, iter);
+    cgArrayIterator_delete(cgInteger, iter);
 
-    CGArray_deleteValues(CGInteger, array);
-    CGArray_delete(CGInteger, array);
+    cgArray_deleteValues(cgInteger, array);
+    cgArray_delete(cgInteger, array);
     
     printf("ok -- ");
 }
 void testClone() {
     printf("%s... ", __func__);
 
-    CGInteger* i1 = CGInteger__new(1);
-    CGInteger* i2 = CGInteger__new(2);
-    CGArray(CGInteger)* array = CGArray__newFromInitializerList(CGInteger, i1, i2, NULL);
-    CGArrayIterator(CGInteger)* iter = CGArrayIterator__new(CGInteger, array);
-    CGInteger* iFetch;
-    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    cgInteger* i1 = cgInteger__new(1);
+    cgInteger* i2 = cgInteger__new(2);
+    cgArray(cgInteger)* array = cgArray__newFromInitializerList(cgInteger, i1, i2, NULL);
+    cgArrayIterator(cgInteger)* iter = cgArrayIterator__new(cgInteger, array);
+    cgInteger* iFetch;
+    iFetch = cgArrayIterator_fetch(cgInteger, iter);
     assert(iFetch == i1);
-    CGArrayIterator(CGInteger)* iter2 = CGArrayIterator_clone(CGInteger, iter);
+    cgArrayIterator(cgInteger)* iter2 = cgArrayIterator_clone(cgInteger, iter);
     assert(iter2 != NULL);
     assert(iter2 != iter);
-    iFetch = CGArrayIterator_fetch(CGInteger, iter);
+    iFetch = cgArrayIterator_fetch(cgInteger, iter);
     assert(iFetch == i2);
 
-    CGArrayIterator_delete(CGInteger, iter);
-    CGArrayIterator_delete(CGInteger, iter2);
+    cgArrayIterator_delete(cgInteger, iter);
+    cgArrayIterator_delete(cgInteger, iter2);
 
-    CGArray_deleteValues(CGInteger, array);
-    CGArray_delete(CGInteger, array);
+    cgArray_deleteValues(cgInteger, array);
+    cgArray_delete(cgInteger, array);
     
     printf("ok -- ");
 }
 int main() {
     printf("=== %s ===\n", __FILE__);
-    CGAppState__init(__FILE__);
-    appState = CGAppState__getInstance();
+    cgAppState__init(__FILE__);
+    appState = cgAppState__getInstance();
 
     testNewDelete();
     testIterate();
@@ -189,7 +189,7 @@ int main() {
     testMoveToIndex();
     testClone();
 
-    CGAppState__deInit();
+    cgAppState__deInit();
     printf("=== %s ok ===\n", __FILE__);
     return 0;
 }
