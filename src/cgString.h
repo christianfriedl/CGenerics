@@ -62,6 +62,10 @@ cgString *cgString_appendWithSprintf_I(cgString * this, const cgString * fmt, ..
 
 cgString *cgString_appendChar_I(cgString * this, char ch);
 
+cgString *cgString_insert_I(cgString * this, unsigned int pos, cgString * that);
+
+cgString *cgString_insertChar_I(cgString * this, unsigned int pos, char ch);
+
 size_t cgString_getSize(const cgString * this);
 
 size_t cgString_getByteSize(const cgString * this);
@@ -73,7 +77,6 @@ char cgString_getCharAt(const cgString * this, unsigned index);
 /* TODO missing functions:
     - strchr
     - strtok
-    - insertAt
     - replaceAt
     - toUpper, toLower
 */

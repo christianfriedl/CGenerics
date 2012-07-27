@@ -164,6 +164,14 @@ cgString *cgString_insert_I(cgString * this, unsigned int pos, cgString * that) 
     return this;
 }
 
+cgString *cgString_insertChar_I(cgString * this, unsigned int pos, char ch) {
+    cgString *s = cgString__newWithSprintf("%c", ch);
+
+    this = cgString_insert_I(this, pos, s);
+    cgString_delete(s);
+    return this;
+}
+
 size_t cgString_getSize(const cgString * this) {
     return strlen(this);
 }
