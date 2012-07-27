@@ -25,6 +25,7 @@ cgString* cgString_append(cgString* this, const cgString* that);
  */
 cgString* cgString_append_I(cgString* this, const cgString* that);
 cgString* cgString_appendWithSprintf_I(cgString* this, const cgString* fmt, ...);
+cgString* cgString_appendChar_I(cgString* this, char ch);
 size_t cgString_getSize(const cgString* this);
 size_t cgString_getByteSize(const cgString* this);
 cgString* cgString_createSubstring(const cgString* this, unsigned startIndex, unsigned length);

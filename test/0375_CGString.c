@@ -146,6 +146,38 @@ void testAppendI() {
     printf("ok -- ");
 }
 
+void testAppendCharI() {
+    printf("%s... ", __func__);
+    cgString* s = cgString__new("xyz");
+    char ch = 'a';
+    s = cgString_appendChar_I(s, ch);
+    assert(!cgString__compare(s, "xyza"));
+    cgString_delete(s);
+    printf("ok -- ");
+}
+
+void testInsertI() {
+    printf("%s... ", __func__);
+    cgString* s = cgString__new("xyz");
+    cgString* s2 = cgString__new("abc");
+    cgString_insert_I(s, 0, s2); /* insert at start */
+    assert(!cgString__compare(s, "abcxyz"));
+    cgString_delete(s2);
+
+    s2 = cgString__new("abc");
+    cgString_insert_I(s, 6, s2); /* insert at end */
+    assert(!cgString__compare(s, "abcxyzabc"));
+    cgString_delete(s2);
+
+    s2 = cgString__new("abc");
+    cgString_insert_I(s, 1, s2); /* insert in middle */
+    assert(!cgString__compare(s, "aabcbcxyzabc"));
+    cgString_delete(s2);
+
+    cgString_delete(s);
+    printf("ok -- ");
+}
+
 int main() {
     printf("=== %s ===\n", __FILE__);
 
@@ -161,6 +193,8 @@ int main() {
     testAppend();
     testAppend2();
     testAppendI();
+    testAppendCharI();
+    testInsertI();
     testSize();
     testSubstring();
     testGetCharAt();

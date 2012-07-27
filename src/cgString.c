@@ -64,8 +64,9 @@ cgString* cgString_append(cgString* this, const cgString* that) {
     strcat(newString, that);
 	return newString;
 }
-/*
+/**
  * append a string in-place
+ * note: the in-place functions do return a pointer because realloc may return a pointer to a new location
  */
 cgString* cgString_append_I(cgString* this, const cgString* that) {
     this = realloc(this, strlen(this) + strlen(that) + 1);
@@ -74,6 +75,10 @@ cgString* cgString_append_I(cgString* this, const cgString* that) {
     strcat(this, that);
     return this;
 }
+
+/*
+ * note: the in-place functions do return a pointer because realloc may return a pointer to a new location
+ */
 cgString* cgString_appendWithSprintf_I(cgString* this, const cgString* fmt, ...) {
     cgString* newString = NULL;
     va_list args;
@@ -86,6 +91,37 @@ cgString* cgString_appendWithSprintf_I(cgString* this, const cgString* fmt, ...)
     cgString_delete(newString);
     return this;
 }
+
+/** 
+ * append a char in-place
+ * note: the in-place functions do return a pointer because realloc may return a pointer to a new location
+ */
+cgString* cgString_appendChar_I(cgString* this, char ch) {
+    cgString* s = cgString__newWithSprintf("%c", ch);
+    cgString_append_I(this, s);
+    cgString_delete(s);
+    return this;
+}
+
+/** 
+ * insert a string in-place before pos
+ * note: the in-place functions do return a pointer because realloc may return a pointer to a new location
+ */
+cgString* cgString_insert_I(cgString* this, unsigned int pos, cgString* that) {
+    if (pos > cgString_getByteSize(this)) {
+        cgAppState_THROW(cgAppState__getInstance(), Severity_notice, cgExceptionID_StringError, "%u > strlen (%u) ", pos, cgString_getByteSize(this));
+        return this;
+    } else if (pos == cgString_getByteSize(this))
+        return cgString_append_I(this, that);
+
+    this = realloc(this, cgString_getByteSize(this) + cgString_getByteSize(that) + 1);
+    if (this == NULL)
+        cgAppState_THROW(cgAppState__getInstance(), Severity_fatal, cgExceptionID_StringError, "unable to re-allocate string");
+    memmove(this + pos + cgString_getByteSize(that), this + pos, cgString_getByteSize(this) - pos + 1); /* make room */
+    memcpy(this + pos, that, cgString_getByteSize(that)); /* copy source to dest */
+    return this;
+}
+
 size_t cgString_getSize(const cgString* this) {
     return strlen(this);
 }
