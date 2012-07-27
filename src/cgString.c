@@ -164,6 +164,20 @@ cgString *cgString_insert_I(cgString * this, unsigned int pos, cgString * that) 
     return this;
 }
 
+cgString* cgString_replace_I(cgString*this, unsigned int pos, cgString* that) {
+    if (pos > cgString_getByteSize(this)) {
+        cgAppState_THROW(cgAppState__getInstance(), Severity_notice,
+                         cgExceptionID_StringError, "%u > strlen (%u) ", pos, cgString_getByteSize(this));
+        return this;
+    } else if (pos == cgString_getByteSize(this))
+        return cgString_append_I(this, that);
+
+    if (pos + cgString_getByteSize(that) > cgString_getByteSize(this))
+        this = realloc(this, cgString_getByteSize(this) + cgString_getByteSize(that) + 1);
+    memcpy(this + pos, that, cgString_getByteSize(that));   /* copy source to dest */
+    return this;
+}
+
 cgString *cgString_insertChar_I(cgString * this, unsigned int pos, char ch) {
     cgString *s = cgString__newWithSprintf("%c", ch);
 
