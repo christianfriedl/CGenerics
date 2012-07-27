@@ -1,3 +1,26 @@
+/*
+    =====================================================================
+    CGenerics - Datatypes and Functions for Generic and OO Programming in C
+
+    Copyright (C) 2012  Christian Friedl
+
+    This file is part of CGenerics.
+
+    CGenerics is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CGenerics is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    =====================================================================
+*/
+
 #ifndef _CGTREE_H
 #define _CGTREE_H
 
@@ -185,24 +208,21 @@ typedef enum { cgTreeStrategy_depthFirst = 0, cgTreeStrategy_breadthFirst } cgTr
 
 #define DECLARE_TREE(TYPENAME) \
     DECLARE_TREE_TYPE(TYPENAME) \
-    DECLARE_TREE_FUNCS(TYPENAME) 
+    DECLARE_TREE_FUNCS(TYPENAME)
 
 #define DEFINE_TREE(TYPENAME) \
-    DEFINE_TREE_FUNCS(TYPENAME) 
+    DEFINE_TREE_FUNCS(TYPENAME)
 
 #define INIT_TREE(TYPENAME) \
     DECLARE_TREE(TYPENAME) \
     DEFINE_TREE(TYPENAME)
-
 
 /* MAKEMAN */
 /* type definition */
 
 #define cgTree(TYPENAME) cgTreeOf##TYPENAME
 
-
 /* callers */
-
 
 #define cgTree__new(TYPENAME, value) cgTreeOf##TYPENAME##__new((value))
 #define cgTree__newFromInitializerList(TYPENAME, value, ...) cgTreeOf##TYPENAME##__newFromInitializerList((value), __VA_ARGS__)
@@ -219,5 +239,4 @@ typedef enum { cgTreeStrategy_depthFirst = 0, cgTreeStrategy_breadthFirst } cgTr
 #define cgTree_mapConstant(TYPENAME, tree, function, strategy, userData) cgTreeOf##TYPENAME##_mapConstant((tree), (function), (strategy), (userData))
 #define cgTree_getParent(TYPENAME, tree) cgTreeOf##TYPENAME##_getParent((tree))
 #define cgTree_setParent(TYPENAME, tree, parent) cgTreeOf##TYPENAME##_setParent((tree), (parent))
-
-#endif 
+#endif

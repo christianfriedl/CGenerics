@@ -1,3 +1,26 @@
+/*
+    =====================================================================
+    CGenerics - Datatypes and Functions for Generic and OO Programming in C
+
+    Copyright (C) 2012  Christian Friedl
+
+    This file is part of CGenerics.
+
+    CGenerics is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CGenerics is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    =====================================================================
+*/
+
 #ifndef _CGARRAY_ITERATOR_H
 #define _CGARRAY_ITERATOR_H
 
@@ -131,15 +154,14 @@ typedef struct { \
 
 #define DECLARE_ARRAY_ITERATOR(TYPENAME) \
     DECLARE_ARRAY_ITERATOR_TYPE(TYPENAME) \
-    DECLARE_ARRAY_ITERATOR_FUNCS(TYPENAME) 
+    DECLARE_ARRAY_ITERATOR_FUNCS(TYPENAME)
 
 #define DEFINE_ARRAY_ITERATOR(TYPENAME) \
-    DEFINE_ARRAY_ITERATOR_FUNCS(TYPENAME) 
+    DEFINE_ARRAY_ITERATOR_FUNCS(TYPENAME)
 
 #define INIT_ARRAY_ITERATOR(TYPENAME) \
     DECLARE_ARRAY_ITERATOR(TYPENAME) \
     DEFINE_ARRAY_ITERATOR(TYPENAME)
-
 
 /* type definition */
 
@@ -147,21 +169,19 @@ typedef struct { \
 
 #define cgArrayIterator(TYPENAME) cgArrayOf##TYPENAME##Iterator
 
-
 /* callers */
 
-#define cgArrayIterator__new(TYPENAME, array) cgArrayOf##TYPENAME##Iterator__new((array)) 
+#define cgArrayIterator__new(TYPENAME, array) cgArrayOf##TYPENAME##Iterator__new((array))
 #define cgArrayIterator_isInsideBounds(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_isInsideBounds((this))
-#define cgArrayIterator_delete(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_delete((this)) 
-#define cgArrayIterator_getCurrentIndex(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_getCurrentIndex((this)) 
-#define cgArrayIterator_getCurrentElement(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_getCurrentElement((this)) 
-#define cgArrayIterator_moveToNextElement(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_moveToNextElement((this)) 
-#define cgArrayIterator_moveToIndex(TYPENAME, this, index) cgArrayOf##TYPENAME##Iterator_moveToIndex((this), (index)) 
-#define cgArrayIterator_getNextElement(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_getNextElement((this)) 
-#define cgArrayIterator_fetch(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_fetch((this)) 
-#define cgArrayIterator_unFetch(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_unFetch((this)) 
-#define cgArrayIterator_reset(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_reset((this)) 
+#define cgArrayIterator_delete(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_delete((this))
+#define cgArrayIterator_getCurrentIndex(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_getCurrentIndex((this))
+#define cgArrayIterator_getCurrentElement(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_getCurrentElement((this))
+#define cgArrayIterator_moveToNextElement(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_moveToNextElement((this))
+#define cgArrayIterator_moveToIndex(TYPENAME, this, index) cgArrayOf##TYPENAME##Iterator_moveToIndex((this), (index))
+#define cgArrayIterator_getNextElement(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_getNextElement((this))
+#define cgArrayIterator_fetch(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_fetch((this))
+#define cgArrayIterator_unFetch(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_unFetch((this))
+#define cgArrayIterator_reset(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_reset((this))
 #define cgArrayIterator_getHasStarted(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_getHasStarted((this))
 #define cgArrayIterator_clone(TYPENAME, this) cgArrayOf##TYPENAME##Iterator_clone((this))
-
 #endif

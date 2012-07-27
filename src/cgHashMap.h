@@ -1,3 +1,26 @@
+/*
+    =====================================================================
+    CGenerics - Datatypes and Functions for Generic and OO Programming in C
+
+    Copyright (C) 2012  Christian Friedl
+
+    This file is part of CGenerics.
+
+    CGenerics is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CGenerics is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    =====================================================================
+*/
+
 #ifndef _CG_HASH_MAP_H
 #define _CG_HASH_MAP_H
 
@@ -10,11 +33,10 @@
 #include"cgAppState.h"
 #include"cgArray.h"
 
-uint32_t hashlittle( const void *key, size_t length, uint32_t initval);
+uint32_t hashlittle(const void *key, size_t length, uint32_t initval);
 
 #define CG_HASH_MAP_BUCKETS (256)
 #define CG_HASH_MAP_SEED (13)
-
 
 /* everything below this line is type-specific! */
 
@@ -168,24 +190,21 @@ typedef struct { \
 
 #define DECLARE_HASH_MAP(TYPENAME1, TYPENAME2) \
     DECLARE_HASH_MAP_TYPE(TYPENAME1, TYPENAME2) \
-    DECLARE_HASH_MAP_FUNCS(TYPENAME1, TYPENAME2) 
+    DECLARE_HASH_MAP_FUNCS(TYPENAME1, TYPENAME2)
 
 #define DEFINE_HASH_MAP(TYPENAME1, TYPENAME2) \
-    DEFINE_HASH_MAP_FUNCS(TYPENAME1, TYPENAME2) 
+    DEFINE_HASH_MAP_FUNCS(TYPENAME1, TYPENAME2)
 
 #define INIT_HASH_MAP(TYPENAME1, TYPENAME2) \
     DECLARE_HASH_MAP(TYPENAME1, TYPENAME2) \
     DEFINE_HASH_MAP(TYPENAME1, TYPENAME2)
-
 
 /* MAKEMAN */
 /* type definition */
 
 #define cgHashMap(TYPENAME1, TYPENAME2) cgHashMapOf##TYPENAME1##TYPENAME2
 
-
 /* callers */
-
 
 #define cgHashMap__new(TYPENAME1, TYPENAME2) cgHashMapOf##TYPENAME1##TYPENAME2##__new()
 #define cgHashMap_clone(TYPENAME1, TYPENAME2, this) cgHashMapOf##TYPENAME1##TYPENAME2##_clone((this))
@@ -199,6 +218,4 @@ typedef struct { \
 #define cgHashMap_getKeys(TYPENAME1, TYPENAME2, this) cgHashMapOf##TYPENAME1##TYPENAME2##_getKeys((this))
 #define cgHashMap_getValues(TYPENAME1, TYPENAME2, this) cgHashMapOf##TYPENAME1##TYPENAME2##_getValues((this))
 #define cgHashMap_add(TYPENAME1, TYPENAME2, this, key, value) cgHashMapOf##TYPENAME1##TYPENAME2##_add((this), (key), (value))
-
-
-#endif 
+#endif

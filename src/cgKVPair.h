@@ -1,3 +1,26 @@
+/*
+    =====================================================================
+    CGenerics - Datatypes and Functions for Generic and OO Programming in C
+
+    Copyright (C) 2012  Christian Friedl
+
+    This file is part of CGenerics.
+
+    CGenerics is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CGenerics is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    =====================================================================
+*/
+
 #ifndef _CG_KV_PAIR_H
 #define _CG_KV_PAIR_H
 
@@ -6,7 +29,6 @@
 #include<stdlib.h>
 #include<stdarg.h>
 #include"cgAppState.h"
-
 
 /* everything below this line is type-specific! */
 
@@ -75,24 +97,21 @@ typedef struct { \
 
 #define DECLARE_KV_PAIR(TYPENAME1, TYPENAME2) \
     DECLARE_KV_PAIR_TYPE(TYPENAME1, TYPENAME2) \
-    DECLARE_KV_PAIR_FUNCS(TYPENAME1, TYPENAME2) 
+    DECLARE_KV_PAIR_FUNCS(TYPENAME1, TYPENAME2)
 
 #define DEFINE_KV_PAIR(TYPENAME1, TYPENAME2) \
-    DEFINE_KV_PAIR_FUNCS(TYPENAME1, TYPENAME2) 
+    DEFINE_KV_PAIR_FUNCS(TYPENAME1, TYPENAME2)
 
 #define INIT_KV_PAIR(TYPENAME1, TYPENAME2) \
     DECLARE_KV_PAIR(TYPENAME1, TYPENAME2) \
     DEFINE_KV_PAIR(TYPENAME1, TYPENAME2)
-
 
 /* MAKEMAN */
 /* type definition */
 
 #define cgKVPair(TYPENAME1, TYPENAME2) cgKVPairOf##TYPENAME1##TYPENAME2
 
-
 /* callers */
-
 
 #define cgKVPair__new(TYPENAME1, TYPENAME2, key, value) cgKVPairOf##TYPENAME1##TYPENAME2##__new((key), (value))
 #define cgKVPair_clone(TYPENAME1, TYPENAME2, this) cgKVPairOf##TYPENAME1##TYPENAME2##_clone((this))
@@ -102,6 +121,4 @@ typedef struct { \
 #define cgKVPair_getValue(TYPENAME1, TYPENAME2, this) cgKVPairOf##TYPENAME1##TYPENAME2##_getValue((this))
 #define cgKVPair_setKey(TYPENAME1, TYPENAME2, this, key) cgKVPairOf##TYPENAME1##TYPENAME2##_setKey((this), (key))
 #define cgKVPair_setValue(TYPENAME1, TYPENAME2, this, value) cgKVPairOf##TYPENAME1##TYPENAME2##_setValue((this), (value))
-
-
-#endif 
+#endif

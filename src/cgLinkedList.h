@@ -1,3 +1,26 @@
+/*
+    =====================================================================
+    CGenerics - Datatypes and Functions for Generic and OO Programming in C
+
+    Copyright (C) 2012  Christian Friedl
+
+    This file is part of CGenerics.
+
+    CGenerics is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CGenerics is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    =====================================================================
+*/
+
 #ifndef _CGLINKEDLIST_H
 #define _CGLINKEDLIST_H
 
@@ -7,7 +30,6 @@
 #include<string.h>
 #include"cgenerics.h"
 #include"cgException.h"
-
 
 /* everything below this line is type-specific! */
 
@@ -153,7 +175,6 @@ TYPENAME* cgLinkedListOf##TYPENAME##_findValue(cgLinkedListOf##TYPENAME* this, c
 #define cgLinkedListElement(TYPENAME) cgLinkedListElementOf##TYPENAME
 #define cgLinkedList(TYPENAME) cgLinkedListOf##TYPENAME
 
-
 /* callers */
 
 #define cgLinkedListElement__new(TYPENAME, value) cgLinkedListElementOf##TYPENAME##__new((value))
@@ -177,5 +198,4 @@ TYPENAME* cgLinkedListOf##TYPENAME##_findValue(cgLinkedListOf##TYPENAME* this, c
 #define cgLinkedList_next(TYPENAME, list) cgLinkedListOf##TYPENAME##_moveToNextElement((list))
 #define cgLinkedList_findElement(TYPENAME, list, value, comparingFunction) cgLinkedListOf##TYPENAME##_findElement((list), (value), (comparingFunction))
 #define cgLinkedList_findValue(TYPENAME, list, value, comparingFunction) cgLinkedListOf##TYPENAME##_findValue((list), (value), (comparingFunction))
-
 #endif

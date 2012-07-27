@@ -1,3 +1,26 @@
+/*
+    =====================================================================
+    CGenerics - Datatypes and Functions for Generic and OO Programming in C
+
+    Copyright (C) 2012  Christian Friedl
+
+    This file is part of CGenerics.
+
+    CGenerics is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CGenerics is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    =====================================================================
+*/
+
 #ifndef _CGARRAY_H
 #define _CGARRAY_H
 
@@ -10,12 +33,12 @@
 
 #define MAX_GROWTH_COUNT 65536
 
-
 /** 
     calculate the needed element count from the current given count, the requested count, and the maximum size to grow per iteration
     - up to the maximum growth size count, we double the size each time
 */
-static unsigned int calculateNeededElementCount(unsigned int currentCount, const unsigned int requested, const unsigned int maxGrowthCount) {
+static unsigned int calculateNeededElementCount(unsigned int currentCount, const unsigned int requested,
+                                                const unsigned int maxGrowthCount) {
     while (currentCount < requested)
         if (currentCount < maxGrowthCount)
             currentCount = currentCount << 1;
@@ -23,7 +46,6 @@ static unsigned int calculateNeededElementCount(unsigned int currentCount, const
             currentCount = currentCount + maxGrowthCount;
     return currentCount;
 }
-
 
 /* everything below this line is type-specific! */
 
@@ -288,24 +310,21 @@ typedef struct { \
 
 #define DECLARE_ARRAY(TYPENAME) \
     DECLARE_ARRAY_TYPE(TYPENAME) \
-    DECLARE_ARRAY_FUNCS(TYPENAME) 
+    DECLARE_ARRAY_FUNCS(TYPENAME)
 
 #define DEFINE_ARRAY(TYPENAME) \
-    DEFINE_ARRAY_FUNCS(TYPENAME) 
+    DEFINE_ARRAY_FUNCS(TYPENAME)
 
 #define INIT_ARRAY(TYPENAME) \
     DECLARE_ARRAY(TYPENAME) \
     DEFINE_ARRAY(TYPENAME)
-
 
 /* MAKEMAN */
 /* type definition */
 
 #define cgArray(TYPENAME) cgArrayOf##TYPENAME
 
-
 /* callers */
-
 
 #define cgArray__new(TYPENAME, initialCapacity) cgArrayOf##TYPENAME##__new((initialCapacity))
 #define cgArray__newFromInitializerList(TYPENAME, ...) cgArrayOf##TYPENAME##__newFromInitializerList(__VA_ARGS__)
@@ -333,6 +352,4 @@ typedef struct { \
 #define cgArray_find(TYPENAME, array, elementPointer, comparingFunction) cgArrayOf##TYPENAME##_find((array), (elementPointer), (comparingFunction))
 #define cgArray_map(TYPENAME, array, mapFunction, userData) cgArrayOf##TYPENAME##_map((array), (mapFunction), (userData))
 #define cgArray_mapConstant(TYPENAME, array, mapFunction, userData) cgArrayOf##TYPENAME##_mapConstant((array), (mapFunction), (userData))
-
-
 #endif
