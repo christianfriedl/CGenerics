@@ -1,6 +1,7 @@
-set(LIB_SOURCES cgException.c cgAppState.c cgLogger.c cgInteger.c cgString.c lookup3.c)
+set(LIB_SOURCES cgException.c cgAppState.c cgLogger.c cgInteger.c
+    cgString.c lookup3.c cgRectangle.c)
 set(INSTALL_HEADERS
-    "cgAppState.h;cgArray.h;cgArrayIterator.h;cgException.h;cgHashMap.h;cgInteger.h;cgKVPair.h;cgLinkedList.h;cgLogger.h;cgString.h;cgTree.h;cgenerics.h")
+    "cgAppState.h;cgArray.h;cgArrayIterator.h;cgException.h;cgHashMap.h;cgInteger.h;cgKVPair.h;cgLinkedList.h;cgLogger.h;cgString.h;cgTree.h;cgRectangle.h;cgenerics.h")
 
 add_library(cgenerics STATIC ${LIB_SOURCES})
 link_directories(${CGENERICS_BIN_DIRECTORIES}/cgenerics)

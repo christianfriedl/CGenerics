@@ -68,6 +68,10 @@ cgString *cgString_insertChar_I(cgString * this, unsigned int pos, char ch);
 
 cgString* cgString_replace_I(cgString*this, unsigned int pos, cgString* that);
 
+cgString* cgString_replaceN_I(cgString*this, unsigned int pos, unsigned int len, cgString* that);
+
+cgString* cgString_removeN_I(cgString* this, unsigned int pos, unsigned int n);
+
 size_t cgString_getSize(const cgString * this);
 
 size_t cgString_getByteSize(const cgString * this);

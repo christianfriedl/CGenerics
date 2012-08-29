@@ -164,7 +164,7 @@ cgString *cgString_insert_I(cgString * this, unsigned int pos, cgString * that) 
     return this;
 }
 
-cgString* cgString_replace_I(cgString*this, unsigned int pos, cgString* that) {
+cgString *cgString_replace_I(cgString * this, unsigned int pos, cgString * that) {
     if (pos > cgString_getByteSize(this)) {
         cgAppState_THROW(cgAppState__getInstance(), Severity_notice,
                          cgExceptionID_StringError, "%u > strlen (%u) ", pos, cgString_getByteSize(this));
@@ -172,9 +172,32 @@ cgString* cgString_replace_I(cgString*this, unsigned int pos, cgString* that) {
     } else if (pos == cgString_getByteSize(this))
         return cgString_append_I(this, that);
 
-    if (pos + cgString_getByteSize(that) > cgString_getByteSize(this))
+    if (pos + cgString_getByteSize(that) > cgString_getByteSize(this)) {
         this = realloc(this, cgString_getByteSize(this) + cgString_getByteSize(that) + 1);
-    memcpy(this + pos, that, cgString_getByteSize(that));   /* copy source to dest */
+        memcpy(this + pos, that, cgString_getByteSize(that) + 1);   /* copy source to dest */
+    } else
+        memcpy(this + pos, that, cgString_getByteSize(that));   /* copy source to dest */
+    return this;
+}
+
+/* TODO test */
+cgString *cgString_replaceN_I(cgString * this, unsigned int pos, unsigned int len, cgString * that) {
+    cgString* s;
+    if (len > cgString_getByteSize(that)) {
+        s = cgString_clone(that);
+        s[len] = '\0';
+        this = cgString_replace_I(this, pos, s);
+        cgString_delete(s);
+    } else
+        this = cgString_replace_I(this, pos, that);
+    return this;
+}
+
+/* delete N chars starting at position pos
+ */
+cgString* cgString_removeN_I(cgString* this, unsigned int pos, unsigned int n) {
+    n = min(n, cgString_getByteSize(this) - pos);
+    memmove(this + pos, this + pos + n, cgString_getByteSize(this) - pos - n + 1);
     return this;
 }
 

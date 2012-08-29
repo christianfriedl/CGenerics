@@ -205,18 +205,28 @@ void testReplaceI() {
     printf("%s... ", __func__);
     cgString* s = cgString__new("xyz");
     cgString* s2 = cgString__new("abc");
-    cgString_replace_I(s, 0, s2); /* replace at start */
+    s = cgString_replace_I(s, 0, s2); /* replace at start */
     assert(!cgString__compare(s, "abc"));
     cgString_delete(s2);
 
     s2 = cgString__new("abc");
-    cgString_replace_I(s, 3, s2); /* replace at end */
+    s = cgString_replace_I(s, 3, s2); /* replace at end */
     assert(!cgString__compare(s, "abcabc"));
     cgString_delete(s2);
 
     s2 = cgString__new("abc");
-    cgString_replace_I(s, 1, s2); /* replace in middle */
+    s = cgString_replace_I(s, 1, s2); /* replace in middle */
     assert(!cgString__compare(s, "aabcbc"));
+    cgString_delete(s2);
+
+    s2 = cgString__new("123456789012345");
+    s = cgString_replace_I(s, 0, s2); /* replace at start longer than original */
+    assert(!cgString__compare(s, s2));
+    cgString_delete(s2);
+
+    s2 = cgString__new("abcdefghijklmnopqrstuvwxyz");
+    s = cgString_replaceN_I(s, 0, 5, s2); /* replace at start longer than original, but only replace the specified length */
+    assert(!cgString__compare(s, "abcde6789012345"));
     cgString_delete(s2);
 
     cgString_delete(s);
