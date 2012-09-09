@@ -183,7 +183,7 @@ cgString *cgString_replace_I(cgString * this, unsigned int pos, cgString * that)
 /* TODO test */
 cgString *cgString_replaceN_I(cgString * this, unsigned int pos, unsigned int len, cgString * that) {
     cgString* s;
-    if (len > cgString_getByteSize(that)) {
+    if (len < cgString_getByteSize(that)) {
         s = cgString_clone(that);
         s[len] = '\0';
         this = cgString_replace_I(this, pos, s);

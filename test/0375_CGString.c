@@ -229,6 +229,16 @@ void testReplaceI() {
     assert(!cgString__compare(s, "abcde6789012345"));
     cgString_delete(s2);
 
+    s2 = cgString__new("xyz");
+    s = cgString_replaceN_I(s, 0, 200, s2); /* replace at start, len is larger than strlen(s2) */
+    assert(!cgString__compare(s, "xyzde6789012345"));
+    cgString_delete(s2);
+
+    s2 = cgString__new("xyz");
+    s = cgString_replaceN_I(s, cgString_getByteSize(s), 200, s2); /* replace at end, len is larger than strlen(s2) */
+    assert(!cgString__compare(s, "xyzde6789012345xyz"));
+    cgString_delete(s2);
+
     cgString_delete(s);
     printf("ok -- ");
 }
