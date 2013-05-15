@@ -27,6 +27,8 @@
 #define cgExceptionID_GeneralFatalException       (0)
 #define cgExceptionID_GeneralNonfatalException    (1)
 #define cgExceptionID_CannotAllocate              (2)
+#define cgExceptionID_CannotOpenFileForReading	  (3)
+#define cgExceptionID_CannotOpenFileForWriting	  (4)
 
 /* this is currently not used in the CG suite itself, but it is a might handy
  * for other cases and shouldn't be redefined for each seperate library, so

@@ -32,15 +32,36 @@ typedef struct {
     cgException *exception;
 } cgAppState;
 
+/**
+ * initialize the cgAppState by calling its constructor
+ */
 void cgAppState__init(const char *name);
 
+/**
+ * delete the cgAppState object if it exists
+ */
 void cgAppState__deInit();
 
+/**
+ * get the singleton instance
+ * NOTE: this does not create the cgAppState instance. Use cgAppState__init for that
+ */
 cgAppState *cgAppState__getInstance();
 
 void cgAppState_throwException(cgAppState * this, cgException * exception);
 
 #define cgAppState_THROW(this, severity, id, ...) cgAppState_throwException((this), cgException__newWithMetadata((severity), (id), __FILE__, __func__, __LINE__, __VA_ARGS__))
+
+/**
+ * throw an exception unless the given condition is met
+ * @param this the cgAppState instance
+ * @param condition condition that should be checked
+ * @param exception exception to raise if condition not met
+ */
+void cgAppState_assert(cgAppState * this, bool condition, cgException * exception);
+
+#define cgAppState_ASSERT(this, condition, severity, id, ...) cgAppState_assert((this), (condition), cgException__newWithMetadata((severity), (id), __FILE__, __func__, __LINE__, __VA_ARGS__))
+
 bool cgAppState_catchAndDeleteException(cgAppState * this);
 
 bool cgAppState_catchAndDeleteExceptionWithID(cgAppState * this, int exceptionID);

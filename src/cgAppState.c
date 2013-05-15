@@ -82,6 +82,11 @@ void cgAppState_throwException(cgAppState * this, cgException * exception) {
     this->exception = exception;
 }
 
+void cgAppState_assert(cgAppState * this, bool condition, cgException * exception) {
+    if (!condition)
+        cgAppState_throwException(this, exception);
+}
+
 bool cgAppState_catchAndDeleteException(cgAppState * this) {
     if (cgAppState_isExceptionRaised(this)) {
         cgException_delete(this->exception);
