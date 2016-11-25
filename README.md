@@ -10,13 +10,13 @@ For example:
 
     cgArray(Int)* array = cgArray__new(Int, 20);
 
-would expand to
-
-    cgarrayOfInt* array = cgArrayOfInt__new(20);
-
 by way of
 
     cgArrayOf##TYPENAME* cgArrayOf##TYPENAME##__new(const unsigned int initialCapacity);
+
+would expand to
+
+    cgarrayOfInt* array = cgArrayOfInt__new(20);
 
 So anyway, here are my learnings, and the principles I was trying to employ in this project:
 
