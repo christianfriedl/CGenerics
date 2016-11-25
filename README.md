@@ -2,9 +2,11 @@
 
 ## A library for generic programming and OOP in C
 
-This was one of my self-education projects. My original intention was to base a BNF parser on this, and then a parser for an actual language on that... Obviously, this never came to fruition. Duh.
+This is one of my weekend self-education projects. My original intention was to base a BNF parser on this, and then a parser for an actual language on that... Obviously, this never came to fruition. Duh.
 
-The project was to create a library of fundamental generic data structures in pure C. The basic idea was to use macros, especially ## expansion (I forget the technical term), to create a C type from a base name and a type:
+The project was to create a library of fundamental generic data structures in pure C. The basic idea was to use macros, especially *## expansion* (I forget the technical term), to create a C type from a base name and a type.
+
+For example:
 
     cgArray(Int)* array = cgArray__new(Int, 20);
 
@@ -26,7 +28,9 @@ So anyway, here are my learnings, and the principles I was trying to employ in t
 * Constructors are named Typename__new
 * Alternative constructors are named Typename__newFrom<Foo>
 * Destructors are named Typename__delete
-* For each generic class, there are always the following macros, e.g. for cgArray:
+* For each generic class, there are always the following macros.
+
+E.g. for cgArray:
 
     #define DECLARE_ARRAY_TYPE(TYPENAME)
    
