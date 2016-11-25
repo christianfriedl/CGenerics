@@ -25,7 +25,7 @@ So anyway, here are my learnings, and the principles I was trying to employ in t
 * All functions are prefixed with cg
 * Instance methods have one underscore between class name and method name (\<Typename\>\_doStuff(...))
 * Static class methods have two underscores between class name and method name (\<Typename\>\_\_new(...))
-* "Private" methods have static scope and *end* on an underscore (*end*, so vi's/ctag's keyword expansion can find it even if we change the visibility)
+* "Private" methods have static scope and *end* on an underscore (*end*, so vi's/ctag's keyword expansion can find it even if we change the visibility), e.g. `static cgAppState *cgAppState__new_(const char *name);`
 * Constructors are named \<Typename\>\_\_new
 * Alternative constructors are named \<Typename\>\_\_newFrom\<Foo\>
 * Destructors are named \<Typename\>\_\_delete
