@@ -16,7 +16,7 @@ by way of
 
 would expand to
 
-    cgarrayOfInt* array = cgArrayOfInt__new(20);
+    cgArrayOfInt* array = cgArrayOfInt__new(20);
 
 So anyway, here are my learnings, and the principles I was trying to employ in this project:
 
