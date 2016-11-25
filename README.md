@@ -59,9 +59,11 @@ to unify the above two macros for convenience
 ### Takeaways and learnings
 
 * You can achieve some limited success by way of macros. The major limitation is that macros don't recurse, so you can not do collections of collections (without using some hacks like pre-expanding some part of your headers...)
+* Another limitation is that everything you put into your generics has to be a pointer, so it has to be an object, so you have to have a class definition, a constructor etc. for it (or forsake code uniformity, which is Not A Good Thing).
 * You can not effectively do exceptions in C. I tried it by way of convention (see https://github.com/christianfriedl/CGenerics/blob/master/src/cgAppState.h), but then EVERY method call needs to check for "Exceptions" afterwards, and that is rather unseemly to say the least. The only other way I know would be to change the binary, so essentially write your own compiler.
 * Of course, fundamental algorithms are extremely nasty with regards to edge cases, and you have to be sure you really covered them all. This library does not cover even the most fundamental issues. So in the extremely unlikely case that you intend to use any part of this for any serious business, please use utter caution, because I didn't. You have been warned! (And a pull request would be nice!)
 * I have since come to the True Belief of never using unsigned int, because it only gives you one extra bit, but can get you in an awful lot of trouble if you're not extremely careful.
+* I would be very hesitant about using another singleton. I think it's the most overrated pattern ever.
 
 ## License
 
