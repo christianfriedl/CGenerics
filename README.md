@@ -29,6 +29,7 @@ So anyway, here are my learnings, and the principles I was trying to employ in t
 * Constructors are named \<Typename\>\_\_new(...).
 * Alternative constructors are named \<Typename\>\_\_newFrom\<Foo\>(...).
 * Destructors are named \<Typename\>\_\_delete()
+* Generic containers have a destructor named \<Typename\>\_deleteValues() which will delete just the contents of the container by calling the corresponding \<Typename\>\_delete() method.
 * For each class there is a header named exactly like this class.
 * For each generic class, there is a set of macros that will expand to declarations and definitions of the basic type and "methods" for that class.
 * cgAppState is a Singleton, thus it has a private constructor and a method `cgAppState__getInstance()`.
