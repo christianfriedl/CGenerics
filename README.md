@@ -23,14 +23,16 @@ So anyway, here are my learnings, and the principles I was trying to employ in t
 ### Design principles and coding style
 
 * All functions are prefixed with cg
-* Member functions have one underscore between class name and method name (Typename_doStuff(...))
-* Static functions have two underscores between class name and method name (Typename__new(...))
-* Constructors are named Typename__new
-* Alternative constructors are named Typename__newFrom<Foo>
-* Destructors are named Typename__delete
-* For each generic class, there are always the following macros.
+* Instance methods have one underscore between class name and method name (\<Typename\>_doStuff(...))
+* Static class methods have two underscores between class name and method name (\<Typename\>__new(...))
+* "Private" methods have static scope and *end* on an underscore (*end*, so vi's/ctag's keyword expansion can find it even if we change the visibility)
+* Constructors are named \<Typename\>__new
+* Alternative constructors are named \<Typename\>__newFrom<Foo>
+* Destructors are named \<Typename\>__delete
+* For each class there is a header named exactly like this class.
+* For each generic class, there is a set of macros that will expand to declarations and definitions of the basic type and "methods" for that class.
 
-E.g. for cgArray:
+### Example class: cgArray (defined in src/cgArray.h)
 
     #define DECLARE_ARRAY_TYPE(TYPENAME)
    
